@@ -212,161 +212,143 @@ footer{background:var(--gold-footer);margin-top:3rem}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 (function(){
-  try { firebase.app(); } catch(e) {
-    firebase.initializeApp({
-      apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
-      authDomain:"zenit-website.firebaseapp.com",
-      projectId:"zenit-website",
-      storageBucket:"zenit-website.firebasestorage.app",
-      messagingSenderId:"690745286720",
-      appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
-    });
+try { firebase.app(); } catch(e) {
+  firebase.initializeApp({
+    apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
+    authDomain:"zenit-website.firebaseapp.com",
+    projectId:"zenit-website",
+    storageBucket:"zenit-website.firebasestorage.app",
+    messagingSenderId:"690745286720",
+    appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
+  });
+}
+var db = firebase.firestore();
+var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
+var thumbColors = {Pakistan:'linear-gradient(140deg,#0a1f0a,#1a4020)',World:'linear-gradient(140deg,#0f1a30,#1a2744)',Business:'linear-gradient(140deg,#1a0f00,#5c3200)',Sports:'linear-gradient(140deg,#0a0a1a,#1a2050)',UAE:'linear-gradient(140deg,#1a1000,#4a3800)',India:'linear-gradient(140deg,#1a0800,#5c2000)',Lifestyle:'linear-gradient(140deg,#1a0a14,#5c1a30)','Sci-Tech':'linear-gradient(140deg,#001a1a,#003a3a)',Opinion:'linear-gradient(140deg,#0a0a0a,#2a2a2a)'};
+
+// LIVE TICKER
+var tt = document.querySelector('.ticker-track');
+if(tt){
+  db.collection('ticker').orderBy('createdAt','desc').onSnapshot(function(snap){
+    var items = snap.docs.map(function(d){ return d.data(); });
+    if(items.length > 0){
+      var doubled = items.concat(items);
+      tt.innerHTML = doubled.map(function(t){ return '<span>' + t.text + '</span>'; }).join('');
+    }
+  });
+}
+
+// LIVE ARTICLES - filtered by section
+db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
+  var arts = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); })
+               .filter(function(a){ return a.status === 'live'; });
+  var liveArts = arts.filter(function(a){ return a.section.toLowerCase() === 'opinion'; });
+  var container = document.getElementById('live-articles-container');
+  if(container){
+    if(liveArts.length === 0){
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = 'block';
+    var grid = document.getElementById('live-articles-grid');
+    if(grid){
+      grid.innerHTML = liveArts.slice(0,6).map(function(a){
+        var thumb = thumbColors[a.section] || 'linear-gradient(140deg,#0a0a0a,#1a1a1a)';
+        return '<div class="news-card" style="border-top:3px solid var(--gold)">'
+          + '<div class="card-thumb" style="background:' + thumb + '"></div>'
+          + '<div class="card-body">'
+          + '<div class="card-cat">' + (a.cat||a.section) + '</div>'
+          + '<div class="card-title">' + a.title + '</div>'
+          + (a.excerpt ? '<div class="card-excerpt">' + a.excerpt + '</div>' : '')
+          + '<div class="card-meta"><span>' + (a.time||'Just now') + '</span>'
+          + '<span>' + (a.read||'3 min read') + '</span></div>'
+          + '</div></div>';
+      }).join('');
+    }
   }
-  var db = firebase.firestore();
-  var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
-
-  // TICKER
-  var tt = document.querySelector('.ticker-track');
-  if(tt){
-    db.collection('ticker').orderBy('createdAt','desc').onSnapshot(function(snap){
-      var items = snap.docs.map(function(d){ return d.data(); });
-      if(items.length > 0){
-        var doubled = items.concat(items);
-        tt.innerHTML = doubled.map(function(t){ return '<span>' + t.text + '</span>'; }).join('');
-      }
-    });
+  // Latest feed page
+  var feed = document.getElementById('firebase-feed');
+  if(feed){
+    feed.innerHTML = arts.map(function(a){
+      return '<div class="feed-item"><div>'
+        + '<div class="fi-cat">' + (a.cat||a.section) + '</div>'
+        + '<div class="fi-title">' + a.title + '</div>'
+        + (a.excerpt ? '<div class="fi-deck">' + a.excerpt + '</div>' : '')
+        + '<div class="fi-meta"><span>' + (a.time||'Just now') + '</span>'
+        + '<span>' + (a.read||'3 min read') + '</span></div>'
+        + '</div><div class="fi-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);height:90px;border-radius:2px"></div></div>';
+    }).join('');
   }
+});
 
-  // ARTICLES — inject into dedicated container
-  db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
-    var arts = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); })
-                   .filter(function(a){ return a.status === 'live'; });
-
-    // Update live articles counter if exists
-    var counter = document.getElementById('fb-article-count');
-    if(counter) counter.textContent = arts.length;
-
-    // Inject into live-articles container
-    var container = document.getElementById('live-articles-container');
-    if(container){
-      if(arts.length === 0){
-        container.style.display = 'none';
-        return;
-      }
-      container.style.display = 'block';
-      var grid = document.getElementById('live-articles-grid');
-      if(grid){
-        grid.innerHTML = arts.slice(0,6).map(function(a){
-          var thumbColors = {
-            'Pakistan':'linear-gradient(140deg,#0a1f0a,#1a4020)',
-            'World':'linear-gradient(140deg,#0f1a30,#1a2744)',
-            'Business':'linear-gradient(140deg,#1a0f00,#5c3200)',
-            'Sports':'linear-gradient(140deg,#0a0a1a,#1a2050)',
-            'UAE':'linear-gradient(140deg,#1a1000,#4a3800)',
-            'India':'linear-gradient(140deg,#1a0800,#5c2000)',
-            'Lifestyle':'linear-gradient(140deg,#1a0a14,#5c1a30)',
-            'Sci-Tech':'linear-gradient(140deg,#001a1a,#003a3a)',
-            'Opinion':'linear-gradient(140deg,#0a0a0a,#2a2a2a)'
-          };
-          var thumb = thumbColors[a.section] || 'linear-gradient(140deg,#0a0a0a,#1a1a1a)';
-          return '<div class="news-card" style="border-top:3px solid var(--gold)">'
-            + '<div class="card-thumb" style="background:' + thumb + '"></div>'
-            + '<div class="card-body">'
-            + '<div class="card-cat">' + (a.cat || a.section) + '</div>'
-            + '<div class="card-title">' + a.title + '</div>'
-            + (a.excerpt ? '<div class="card-excerpt">' + a.excerpt + '</div>' : '')
-            + '<div class="card-meta"><span>' + (a.time || 'Just now') + '</span>'
-            + '<span>' + (a.read || '3 min read') + '</span></div>'
-            + '</div></div>';
-        }).join('');
-      }
-    }
-
-    // Also inject into latest feed page
-    var feed = document.getElementById('firebase-feed');
-    if(feed){
-      feed.innerHTML = arts.map(function(a){
-        return '<div class="feed-item"><div>'
-          + '<div class="fi-cat">' + (a.cat || a.section) + '</div>'
-          + '<div class="fi-title">' + a.title + '</div>'
-          + (a.excerpt ? '<div class="fi-deck">' + a.excerpt + '</div>' : '')
-          + '<div class="fi-meta"><span>' + (a.time || 'Just now') + '</span>'
-          + '<span>' + (a.read || '3 min read') + '</span></div>'
-          + '</div><div class="fi-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);height:90px;border-radius:2px"></div></div>';
-      }).join('');
-    }
+// LIVE OPINION
+db.collection('opinion').orderBy('createdAt','desc').onSnapshot(function(snap){
+  var ops = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  if(!ops.length) return;
+  document.querySelectorAll('.op-grid').forEach(function(grid){
+    var existing = grid.querySelectorAll('.op-card');
+    existing.forEach(function(c){ c.remove(); });
+    var newOps = ops.slice(0,4).map(function(o){
+      return '<div class="op-card">'
+        + '<div class="op-av" style="background:' + (o.color||'linear-gradient(135deg,#c9a84c,#8a6020)') + '">' + (o.initials||'??') + '</div>'
+        + '<div class="op-line"></div>'
+        + '<div class="op-author">' + o.author + '</div>'
+        + '<div class="op-title">' + o.title + '</div>'
+        + '</div>';
+    }).join('');
+    grid.insertAdjacentHTML('afterbegin', newOps);
   });
+  var opFull = document.getElementById('firebase-opinion-full');
+  if(opFull){
+    opFull.innerHTML = ops.map(function(o){
+      return '<div class="op-full-card">'
+        + '<div class="op-full-av" style="background:' + (o.color||'linear-gradient(135deg,#c9a84c,#8a6020)') + '">' + (o.initials||'??') + '</div>'
+        + '<div class="op-full-author">' + o.author + '</div>'
+        + '<div class="op-full-role">' + (o.role||'') + '</div>'
+        + '<div class="op-full-title">' + o.title + '</div>'
+        + '<div class="op-full-deck">' + (o.deck||'') + '</div>'
+        + '<div class="op-full-meta"><span>' + (o.time||'Just now') + '</span><span>' + (o.read||'5 min read') + '</span></div>'
+        + '</div>';
+    }).join('');
+  }
+});
 
-  // OPINION
-  db.collection('opinion').orderBy('createdAt','desc').onSnapshot(function(snap){
-    var ops = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
-    if(!ops.length) return;
-    var grids = document.querySelectorAll('.op-grid');
-    grids.forEach(function(grid){
-      var existing = grid.querySelectorAll('.op-card');
-      existing.forEach(function(c){ c.remove(); });
-      grid.innerHTML = ops.slice(0,4).map(function(o){
-        return '<div class="op-card">'
-          + '<div class="op-av" style="background:' + (o.color || 'linear-gradient(135deg,#c9a84c,#8a6020)') + '">' + (o.initials || '??') + '</div>'
-          + '<div class="op-line"></div>'
-          + '<div class="op-author">' + o.author + '</div>'
-          + '<div class="op-title">' + o.title + '</div>'
-          + '</div>';
-      }).join('') + grid.innerHTML;
-    });
-    var opFull = document.getElementById('firebase-opinion-full');
-    if(opFull){
-      opFull.innerHTML = ops.map(function(o){
-        return '<div class="op-full-card">'
-          + '<div class="op-full-av" style="background:' + (o.color || 'linear-gradient(135deg,#c9a84c,#8a6020)') + '">' + (o.initials || '??') + '</div>'
-          + '<div class="op-full-author">' + o.author + '</div>'
-          + '<div class="op-full-role">' + (o.role || '') + '</div>'
-          + '<div class="op-full-title">' + o.title + '</div>'
-          + '<div class="op-full-deck">' + (o.deck || '') + '</div>'
-          + '<div class="op-full-meta"><span>' + (o.time || 'Just now') + '</span><span>' + (o.read || '5 min read') + '</span></div>'
-          + '</div>';
-      }).join('');
-    }
+// LIVE VIDEOS
+db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
+  var vids = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  if(!vids.length) return;
+  document.querySelectorAll('.reels-scroll').forEach(function(scroll){
+    var fbReels = scroll.querySelectorAll('.fb-reel');
+    fbReels.forEach(function(r){ r.remove(); });
+    var newReels = vids.slice(0,6).map(function(v){
+      return '<div class="reel-card fb-reel">'
+        + '<div class="reel-visual">'
+        + '<div class="reel-bg" style="background:' + (bgMap[v.bg]||bgMap.vt1) + ';width:100%;height:100%"></div>'
+        + '<div class="reel-ol">'
+        + '<div class="reel-top"><span class="rbadge ' + (v.badge||'recap') + '">' + (v.badge||'Recap') + '</span>'
+        + '<span class="rdur">' + (v.dur||'1:00') + '</span></div>'
+        + '<div class="reel-bot"><div class="rcat">' + v.cat + '</div>'
+        + '<div class="rtitle">' + v.title + '</div>'
+        + '<div class="rplay"><div class="rplay-tri"></div></div></div>'
+        + '</div></div></div>';
+    }).join('');
+    scroll.insertAdjacentHTML('afterbegin', newReels);
   });
-
-  // VIDEOS
-  db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
-    var vids = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
-    if(!vids.length) return;
-    var scrolls = document.querySelectorAll('.reels-scroll');
-    scrolls.forEach(function(scroll){
-      var fbReels = scroll.querySelectorAll('.fb-reel');
-      fbReels.forEach(function(r){ r.remove(); });
-      var newReels = vids.slice(0,6).map(function(v){
-        return '<div class="reel-card fb-reel">'
-          + '<div class="reel-visual">'
-          + '<div class="reel-bg" style="background:' + (bgMap[v.bg] || bgMap.vt1) + ';width:100%;height:100%"></div>'
-          + '<div class="reel-ol">'
-          + '<div class="reel-top"><span class="rbadge ' + (v.badge||'recap') + '">' + (v.badge||'Recap') + '</span>'
-          + '<span class="rdur">' + (v.dur||'1:00') + '</span></div>'
-          + '<div class="reel-bot"><div class="rcat">' + v.cat + '</div>'
-          + '<div class="rtitle">' + v.title + '</div>'
-          + '<div class="rplay"><div class="rplay-tri"></div></div></div>'
-          + '</div></div></div>';
-      }).join('');
-      scroll.insertAdjacentHTML('afterbegin', newReels);
-    });
-    var vidFull = document.getElementById('firebase-videos-full');
-    if(vidFull){
-      vidFull.innerHTML = vids.map(function(v){
-        return '<div class="vid-card">'
-          + '<div class="vid-thumb"><div class="vid-thumb-img" style="background:' + (bgMap[v.bg]||bgMap.vt1) + '"></div>'
-          + '<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
-          + '<span class="vid-dur">' + (v.dur||'1:00') + '</span>'
-          + '<div class="vid-badge"><span class="rbadge ' + (v.badge||'recap') + '">' + (v.badge||'Recap') + '</span></div></div>'
-          + '<div class="vid-cat">' + v.cat + '</div>'
-          + '<div class="vid-title">' + v.title + '</div>'
-          + '<div class="vid-meta"><span>Just now</span><span>' + (v.likes||'0') + ' views</span></div>'
-          + '</div>';
-      }).join('');
-    }
-  });
-
+  var vidFull = document.getElementById('firebase-videos-full');
+  if(vidFull){
+    vidFull.innerHTML = vids.map(function(v){
+      return '<div class="vid-card">'
+        + '<div class="vid-thumb"><div class="vid-thumb-img" style="background:' + (bgMap[v.bg]||bgMap.vt1) + '"></div>'
+        + '<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
+        + '<span class="vid-dur">' + (v.dur||'1:00') + '</span>'
+        + '<div class="vid-badge"><span class="rbadge ' + (v.badge||'recap') + '">' + (v.badge||'Recap') + '</span></div></div>'
+        + '<div class="vid-cat">' + v.cat + '</div>'
+        + '<div class="vid-title">' + v.title + '</div>'
+        + '<div class="vid-meta"><span>Just now</span><span>' + (v.likes||'0') + ' views</span></div>'
+        + '</div>';
+    }).join('');
+  }
+});
 })();
 </script>
 
