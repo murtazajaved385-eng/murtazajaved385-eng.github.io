@@ -311,6 +311,11 @@ function renderArticle(a) {
   }
 
   document.getElementById('article-content').style.display = 'block';
+
+  // Count this view (increment atomically)
+  db.collection('articles').doc(a.id).update({
+    views: firebase.firestore.FieldValue.increment(1)
+  }).catch(function(){});
 }
 
 function loadRelated(a) {
