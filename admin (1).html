@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENIT Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0a0a0a;--gold:#c9a84c;--gold-light:#e0c070;--gold-footer:#d4a832;--burgundy:#7a1c2e;--bg:#0d0d0d;--panel:#161616;--panel2:#1e1e1e;--border:rgba(201,168,76,0.15);--text:#e8e0d0;--muted:#8a7a62;--success:#2d6a3f;--danger:#6a1a2a;}
+html{scroll-behavior:smooth}body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);letter-spacing:0.3em}
+.login-sub{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;margin-top:-1.5rem}
+.login-box{background:var(--panel);border:1px solid var(--border);padding:2.5rem;width:360px}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:0.4rem}
+.login-hint{font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem}
+.field-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.field-input{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;outline:none;margin-bottom:1rem;transition:border-color .2s}
+.field-input:focus{border-color:var(--gold)}
+.btn-gold{width:100%;background:var(--gold-footer);color:var(--black);border:none;padding:11px;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.btn-gold:hover{opacity:0.88}.login-error{color:#e07070;font-family:'Jost',sans-serif;font-size:0.7rem;margin-top:0.5rem;display:none}
+#admin-app{display:none;min-height:100vh}
+.admin-topbar{background:var(--gold-footer);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid rgba(0,0,0,0.2)}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--black);letter-spacing:0.2em}
+.topbar-badge{font-family:'Jost',sans-serif;font-size:0.52rem;background:var(--black);color:var(--gold-light);padding:3px 10px;letter-spacing:0.14em;text-transform:uppercase;margin-left:0.75rem}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.firebase-dot{width:8px;height:8px;border-radius:50%;background:#888;display:inline-block;margin-right:4px;transition:background .3s}.firebase-dot.connected{background:#4caf50}
+.firebase-status{font-family:'Jost',sans-serif;font-size:0.6rem;color:rgba(0,0,0,0.55);display:flex;align-items:center;gap:4px}
+.topbar-user{font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(0,0,0,0.6);letter-spacing:0.06em}
+.btn-logout{background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.25);color:var(--black);padding:6px 16px;font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+.admin-body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
+.sidebar{background:var(--panel);border-right:1px solid var(--border);padding:1.5rem 0}
+.sidebar-section{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding:0 1.25rem;margin-bottom:0.5rem;margin-top:1.25rem}
+.sidebar-section:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.25rem;cursor:pointer;transition:background .15s;border-left:3px solid transparent;font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--muted)}
+.nav-item:hover{background:rgba(201,168,76,0.06);color:var(--text)}.nav-item.active{background:rgba(201,168,76,0.1);border-left-color:var(--gold);color:var(--gold)}
+.nav-icon{font-size:1rem;width:20px;text-align:center}.sidebar-divider{height:1px;background:var(--border);margin:1rem 1.25rem}
+.main-content{padding:2rem;background:var(--bg);overflow-y:auto}
+.page{display:none}.page.active{display:block}
+.page-header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.page-desc{font-family:'EB Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--panel);border:1px solid var(--border);padding:1.25rem 1.5rem}
+.stat-label{font-family:'Jost',sans-serif;font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
+.stat-sub{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--muted);margin-top:4px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.dash-card{background:var(--panel);border:1px solid var(--border);padding:1.5rem}
+.dash-card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.recent-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.07);font-family:'Jost',sans-serif;font-size:0.68rem}
+.recent-item:last-child{border-bottom:none}.recent-title{color:var(--text);flex:1;margin-right:1rem;line-height:1.4}
+.recent-cat{color:var(--gold);font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase}.recent-time{color:var(--muted);font-size:0.58rem;white-space:nowrap}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}.form-group{margin-bottom:1.25rem}.form-group.full{grid-column:1/-1}
+label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}select option{background:var(--panel2)}
+textarea{resize:vertical;min-height:100px;font-family:'EB Garamond',serif;font-size:0.95rem;font-style:italic}
+.form-actions{display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.btn-primary{background:var(--gold-footer);color:var(--black);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.btn-primary:hover{opacity:0.88}.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px 20px;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{border-color:var(--gold);color:var(--text)}
+.btn-danger{background:var(--danger);color:#ffaaaa;border:none;padding:6px 14px;font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.btn-danger:hover{opacity:0.8}
+.tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.tab{padding:0.7rem 1.25rem;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-content{display:none}.tab-content.active{display:block}
+.table-wrap{background:var(--panel);border:1px solid var(--border);overflow:hidden}
+.table-toolbar{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.table-search{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 12px;font-family:'Jost',sans-serif;font-size:0.72rem;outline:none;width:220px}
+.table-search:focus{border-color:var(--gold)}
+table{width:100%;border-collapse:collapse}
+th{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:0.75rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);background:var(--panel)}
+td{padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.06);font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)}
+.td-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;line-height:1.3}
+.td-cat{display:inline-block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.1);padding:2px 8px;margin-bottom:4px}
+.td-actions{display:flex;gap:0.5rem;align-items:center}
+.status-live{background:rgba(45,106,63,0.25);color:#7ecf94;border:1px solid rgba(45,106,63,0.4);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
+.status-draft{background:rgba(100,100,100,0.2);color:#999;border:1px solid rgba(100,100,100,0.3);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
+.ticker-list{background:var(--panel);border:1px solid var(--border);margin-bottom:1.5rem}
+.ticker-item{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.07)}
+.ticker-item:last-child{border-bottom:none}.ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)}
+.ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa;margin-right:0.5rem}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.video-admin-card{background:var(--panel);border:1px solid var(--border);padding:1rem}
+.video-thumb-admin{height:80px;margin-bottom:0.75rem;border-radius:2px}
+.vt1{background:linear-gradient(170deg,#0a0a14,#1a2040)}.vt2{background:linear-gradient(170deg,#140a0a,#401a1a)}
+.vt3{background:linear-gradient(170deg,#0a140a,#1a3520)}.vt4{background:linear-gradient(170deg,#14120a,#3a2e10)}
+.vt5{background:linear-gradient(170deg,#0e0a14,#2a1840)}.vt6{background:linear-gradient(170deg,#140a0e,#401520)}
+.video-admin-cat{font-family:'Jost',sans-serif;font-size:0.52rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.video-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.5rem}
+.video-admin-meta{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);margin-bottom:0.75rem}
+.video-admin-actions{display:flex;gap:0.5rem}
+.opinion-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.op-admin-card{background:var(--panel);border:1px solid var(--border);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start}
+.op-admin-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a6020);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:700;color:var(--black);flex-shrink:0}
+.op-admin-info{flex:1}.op-admin-author{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:3px}
+.op-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:0.5rem}
+.op-admin-actions{display:flex;gap:0.5rem;margin-top:0.5rem}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--success);color:#a0ffb8;padding:1rem 1.5rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.06em;border:1px solid rgba(45,106,63,0.5);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}.toast.error{background:var(--danger);color:#ffaaaa;border-color:rgba(106,26,42,0.5)}
+.empty-state{text-align:center;padding:3rem;color:var(--muted)}.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4}
+.empty-text{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem}
+.char-count{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);text-align:right;margin-top:3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div style="text-align:center"><div class="login-logo">ZENIT</div><div class="login-sub">Admin Panel</div></div>
+  <div class="login-box">
+    <div class="login-title">Sign In</div>
+    <div class="login-hint">Enter your credentials to access the dashboard</div>
+    <label class="field-label">Username</label>
+    <input class="field-input" type="text" id="login-user" placeholder="admin">
+    <label class="field-label">Password</label>
+    <input class="field-input" type="password" id="login-pass" placeholder="••••••••">
+    <button class="btn-gold" onclick="doLogin()">Sign In &#8594;</button>
+    <div class="login-error" id="login-error">Incorrect username or password.</div>
+  </div>
+</div>
+
+<div id="admin-app">
+  <div class="admin-topbar">
+    <div style="display:flex;align-items:center"><div class="topbar-logo">ZENIT</div><span class="topbar-badge">Admin</span></div>
+    <div class="topbar-right">
+      <div class="firebase-status"><span class="firebase-dot" id="fb-dot"></span><span id="fb-status">Connecting...</span></div>
+      <span class="topbar-user">Signed in as <strong>admin</strong></span>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="sidebar">
+      <div class="sidebar-section">Overview</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">&#9672;</span> Dashboard</div>
+      <div class="sidebar-section">Content</div>
+      <div class="nav-item" onclick="showPage('articles',this)"><span class="nav-icon">&#10022;</span> Articles</div>
+      <div class="nav-item" onclick="showPage('ticker',this)"><span class="nav-icon">&#9670;</span> Breaking Ticker</div>
+      <div class="nav-item" onclick="showPage('videos',this)"><span class="nav-icon">&#9654;</span> Video Reels</div>
+      <div class="nav-item" onclick="showPage('opinion',this)"><span class="nav-icon">&#9872;</span> Opinion Pieces</div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">Account</div>
+      <div class="nav-item" onclick="showPage('settings',this)"><span class="nav-icon">&#9881;</span> Settings</div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">Site</div>
+      <div class="nav-item" onclick="window.open('index.html','_blank')"><span class="nav-icon">&#8853;</span> View Website</div>
+    </div>
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header"><div class="page-title">Dashboard</div><div class="page-desc">Live overview of your ZENIT website content — powered by Firebase.</div></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value" id="stat-articles">—</div><div class="stat-sub">Across all sections</div></div>
+          <div class="stat-card"><div class="stat-label">Ticker Items</div><div class="stat-value" id="stat-ticker">—</div><div class="stat-sub">Breaking news</div></div>
+          <div class="stat-card"><div class="stat-label">Video Reels</div><div class="stat-value" id="stat-videos">—</div><div class="stat-sub">Published shorts</div></div>
+          <div class="stat-card"><div class="stat-label">Opinion Pieces</div><div class="stat-value" id="stat-opinion">—</div><div class="stat-sub">Writer columns</div></div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card"><div class="dash-card-title">Recent Articles</div><div id="dash-recent-articles"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></div></div>
+          <div class="dash-card"><div class="dash-card-title">Recent Opinion Pieces</div><div id="dash-recent-opinion"><div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div></div></div>
+        </div>
+      </div>
+
+      <!-- ARTICLES -->
+      <div class="page" id="page-articles">
+        <div class="page-header"><div class="page-title">Articles</div><div class="page-desc">Add articles — they appear live on your website instantly via Firebase.</div></div>
+        <div class="tabs"><div class="tab active" onclick="switchTab('articles','list',this)">All Articles</div><div class="tab" onclick="switchTab('articles','add',this)">Add New Article</div></div>
+        <div class="tab-content active" id="articles-list">
+          <div class="table-wrap">
+            <div class="table-toolbar"><input class="table-search" type="text" placeholder="Search articles..." oninput="filterArticles(this.value)"><button class="btn-primary" onclick="switchTab('articles','add',document.querySelectorAll('#page-articles .tab')[1])">+ New Article</button></div>
+            <table><thead><tr><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead><tbody id="articles-table-body"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading from Firebase...</div></div></td></tr></tbody></table>
+          </div>
+        </div>
+        <div class="tab-content" id="articles-add">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
+            <div class="form-grid">
+              <div class="form-group full"><label>Headline *</label><input type="text" id="art-title" placeholder="Enter article headline..." oninput="cc('art-title','art-tc',120)"><div class="char-count"><span id="art-tc">0</span>/120</div></div>
+              <div class="form-group"><label>Section *</label><select id="art-section"><option value="">Select section...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Opinion</option><option>Sci-Tech</option></select></div>
+              <div class="form-group"><label>Category Tag</label><input type="text" id="art-cat" placeholder="e.g. Pakistan · Security"></div>
+              <div class="form-group full"><label>Excerpt</label><input type="text" id="art-excerpt" placeholder="Brief summary..."></div>
+              <div class="form-group full"><label>Article Body</label><textarea id="art-body" rows="5" placeholder="Full article content..."></textarea></div>
+              <div class="form-group"><label>Author</label><input type="text" id="art-author" placeholder="e.g. Ayesha Khalid"></div>
+              <div class="form-group"><label>Read Time</label><input type="text" id="art-read" placeholder="e.g. 4 min read"></div>
+              <div class="form-group"><label>Status</label><select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select></div>
+              <div class="form-group"><label>Time Label</label><input type="text" id="art-time" placeholder="e.g. 2h ago"></div>
+            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-art" onclick="saveArticle()">Save to Firebase &#8594;</button><button class="btn-secondary" onclick="clearForm(['art-title','art-cat','art-excerpt','art-body','art-author','art-read','art-time'],['art-section','art-status'])">Clear</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TICKER -->
+      <div class="page" id="page-ticker">
+        <div class="page-header"><div class="page-title">Breaking News Ticker</div><div class="page-desc">Add items — they appear on your website ticker instantly.</div></div>
+        <div style="background:var(--panel);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);margin-bottom:1rem">Add Breaking News Item</div>
+          <div style="display:flex;gap:0.75rem;align-items:flex-end">
+            <div style="flex:1"><label>Breaking News Text *</label><input type="text" id="ticker-input" placeholder="Enter breaking news headline..." oninput="cc('ticker-input','ticker-cc',100)"><div class="char-count"><span id="ticker-cc">0</span>/100</div></div>
+            <button class="btn-primary" style="margin-bottom:18px;white-space:nowrap" id="btn-add-ticker" onclick="addTicker()">+ Add Item</button>
+          </div>
+        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.75rem">Current Items <span style="font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);font-weight:400">(<span id="ticker-count">0</span>)</span></div>
+        <div class="ticker-list" id="ticker-list"><div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">Loading...</div></div></div>
+      </div>
+
+      <!-- VIDEOS -->
+      <div class="page" id="page-videos">
+        <div class="page-header"><div class="page-title">Video Reels</div><div class="page-desc">Add video reels — they appear on your website instantly.</div></div>
+        <div class="tabs"><div class="tab active" onclick="switchTab('videos','list',this)">All Videos</div><div class="tab" onclick="switchTab('videos','add',this)">Add New Video</div></div>
+        <div class="tab-content active" id="videos-list"><div class="video-grid" id="videos-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div></div></div>
+        <div class="tab-content" id="videos-add">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
+            <div class="form-grid">
+              <div class="form-group full"><label>Video Title *</label><input type="text" id="vid-title" placeholder="Enter video title..." oninput="cc('vid-title','vid-tc',80)"><div class="char-count"><span id="vid-tc">0</span>/80</div></div>
+              <div class="form-group"><label>Category *</label><select id="vid-cat"><option value="">Select...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Sci-Tech</option></select></div>
+              <div class="form-group"><label>Badge</label><select id="vid-badge"><option value="live">Live</option><option value="recap">Recap</option><option value="analysis">Analysis</option></select></div>
+              <div class="form-group"><label>Duration</label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
+              <div class="form-group"><label>Likes</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
+            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-vid" onclick="saveVideo()">Save to Firebase &#8594;</button><button class="btn-secondary" onclick="clearForm(['vid-title','vid-dur','vid-likes'],['vid-cat','vid-badge'])">Clear</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPINION -->
+      <div class="page" id="page-opinion">
+        <div class="page-header"><div class="page-title">Opinion Pieces</div><div class="page-desc">Add opinion pieces — they appear on your website instantly.</div></div>
+        <div class="tabs"><div class="tab active" onclick="switchTab('opinion','list',this)">All Opinions</div><div class="tab" onclick="switchTab('opinion','add',this)">Add New Opinion</div></div>
+        <div class="tab-content active" id="opinion-list"><div class="opinion-admin-grid" id="opinion-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div></div></div>
+        <div class="tab-content" id="opinion-add">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
+            <div class="form-grid">
+              <div class="form-group"><label>Author Name *</label><input type="text" id="op-author" placeholder="e.g. Ayesha Khalid"></div>
+              <div class="form-group"><label>Author Role</label><input type="text" id="op-role" placeholder="e.g. Senior Correspondent"></div>
+              <div class="form-group"><label>Initials</label><input type="text" id="op-initials" placeholder="e.g. AK" maxlength="2"></div>
+              <div class="form-group"><label>Avatar Color</label><select id="op-color"><option value="linear-gradient(135deg,#c9a84c,#8a6020)">Gold</option><option value="linear-gradient(135deg,#1b4a8a,#2d70c8)">Blue</option><option value="linear-gradient(135deg,#5c1020,#8b2030)">Burgundy</option><option value="linear-gradient(135deg,#1a3020,#2d5040)">Green</option><option value="linear-gradient(135deg,#3a1020,#6a1a38)">Plum</option></select></div>
+              <div class="form-group full"><label>Opinion Title *</label><input type="text" id="op-title" placeholder="Opinion headline..." oninput="cc('op-title','op-tc',120)"><div class="char-count"><span id="op-tc">0</span>/120</div></div>
+              <div class="form-group full"><label>Opening Paragraph</label><textarea id="op-deck" rows="4" placeholder="Opening argument..."></textarea></div>
+              <div class="form-group"><label>Read Time</label><input type="text" id="op-read" placeholder="e.g. 6 min read"></div>
+              <div class="form-group"><label>Time Label</label><input type="text" id="op-time" placeholder="e.g. 3h ago"></div>
+            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-op" onclick="saveOpinion()">Save to Firebase &#8594;</button><button class="btn-secondary" onclick="clearForm(['op-author','op-role','op-initials','op-title','op-deck','op-read','op-time'],['op-color'])">Clear</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-header"><div class="page-title">Settings</div><div class="page-desc">Manage your admin account security.</div></div>
+        <div style="max-width:480px">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem;margin-bottom:1.5rem">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold);margin-bottom:0.4rem">Change Password</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem">Enter your current password then choose a new one.</div>
+            <div class="form-group"><label>Current Password *</label><div style="position:relative"><input type="password" id="pw-current" placeholder="Current password" style="padding-right:50px"><span onclick="togglePw('pw-current',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span></div></div>
+            <div class="form-group"><label>New Password *</label><div style="position:relative"><input type="password" id="pw-new" placeholder="New password" oninput="pwStrength(this.value)" style="padding-right:50px"><span onclick="togglePw('pw-new',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span></div><div style="margin-top:6px;height:3px;background:var(--panel2);border-radius:2px"><div id="pw-bar" style="height:100%;width:0%;transition:width .3s,background .3s;border-radius:2px"></div></div><div id="pw-slabel" style="font-family:'Jost',sans-serif;font-size:0.56rem;margin-top:3px"></div></div>
+            <div class="form-group"><label>Confirm New Password *</label><div style="position:relative"><input type="password" id="pw-confirm" placeholder="Confirm password" oninput="pwMatch()" style="padding-right:50px"><span onclick="togglePw('pw-confirm',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span></div><div id="pw-match" style="font-family:'Jost',sans-serif;font-size:0.56rem;margin-top:3px"></div></div>
+            <div id="pw-err" style="color:#e07070;font-family:'Jost',sans-serif;font-size:0.7rem;margin-bottom:1rem;display:none"></div>
+            <div id="pw-ok" style="color:#7ecf94;font-family:'Jost',sans-serif;font-size:0.7rem;margin-bottom:1rem;display:none">&#10003; Password changed successfully!</div>
+            <button class="btn-primary" onclick="changePw()" style="width:100%">Update Password</button>
+          </div>
+          <div style="background:rgba(201,168,76,0.06);border:1px solid var(--border);padding:1.25rem">
+            <div style="font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Account Info</div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text);margin-bottom:0.4rem">Username: <strong>admin</strong></div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)">Password: <strong id="pw-display">zenit2026</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,deleteDoc,doc,onSnapshot,serverTimestamp,query,orderBy}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",authDomain:"zenit-website.firebaseapp.com",projectId:"zenit-website",storageBucket:"zenit-website.firebasestorage.app",messagingSenderId:"690745286720",appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"};
+const app=initializeApp(cfg);
+const db=getFirestore(app);
+document.getElementById('fb-dot').classList.add('connected');
+document.getElementById('fb-status').textContent='Firebase Connected';
+window._db=db;
+window._fbAdd=async(col,data)=>await addDoc(collection(db,col),{...data,createdAt:serverTimestamp()});
+window._fbDel=async(col,id)=>await deleteDoc(doc(db,col,id));
+window._fbListen=(col,cb)=>{const q=query(collection(db,col),orderBy('createdAt','desc'));return onSnapshot(q,snap=>cb(snap.docs.map(d=>({id:d.id,...d.data()}))));};
+window._fbReady=true;
+</script>
+
+<script>
+let CREDS={user:'admin',pass:'zenit2026'};
+let _lists={articles:[],ticker:[],videos:[],opinion:[]};
+const vidBgs=['vt1','vt2','vt3','vt4','vt5','vt6'];
+
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  if(u===CREDS.user&&p===CREDS.pass){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-app').style.display='block';
+    setTimeout(startListeners,900);
+  }else{document.getElementById('login-error').style.display='block';}
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+function doLogout(){document.getElementById('admin-app').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-pass').value='';document.getElementById('login-error').style.display='none';}
+
+function startListeners(){
+  if(!window._fbListen){setTimeout(startListeners,400);return;}
+  window._fbListen('articles',d=>{_lists.articles=d;renderArticles();document.getElementById('stat-articles').textContent=d.length;renderDash();});
+  window._fbListen('ticker',d=>{_lists.ticker=d;renderTicker();document.getElementById('stat-ticker').textContent=d.length;});
+  window._fbListen('videos',d=>{_lists.videos=d;renderVideos();document.getElementById('stat-videos').textContent=d.length;});
+  window._fbListen('opinion',d=>{_lists.opinion=d;renderOpinion();document.getElementById('stat-opinion').textContent=d.length;renderDash();});
+}
+
+function showPage(p,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');el.classList.add('active');}
+function switchTab(s,t,el){const pg=document.getElementById('page-'+s);pg.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));pg.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById(s+'-'+t).classList.add('active');}
+
+function toast(msg,err=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(err?' error':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+function cc(i,c,m){const l=document.getElementById(i).value.length;const el=document.getElementById(c);el.textContent=l;el.style.color=l>m?'#e07070':'var(--muted)';}
+function clearForm(inputs,selects=[]){inputs.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});selects.forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});}
+
+function renderDash(){
+  const ra=document.getElementById('dash-recent-articles');
+  ra.innerHTML=_lists.articles.length===0?'<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>':_lists.articles.slice(0,5).map(a=>`<div class="recent-item"><div class="recent-title"><span class="recent-cat">${a.section}</span><br>${a.title}</div><div class="recent-time">${a.time||'Now'}</div></div>`).join('');
+  const ro=document.getElementById('dash-recent-opinion');
+  ro.innerHTML=_lists.opinion.length===0?'<div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinions yet</div></div>':_lists.opinion.slice(0,5).map(o=>`<div class="recent-item"><div class="recent-title"><span class="recent-cat">${o.author}</span><br>${o.title}</div><div class="recent-time">${o.time||'Now'}</div></div>`).join('');
+}
+
+async function saveArticle(){
+  const title=document.getElementById('art-title').value.trim();
+  const section=document.getElementById('art-section').value;
+  if(!title||!section){toast('Please fill headline and section',true);return;}
+  const btn=document.getElementById('btn-save-art');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Saving...';
+  try{await window._fbAdd('articles',{title,section,cat:document.getElementById('art-cat').value.trim()||section,excerpt:document.getElementById('art-excerpt').value.trim(),body:document.getElementById('art-body').value.trim(),author:document.getElementById('art-author').value.trim()||'Zenit Staff',read:document.getElementById('art-read').value.trim()||'3 min read',status:document.getElementById('art-status').value,time:document.getElementById('art-time').value.trim()||'Just now'});toast('Article is now live on your website!');clearForm(['art-title','art-cat','art-excerpt','art-body','art-author','art-read','art-time'],['art-section','art-status']);switchTab('articles','list',document.querySelector('#page-articles .tab'));}catch(e){toast('Error saving. Try again.',true);}
+  btn.disabled=false;btn.innerHTML='Save to Firebase &#8594;';
+}
+async function deleteArticle(id){if(!confirm('Delete this article?'))return;try{await window._fbDel('articles',id);toast('Article deleted');}catch(e){toast('Error',true);}}
+function renderArticles(list){
+  const data=list||_lists.articles;const tbody=document.getElementById('articles-table-body');
+  tbody.innerHTML=data.length===0?'<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>':data.map(a=>`<tr><td><div class="td-cat">${a.cat||a.section}</div><div class="td-title">${a.title}</div></td><td>${a.section}</td><td><span class="status-${a.status||'live'}">${a.status||'live'}</span></td><td>${a.time||'—'}</td><td><div class="td-actions"><button class="btn-danger" onclick="deleteArticle('${a.id}')">Delete</button></div></td></tr>`).join('');
+}
+function filterArticles(q){renderArticles(_lists.articles.filter(a=>a.title.toLowerCase().includes(q.toLowerCase())||a.section.toLowerCase().includes(q.toLowerCase())));}
+
+async function addTicker(){
+  const text=document.getElementById('ticker-input').value.trim();
+  if(!text){toast('Please enter a headline',true);return;}
+  const btn=document.getElementById('btn-add-ticker');btn.disabled=true;btn.textContent='Saving...';
+  try{await window._fbAdd('ticker',{text});document.getElementById('ticker-input').value='';document.getElementById('ticker-cc').textContent='0';toast('Ticker item is now live!');}catch(e){toast('Error',true);}
+  btn.disabled=false;btn.textContent='+ Add Item';
+}
+async function deleteTicker(id){try{await window._fbDel('ticker',id);toast('Removed');}catch(e){toast('Error',true);}}
+function renderTicker(){
+  const list=document.getElementById('ticker-list');document.getElementById('ticker-count').textContent=_lists.ticker.length;
+  list.innerHTML=_lists.ticker.length===0?'<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>':_lists.ticker.map(t=>`<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">${t.text}</span><button class="btn-danger" onclick="deleteTicker('${t.id}')">Remove</button></div>`).join('');
+}
+document.getElementById('ticker-input').addEventListener('keydown',e=>{if(e.key==='Enter')addTicker();});
+
+async function saveVideo(){
+  const title=document.getElementById('vid-title').value.trim();const cat=document.getElementById('vid-cat').value;
+  if(!title||!cat){toast('Please fill title and category',true);return;}
+  const btn=document.getElementById('btn-save-vid');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Saving...';
+  try{await window._fbAdd('videos',{title,cat,badge:document.getElementById('vid-badge').value,dur:document.getElementById('vid-dur').value.trim()||'1:00',likes:document.getElementById('vid-likes').value.trim()||'0',bg:vidBgs[_lists.videos.length%vidBgs.length]});toast('Video is now live!');clearForm(['vid-title','vid-dur','vid-likes'],['vid-cat','vid-badge']);switchTab('videos','list',document.querySelector('#page-videos .tab'));}catch(e){toast('Error',true);}
+  btn.disabled=false;btn.innerHTML='Save to Firebase &#8594;';
+}
+async function deleteVideo(id){if(!confirm('Delete?'))return;try{await window._fbDel('videos',id);toast('Removed');}catch(e){toast('Error',true);}}
+function renderVideos(){
+  const grid=document.getElementById('videos-grid');
+  grid.innerHTML=_lists.videos.length===0?'<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>':_lists.videos.map(v=>`<div class="video-admin-card"><div class="video-thumb-admin ${v.bg||'vt1'}"></div><div class="video-admin-cat">${v.cat} · ${v.badge}</div><div class="video-admin-title">${v.title}</div><div class="video-admin-meta">${v.dur} · ${v.likes} likes</div><div class="video-admin-actions"><button class="btn-danger" onclick="deleteVideo('${v.id}')">Remove</button></div></div>`).join('');
+}
+
+async function saveOpinion(){
+  const author=document.getElementById('op-author').value.trim();const title=document.getElementById('op-title').value.trim();
+  if(!author||!title){toast('Please fill author and title',true);return;}
+  const initials=document.getElementById('op-initials').value.trim()||author.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const btn=document.getElementById('btn-save-op');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Saving...';
+  try{await window._fbAdd('opinion',{author,initials,role:document.getElementById('op-role').value.trim(),color:document.getElementById('op-color').value,title,deck:document.getElementById('op-deck').value.trim(),read:document.getElementById('op-read').value.trim()||'5 min read',time:document.getElementById('op-time').value.trim()||'Just now'});toast('Opinion piece is now live!');clearForm(['op-author','op-role','op-initials','op-title','op-deck','op-read','op-time'],['op-color']);switchTab('opinion','list',document.querySelector('#page-opinion .tab'));}catch(e){toast('Error',true);}
+  btn.disabled=false;btn.innerHTML='Save to Firebase &#8594;';
+}
+async function deleteOpinion(id){if(!confirm('Delete?'))return;try{await window._fbDel('opinion',id);toast('Removed');}catch(e){toast('Error',true);}}
+function renderOpinion(){
+  const grid=document.getElementById('opinion-grid');
+  grid.innerHTML=_lists.opinion.length===0?'<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>':_lists.opinion.map(o=>`<div class="op-admin-card"><div class="op-admin-av" style="background:${o.color||'linear-gradient(135deg,#c9a84c,#8a6020)'}">${o.initials}</div><div class="op-admin-info"><div class="op-admin-author">${o.author}${o.role?' · '+o.role:''}</div><div class="op-admin-title">${o.title}</div><div class="op-admin-actions"><button class="btn-danger" onclick="deleteOpinion('${o.id}')">Remove</button></div></div></div>`).join('');
+}
+
+function togglePw(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'Show':'Hide';}
+function pwStrength(pw){const bar=document.getElementById('pw-bar');const lbl=document.getElementById('pw-slabel');let s=0;if(pw.length>=6)s++;if(pw.length>=10)s++;if(/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;const lvls=[{w:'0%',bg:'transparent',t:''},{w:'25%',bg:'#e07070',t:'Weak'},{w:'50%',bg:'#e0a870',t:'Fair'},{w:'75%',bg:'#e0d070',t:'Good'},{w:'100%',bg:'#7ecf94',t:'Strong'}];const l=lvls[Math.min(s,4)];bar.style.width=l.w;bar.style.background=l.bg;lbl.textContent=l.t;lbl.style.color=l.bg;pwMatch();}
+function pwMatch(){const n=document.getElementById('pw-new').value;const c=document.getElementById('pw-confirm').value;const m=document.getElementById('pw-match');if(!c){m.textContent='';return;}m.textContent=n===c?'✓ Passwords match':'✗ Does not match';m.style.color=n===c?'#7ecf94':'#e07070';}
+function changePw(){
+  const cur=document.getElementById('pw-current').value;const nw=document.getElementById('pw-new').value;const cf=document.getElementById('pw-confirm').value;
+  const err=document.getElementById('pw-err');const ok=document.getElementById('pw-ok');err.style.display='none';ok.style.display='none';
+  if(cur!==CREDS.pass){err.textContent='Current password is incorrect.';err.style.display='block';return;}
+  if(nw.length<6){err.textContent='Password must be at least 6 characters.';err.style.display='block';return;}
+  if(nw!==cf){err.textContent='Passwords do not match.';err.style.display='block';return;}
+  if(nw===cur){err.textContent='New password must differ from current.';err.style.display='block';return;}
+  CREDS.pass=nw;document.getElementById('pw-display').textContent=nw;
+  ['pw-current','pw-new','pw-confirm'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pw-bar').style.width='0%';document.getElementById('pw-slabel').textContent='';document.getElementById('pw-match').textContent='';
+  ok.style.display='block';toast('Password updated!');
+}
+</script>
+</body>
+</html>
