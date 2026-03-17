@@ -149,6 +149,29 @@ firebase.initializeApp({
 });
 var auth = firebase.auth();
 var db = firebase.firestore();
+
+function formatTime(val) {
+  if (!val) return 'Just now';
+  var d;
+  if (val && typeof val.toDate === 'function') {
+    d = val.toDate();
+  } else if (val && val.seconds) {
+    d = new Date(val.seconds * 1000);
+  } else {
+    d = new Date(val);
+  }
+  if (isNaN(d.getTime())) return 'Just now';
+  var now = new Date();
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff/3600) + ' hr ago';
+  if (diff < 172800) {
+    return 'Yesterday, ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }
+  return d.toLocaleDateString([],{month:'short',day:'numeric'}) + ', ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
 var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 var CLOUD_NAME = "dr8zqvhlh";
 var UPLOAD_PRESET = "zenit_uploads";
@@ -175,7 +198,7 @@ var UPLOAD_PRESET = "zenit_uploads";
       <button class="btn-forgot" id="forgot-btn">Forgot Password? Send Reset Email</button>
     </div>
     <div id="forgot-form" style="display:none">
-      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)">murtazajaved385@gmail.com</strong></div>
+      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dab7afa8aebba0bbb0bbacbfbee9e2ef9abdb7bbb3b6f4b9b5b7">[email&#160;protected]</a></strong></div>
       <button class="btn-gold" id="send-reset-btn">Send Reset Email &rarr;</button>
       <button class="btn-forgot" id="back-btn">Back to Sign In</button>
     </div>
@@ -279,7 +302,7 @@ var UPLOAD_PRESET = "zenit_uploads";
               <div class="form-group"><label>Author</label><input type="text" id="art-author" placeholder="e.g. Ayesha Khalid"></div>
               <div class="form-group"><label>Read Time</label><input type="text" id="art-read" placeholder="e.g. 4 min read"></div>
               <div class="form-group"><label>Status</label><select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select></div>
-              <div class="form-group"><label>Time Label</label><input type="text" id="art-time" placeholder="e.g. 2h ago"></div>
+              
             </div>
             <div class="form-actions"><button class="btn-primary" id="btn-save-art">Save Article &rarr;</button><button class="btn-secondary" id="btn-clear-art">Clear</button></div>
           </div>
@@ -401,7 +424,7 @@ var UPLOAD_PRESET = "zenit_uploads";
               <div class="form-group full"><label>Opinion Title *</label><input type="text" id="op-title" placeholder="Opinion headline..."><div class="char-count"><span id="op-tc">0</span>/120</div></div>
               <div class="form-group full"><label>Opening Paragraph</label><textarea id="op-deck" rows="4" placeholder="Opening argument..."></textarea></div>
               <div class="form-group"><label>Read Time</label><input type="text" id="op-read" placeholder="e.g. 6 min read"></div>
-              <div class="form-group"><label>Time Label</label><input type="text" id="op-time" placeholder="e.g. 3h ago"></div>
+              
             </div>
             <div class="form-actions"><button class="btn-primary" id="btn-save-op">Save Opinion &rarr;</button><button class="btn-secondary" id="btn-clear-op">Clear</button></div>
           </div>
@@ -413,7 +436,7 @@ var UPLOAD_PRESET = "zenit_uploads";
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var _lists = {articles:[], ticker:[], videos:[], opinion:[]};
 
 // AUTH
@@ -695,7 +718,7 @@ function renderDash() {
   ra.innerHTML = _lists.articles.length === 0
     ? '<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>'
     : _lists.articles.slice(0,5).map(function(a) {
-        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span><br>'+a.title+'</div><div class="recent-time">'+(a.time||"Now")+'</div></div>';
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span><br>'+a.title+'</div><div class="recent-time">'+formatTime(a.createdAt)+'</div></div>';
       }).join("");
   var rv = document.getElementById("dash-recent-videos");
   rv.innerHTML = _lists.videos.length === 0
@@ -723,12 +746,11 @@ document.getElementById("btn-save-art").addEventListener("click", function() {
     author:document.getElementById("art-author").value.trim()||"Zenit Staff",
     read:document.getElementById("art-read").value.trim()||"3 min read",
     status:document.getElementById("art-status").value,
-    time:document.getElementById("art-time").value.trim()||"Just now",
     createdAt:firebase.firestore.FieldValue.serverTimestamp()
   }).then(function() {
     showToast("Article is now live on your website!");
     // Clear form
-    ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
+    ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
     document.getElementById("art-section").selectedIndex=0;
     document.getElementById("art-status").selectedIndex=0;
     document.getElementById("art-tc").textContent="0";
@@ -744,7 +766,7 @@ document.getElementById("btn-save-art").addEventListener("click", function() {
 });
 
 document.getElementById("btn-clear-art").addEventListener("click", function() {
-  ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
+  ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
   document.getElementById("art-thumb-preview").style.display="none";
   document.getElementById("art-body-preview").style.display="none";
   document.getElementById("art-tc").textContent="0";
@@ -764,7 +786,7 @@ function renderArticles(list) {
   }
   tbody.innerHTML = data.map(function(a) {
     var thumb = a.thumbnailUrl ? '<img src="'+a.thumbnailUrl+'" class="td-thumb">' : '<div class="td-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);border-radius:2px"></div>';
-    return '<tr><td>'+thumb+'</td><td><div class="td-cat">'+(a.cat||a.section)+'</div><div class="td-title">'+a.title+'</div></td><td>'+a.section+'</td><td><span class="status-'+(a.status||"live")+'">'+(a.status||"live")+'</span></td><td>'+(a.time||"--")+'</td><td><div class="td-actions"><button class="btn-danger" data-id="'+a.id+'">Delete</button></div></td></tr>';
+    return '<tr><td>'+thumb+'</td><td><div class="td-cat">'+(a.cat||a.section)+'</div><div class="td-title">'+a.title+'</div></td><td>'+a.section+'</td><td><span class="status-'+(a.status||"live")+'">'+(a.status||"live")+'</span></td><td>'+formatTime(a.createdAt)+'</td><td><div class="td-actions"><button class="btn-danger" data-id="'+a.id+'">Delete</button></div></td></tr>';
   }).join("");
   tbody.querySelectorAll(".btn-danger").forEach(function(btn) {
     btn.addEventListener("click", function() {
@@ -883,11 +905,10 @@ document.getElementById("btn-save-op").addEventListener("click", function() {
     title:title,
     deck:document.getElementById("op-deck").value.trim(),
     read:document.getElementById("op-read").value.trim()||"5 min read",
-    time:document.getElementById("op-time").value.trim()||"Just now",
     createdAt:firebase.firestore.FieldValue.serverTimestamp()
   }).then(function(){
     showToast("Opinion piece is now live!");
-    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
+    ["op-author","op-role","op-initials","op-title","op-deck","op-read"].forEach(function(id){document.getElementById(id).value="";});
     document.getElementById("op-tc").textContent="0";
     switchTab("opinion","list");
   }).catch(function(){showToast("Error",true);})
@@ -895,7 +916,7 @@ document.getElementById("btn-save-op").addEventListener("click", function() {
 });
 
 document.getElementById("btn-clear-op").addEventListener("click", function(){
-  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
+  ["op-author","op-role","op-initials","op-title","op-deck","op-read"].forEach(function(id){document.getElementById(id).value="";});
   document.getElementById("op-tc").textContent="0";
 });
 
@@ -910,12 +931,4 @@ function renderOpinion() {
   }).join("");
   grid.querySelectorAll(".btn-danger").forEach(function(btn){
     btn.addEventListener("click", function(){
-      if(!confirm("Delete?")) return;
-      db.collection("opinion").doc(this.getAttribute("data-id")).delete()
-        .then(function(){showToast("Removed");}).catch(function(){showToast("Error",true);});
-    });
-  });
-}
-</script>
-</body>
-</html>
+      if(!c
