@@ -200,7 +200,7 @@ var UPLOAD_PRESET = "zenit_uploads";
       <button class="btn-forgot" id="forgot-btn">Forgot Password? Send Reset Email</button>
     </div>
     <div id="forgot-form" style="display:none">
-      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)">murtazajaved385@gmail.com</strong></div>
+      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aac7dfd8decbd0cbc0cbdccfce99929feacdc7cbc3c684c9c5c7">[email&#160;protected]</a></strong></div>
       <button class="btn-gold" id="send-reset-btn">Send Reset Email &rarr;</button>
       <button class="btn-forgot" id="back-btn">Back to Sign In</button>
     </div>
@@ -438,7 +438,7 @@ var UPLOAD_PRESET = "zenit_uploads";
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var _lists = {articles:[], ticker:[], videos:[], opinion:[]};
 
 // AUTH
@@ -459,8 +459,15 @@ document.getElementById("signin-btn").addEventListener("click", function() {
   var pass = document.getElementById("login-pass").value;
   var errEl = document.getElementById("login-error");
   errEl.style.display = "none";
-  auth.signInWithEmailAndPassword(email, pass).catch(function() {
-    errEl.textContent = "Incorrect email or password.";
+  auth.signInWithEmailAndPassword(email, pass).then(function(result) {
+    if (result.user && result.user.email === ADMIN_EMAIL) {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-app").style.display = "block";
+      document.getElementById("topbar-email").textContent = result.user.email;
+      startListeners();
+    }
+  }).catch(function(err) {
+    errEl.textContent = err.message || "Incorrect email or password.";
     errEl.style.display = "block";
   });
 });
@@ -929,8 +936,4 @@ function renderOpinion() {
     return;
   }
   grid.innerHTML = _lists.opinion.map(function(o){
-    return '<div class="op-admin-card"><div class="op-admin-av" style="background:'+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+'">'+o.initials+'</div><div class="op-admin-info"><div class="op-admin-author">'+o.author+(o.role?" - "+o.role:"")+'</div><div class="op-admin-title">'+o.title+'</div><div class="op-admin-actions"><button class="btn-danger" data-id="'+o.id+'">Remove</button></div></div></div>';
-  }).join("");
-  grid.querySelectorAll(".btn-danger").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      if(!c
+    return '<div class="op-admin-card"><div class="op-admin-av" style="background:'+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+'">'+o.initials+'</div><div class="op-admin-info"><div class="op-admin-author">'+o.author+(o.role?" - "+o.role:"")+'</div><div class="op-admin-title">'+o.title+'</div><div class
