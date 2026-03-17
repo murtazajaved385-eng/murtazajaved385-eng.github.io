@@ -8,7 +8,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--black:#0a0a0a;--gold:#c9a84c;--gold-light:#e0c070;--gold-footer:#d4a832;--burgundy:#7a1c2e;--bg:#0d0d0d;--panel:#161616;--panel2:#1e1e1e;--border:rgba(201,168,76,0.15);--text:#e8e0d0;--muted:#8a7a62;--success:#2d6a3f;--danger:#6a1a2a;}
-html{scroll-behavior:smooth}body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem}
 .login-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);letter-spacing:0.3em}
 .login-sub{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;margin-top:-1.5rem}
@@ -29,17 +30,19 @@ html{scroll-behavior:smooth}body{font-family:'Jost',sans-serif;background:var(--
 .topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--black);letter-spacing:0.2em}
 .topbar-badge{font-family:'Jost',sans-serif;font-size:0.52rem;background:var(--black);color:var(--gold-light);padding:3px 10px;letter-spacing:0.14em;text-transform:uppercase;margin-left:0.75rem}
 .topbar-right{display:flex;align-items:center;gap:1rem}
-.firebase-dot{width:8px;height:8px;border-radius:50%;background:#888;display:inline-block;margin-right:4px;transition:background .3s}.firebase-dot.connected{background:#4caf50}
+.firebase-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px}
 .firebase-status{font-family:'Jost',sans-serif;font-size:0.6rem;color:rgba(0,0,0,0.55);display:flex;align-items:center;gap:4px}
-.topbar-user{font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(0,0,0,0.6);letter-spacing:0.06em}
+.topbar-user{font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(0,0,0,0.6)}
 .btn-logout{background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.25);color:var(--black);padding:6px 16px;font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 .admin-body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
 .sidebar{background:var(--panel);border-right:1px solid var(--border);padding:1.5rem 0}
 .sidebar-section{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding:0 1.25rem;margin-bottom:0.5rem;margin-top:1.25rem}
 .sidebar-section:first-child{margin-top:0}
 .nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.25rem;cursor:pointer;transition:background .15s;border-left:3px solid transparent;font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--muted)}
-.nav-item:hover{background:rgba(201,168,76,0.06);color:var(--text)}.nav-item.active{background:rgba(201,168,76,0.1);border-left-color:var(--gold);color:var(--gold)}
-.nav-icon{font-size:1rem;width:20px;text-align:center}.sidebar-divider{height:1px;background:var(--border);margin:1rem 1.25rem}
+.nav-item:hover{background:rgba(201,168,76,0.06);color:var(--text)}
+.nav-item.active{background:rgba(201,168,76,0.1);border-left-color:var(--gold);color:var(--gold)}
+.nav-icon{font-size:1rem;width:20px;text-align:center}
+.sidebar-divider{height:1px;background:var(--border);margin:1rem 1.25rem}
 .main-content{padding:2rem;background:var(--bg);overflow-y:auto}
 .page{display:none}.page.active{display:block}
 .page-header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
@@ -54,20 +57,23 @@ html{scroll-behavior:smooth}body{font-family:'Jost',sans-serif;background:var(--
 .dash-card{background:var(--panel);border:1px solid var(--border);padding:1.5rem}
 .dash-card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
 .recent-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.07);font-family:'Jost',sans-serif;font-size:0.68rem}
-.recent-item:last-child{border-bottom:none}.recent-title{color:var(--text);flex:1;margin-right:1rem;line-height:1.4}
-.recent-cat{color:var(--gold);font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase}.recent-time{color:var(--muted);font-size:0.58rem;white-space:nowrap}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}.form-group{margin-bottom:1.25rem}.form-group.full{grid-column:1/-1}
+.recent-item:last-child{border-bottom:none}
+.recent-title{color:var(--text);flex:1;margin-right:1rem;line-height:1.4}
+.recent-cat{color:var(--gold);font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase}
+.recent-time{color:var(--muted);font-size:0.58rem;white-space:nowrap}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.form-group{margin-bottom:1.25rem}.form-group.full{grid-column:1/-1}
 label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
 input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0}
-input:focus,select:focus,textarea:focus{border-color:var(--gold)}select option{background:var(--panel2)}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+select option{background:var(--panel2)}
 textarea{resize:vertical;min-height:100px;font-family:'EB Garamond',serif;font-size:0.95rem;font-style:italic}
 .form-actions{display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
 .btn-primary{background:var(--gold-footer);color:var(--black);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
 .btn-primary:hover{opacity:0.88}.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 .btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px 20px;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-secondary:hover{border-color:var(--gold);color:var(--text)}
-.btn-danger{background:var(--danger);color:#ffaaaa;border:none;padding:6px 14px;font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
-.btn-danger:hover{opacity:0.8}
+.btn-danger{background:var(--danger);color:#ffaaaa;border:none;padding:6px 14px;font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 .tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
 .tab{padding:0.7rem 1.25rem;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
 .tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
@@ -75,20 +81,20 @@ textarea{resize:vertical;min-height:100px;font-family:'EB Garamond',serif;font-s
 .table-wrap{background:var(--panel);border:1px solid var(--border);overflow:hidden}
 .table-toolbar{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
 .table-search{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 12px;font-family:'Jost',sans-serif;font-size:0.72rem;outline:none;width:220px}
-.table-search:focus{border-color:var(--gold)}
 table{width:100%;border-collapse:collapse}
 th{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:0.75rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);background:var(--panel)}
 td{padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.06);font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);vertical-align:top}
 tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)}
 .td-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;line-height:1.3}
 .td-cat{display:inline-block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.1);padding:2px 8px;margin-bottom:4px}
-.td-actions{display:flex;gap:0.5rem;align-items:center}
+.td-actions{display:flex;gap:0.5rem}
 .status-live{background:rgba(45,106,63,0.25);color:#7ecf94;border:1px solid rgba(45,106,63,0.4);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
-.status-draft{background:rgba(100,100,100,0.2);color:#999;border:1px solid rgba(100,100,100,0.3);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
+.status-draft{background:rgba(100,100,100,0.2);color:#999;border:1px solid rgba(100,100,100,0.3);font-family:'Jost',sans-serif;font-size:0.5rem;padding:3px 8px;display:inline-block}
 .ticker-list{background:var(--panel);border:1px solid var(--border);margin-bottom:1.5rem}
 .ticker-item{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.07)}
-.ticker-item:last-child{border-bottom:none}.ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)}
-.ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa;margin-right:0.5rem}
+.ticker-item:last-child{border-bottom:none}
+.ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)}
+.ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa}
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
 .video-admin-card{background:var(--panel);border:1px solid var(--border);padding:1rem}
 .video-thumb-admin{height:80px;margin-bottom:0.75rem;border-radius:2px}
@@ -102,12 +108,14 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)
 .opinion-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
 .op-admin-card{background:var(--panel);border:1px solid var(--border);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start}
 .op-admin-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a6020);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:700;color:var(--black);flex-shrink:0}
-.op-admin-info{flex:1}.op-admin-author{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:3px}
+.op-admin-info{flex:1}
+.op-admin-author{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:3px}
 .op-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:0.5rem}
 .op-admin-actions{display:flex;gap:0.5rem;margin-top:0.5rem}
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--success);color:#a0ffb8;padding:1rem 1.5rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.06em;border:1px solid rgba(45,106,63,0.5);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
 .toast.show{transform:translateY(0);opacity:1}.toast.error{background:var(--danger);color:#ffaaaa;border-color:rgba(106,26,42,0.5)}
-.empty-state{text-align:center;padding:3rem;color:var(--muted)}.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4}
+.empty-state{text-align:center;padding:3rem;color:var(--muted)}
+.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4}
 .empty-text{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem}
 .char-count{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);text-align:right;margin-top:3px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -116,55 +124,51 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)
 </head>
 <body>
 
-<!-- FIREBASE SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
-  authDomain:"zenit-website.firebaseapp.com",
-  projectId:"zenit-website",
-  storageBucket:"zenit-website.firebasestorage.app",
-  messagingSenderId:"690745286720",
-  appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
+  apiKey: "AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
+  authDomain: "zenit-website.firebaseapp.com",
+  projectId: "zenit-website",
+  storageBucket: "zenit-website.firebasestorage.app",
+  messagingSenderId: "690745286720",
+  appId: "1:690745286720:web:7c9d8fa74ca7083d9dffa5"
 });
 var auth = firebase.auth();
 var db = firebase.firestore();
 var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 </script>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div style="text-align:center">
     <div class="login-logo">ZENIT</div>
     <div class="login-sub">Admin Panel</div>
   </div>
-  <div class="login-box" id="login-box">
+  <div class="login-box">
     <div class="login-title" id="login-title">Sign In</div>
     <div class="login-hint" id="login-hint">Sign in with your Gmail to access the dashboard</div>
-
     <div id="login-form">
       <label class="field-label">Email</label>
       <input class="field-input" type="email" id="login-email" value="murtazajaved385@gmail.com">
       <label class="field-label">Password</label>
       <div style="position:relative">
         <input class="field-input" type="password" id="login-pass" placeholder="Your password" style="padding-right:50px">
-        <span onclick="togglePwLogin()" style="position:absolute;right:12px;top:35%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none" id="show-login-pw">Show</span>
+        <span id="show-pw-btn" style="position:absolute;right:12px;top:35%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span>
       </div>
-      <button class="btn-gold" onclick="doLogin()">Sign In &rarr;</button>
-      <button class="btn-forgot" onclick="showForgot()">Forgot Password? Send Reset Email</button>
+      <button class="btn-gold" id="signin-btn">Sign In &rarr;</button>
+      <button class="btn-forgot" id="forgot-btn">Forgot Password? Send Reset Email</button>
     </div>
-
     <div id="forgot-form" style="display:none">
       <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">
         A password reset link will be sent to:<br>
         <strong style="color:var(--gold)">murtazajaved385@gmail.com</strong>
       </div>
-      <button class="btn-gold" onclick="sendReset()">Send Reset Email &rarr;</button>
-      <button class="btn-forgot" onclick="showLogin()">Back to Sign In</button>
+      <button class="btn-gold" id="send-reset-btn">Send Reset Email &rarr;</button>
+      <button class="btn-forgot" id="back-btn">Back to Sign In</button>
     </div>
-
     <div class="login-error" id="login-error"></div>
     <div class="login-success" id="login-success"></div>
   </div>
@@ -178,26 +182,24 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <span class="topbar-badge">Admin</span>
     </div>
     <div class="topbar-right">
-      <div class="firebase-status"><span class="firebase-dot connected"></span><span>Firebase Connected</span></div>
-      <span class="topbar-user" id="topbar-email">admin</span>
-      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+      <div class="firebase-status"><span class="firebase-dot"></span><span>Firebase Connected</span></div>
+      <span class="topbar-user" id="topbar-email"></span>
+      <button id="signout-btn" class="btn-logout">Sign Out</button>
     </div>
   </div>
-
   <div class="admin-body">
     <div class="sidebar">
       <div class="sidebar-section">Overview</div>
-      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">&#9672;</span> Dashboard</div>
+      <div class="nav-item active" id="nav-dashboard"><span class="nav-icon">&#9672;</span> Dashboard</div>
       <div class="sidebar-section">Content</div>
-      <div class="nav-item" onclick="showPage('articles',this)"><span class="nav-icon">&#10022;</span> Articles</div>
-      <div class="nav-item" onclick="showPage('ticker',this)"><span class="nav-icon">&#9670;</span> Breaking Ticker</div>
-      <div class="nav-item" onclick="showPage('videos',this)"><span class="nav-icon">&#9654;</span> Video Reels</div>
-      <div class="nav-item" onclick="showPage('opinion',this)"><span class="nav-icon">&#9872;</span> Opinion Pieces</div>
+      <div class="nav-item" id="nav-articles"><span class="nav-icon">&#10022;</span> Articles</div>
+      <div class="nav-item" id="nav-ticker"><span class="nav-icon">&#9670;</span> Breaking Ticker</div>
+      <div class="nav-item" id="nav-videos"><span class="nav-icon">&#9654;</span> Video Reels</div>
+      <div class="nav-item" id="nav-opinion"><span class="nav-icon">&#9872;</span> Opinion Pieces</div>
       <div class="sidebar-divider"></div>
       <div class="sidebar-section">Site</div>
-      <div class="nav-item" onclick="window.open('index.html','_blank')"><span class="nav-icon">&#8853;</span> View Website</div>
+      <div class="nav-item" id="nav-website"><span class="nav-icon">&#8853;</span> View Website</div>
     </div>
-
     <div class="main-content">
 
       <!-- DASHBOARD -->
@@ -218,19 +220,26 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <!-- ARTICLES -->
       <div class="page" id="page-articles">
         <div class="page-header"><div class="page-title">Articles</div><div class="page-desc">Add articles — they appear live on your website instantly.</div></div>
-        <div class="tabs"><div class="tab active" onclick="switchTab('articles','list',this)">All Articles</div><div class="tab" onclick="switchTab('articles','add',this)">Add New Article</div></div>
+        <div class="tabs">
+          <div class="tab active" id="tab-articles-list">All Articles</div>
+          <div class="tab" id="tab-articles-add">Add New Article</div>
+        </div>
         <div class="tab-content active" id="articles-list">
           <div class="table-wrap">
-            <div class="table-toolbar"><input class="table-search" type="text" placeholder="Search articles..." oninput="filterArticles(this.value)"><button class="btn-primary" onclick="switchTab('articles','add',document.querySelectorAll('#page-articles .tab')[1])">+ New Article</button></div>
-            <table><thead><tr><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead><tbody id="articles-table-body"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr></tbody></table>
+            <div class="table-toolbar">
+              <input class="table-search" type="text" id="art-search" placeholder="Search articles...">
+              <button class="btn-primary" id="btn-new-article">+ New Article</button>
+            </div>
+            <table><thead><tr><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
+            <tbody id="articles-table-body"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr></tbody></table>
           </div>
         </div>
         <div class="tab-content" id="articles-add">
           <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
-              <div class="form-group full"><label>Headline *</label><input type="text" id="art-title" placeholder="Enter article headline..." oninput="cc('art-title','art-tc',120)"><div class="char-count"><span id="art-tc">0</span>/120</div></div>
+              <div class="form-group full"><label>Headline *</label><input type="text" id="art-title" placeholder="Enter article headline..."><div class="char-count"><span id="art-tc">0</span>/120</div></div>
               <div class="form-group"><label>Section *</label><select id="art-section"><option value="">Select section...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Opinion</option><option>Sci-Tech</option></select></div>
-              <div class="form-group"><label>Category Tag</label><input type="text" id="art-cat" placeholder="e.g. Pakistan &middot; Security"></div>
+              <div class="form-group"><label>Category Tag</label><input type="text" id="art-cat" placeholder="e.g. Pakistan - Security"></div>
               <div class="form-group full"><label>Excerpt</label><input type="text" id="art-excerpt" placeholder="Brief summary..."></div>
               <div class="form-group full"><label>Article Body</label><textarea id="art-body" rows="5" placeholder="Full article content..."></textarea></div>
               <div class="form-group"><label>Author</label><input type="text" id="art-author" placeholder="e.g. Ayesha Khalid"></div>
@@ -238,7 +247,7 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
               <div class="form-group"><label>Status</label><select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select></div>
               <div class="form-group"><label>Time Label</label><input type="text" id="art-time" placeholder="e.g. 2h ago"></div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-art" onclick="saveArticle()">Save to Firebase &rarr;</button><button class="btn-secondary" onclick="clearForm(['art-title','art-cat','art-excerpt','art-body','art-author','art-read','art-time'],['art-section','art-status'])">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-art">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-art">Clear</button></div>
           </div>
         </div>
       </div>
@@ -249,8 +258,8 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
         <div style="background:var(--panel);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem">
           <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);margin-bottom:1rem">Add Breaking News Item</div>
           <div style="display:flex;gap:0.75rem;align-items:flex-end">
-            <div style="flex:1"><label>Breaking News Text *</label><input type="text" id="ticker-input" placeholder="Enter breaking news headline..." oninput="cc('ticker-input','ticker-cc',100)"><div class="char-count"><span id="ticker-cc">0</span>/100</div></div>
-            <button class="btn-primary" style="margin-bottom:18px;white-space:nowrap" id="btn-add-ticker" onclick="addTicker()">+ Add Item</button>
+            <div style="flex:1"><label>Breaking News Text *</label><input type="text" id="ticker-input" placeholder="Enter breaking news headline..."><div class="char-count"><span id="ticker-cc">0</span>/100</div></div>
+            <button class="btn-primary" style="margin-bottom:18px;white-space:nowrap" id="btn-add-ticker">+ Add Item</button>
           </div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.75rem">Current Items (<span id="ticker-count">0</span>)</div>
@@ -260,18 +269,21 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <!-- VIDEOS -->
       <div class="page" id="page-videos">
         <div class="page-header"><div class="page-title">Video Reels</div><div class="page-desc">Add video reels — they appear on your website instantly.</div></div>
-        <div class="tabs"><div class="tab active" onclick="switchTab('videos','list',this)">All Videos</div><div class="tab" onclick="switchTab('videos','add',this)">Add New Video</div></div>
+        <div class="tabs">
+          <div class="tab active" id="tab-videos-list">All Videos</div>
+          <div class="tab" id="tab-videos-add">Add New Video</div>
+        </div>
         <div class="tab-content active" id="videos-list"><div class="video-grid" id="videos-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div></div></div>
         <div class="tab-content" id="videos-add">
           <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
-              <div class="form-group full"><label>Video Title *</label><input type="text" id="vid-title" placeholder="Enter video title..." oninput="cc('vid-title','vid-tc',80)"><div class="char-count"><span id="vid-tc">0</span>/80</div></div>
+              <div class="form-group full"><label>Video Title *</label><input type="text" id="vid-title" placeholder="Enter video title..."><div class="char-count"><span id="vid-tc">0</span>/80</div></div>
               <div class="form-group"><label>Category *</label><select id="vid-cat"><option value="">Select...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Sci-Tech</option></select></div>
               <div class="form-group"><label>Badge</label><select id="vid-badge"><option value="live">Live</option><option value="recap">Recap</option><option value="analysis">Analysis</option></select></div>
               <div class="form-group"><label>Duration</label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
               <div class="form-group"><label>Likes</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-vid" onclick="saveVideo()">Save to Firebase &rarr;</button><button class="btn-secondary" onclick="clearForm(['vid-title','vid-dur','vid-likes'],['vid-cat','vid-badge'])">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-vid">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-vid">Clear</button></div>
           </div>
         </div>
       </div>
@@ -279,7 +291,10 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <!-- OPINION -->
       <div class="page" id="page-opinion">
         <div class="page-header"><div class="page-title">Opinion Pieces</div><div class="page-desc">Add opinion pieces — they appear on your website instantly.</div></div>
-        <div class="tabs"><div class="tab active" onclick="switchTab('opinion','list',this)">All Opinions</div><div class="tab" onclick="switchTab('opinion','add',this)">Add New Opinion</div></div>
+        <div class="tabs">
+          <div class="tab active" id="tab-opinion-list">All Opinions</div>
+          <div class="tab" id="tab-opinion-add">Add New Opinion</div>
+        </div>
         <div class="tab-content active" id="opinion-list"><div class="opinion-admin-grid" id="opinion-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div></div></div>
         <div class="tab-content" id="opinion-add">
           <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
@@ -288,12 +303,12 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
               <div class="form-group"><label>Author Role</label><input type="text" id="op-role" placeholder="e.g. Senior Correspondent"></div>
               <div class="form-group"><label>Initials</label><input type="text" id="op-initials" placeholder="e.g. AK" maxlength="2"></div>
               <div class="form-group"><label>Avatar Color</label><select id="op-color"><option value="linear-gradient(135deg,#c9a84c,#8a6020)">Gold</option><option value="linear-gradient(135deg,#1b4a8a,#2d70c8)">Blue</option><option value="linear-gradient(135deg,#5c1020,#8b2030)">Burgundy</option><option value="linear-gradient(135deg,#1a3020,#2d5040)">Green</option><option value="linear-gradient(135deg,#3a1020,#6a1a38)">Plum</option></select></div>
-              <div class="form-group full"><label>Opinion Title *</label><input type="text" id="op-title" placeholder="Opinion headline..." oninput="cc('op-title','op-tc',120)"><div class="char-count"><span id="op-tc">0</span>/120</div></div>
+              <div class="form-group full"><label>Opinion Title *</label><input type="text" id="op-title" placeholder="Opinion headline..."><div class="char-count"><span id="op-tc">0</span>/120</div></div>
               <div class="form-group full"><label>Opening Paragraph</label><textarea id="op-deck" rows="4" placeholder="Opening argument..."></textarea></div>
               <div class="form-group"><label>Read Time</label><input type="text" id="op-read" placeholder="e.g. 6 min read"></div>
               <div class="form-group"><label>Time Label</label><input type="text" id="op-time" placeholder="e.g. 3h ago"></div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-op" onclick="saveOpinion()">Save to Firebase &rarr;</button><button class="btn-secondary" onclick="clearForm(['op-author','op-role','op-initials','op-title','op-deck','op-read','op-time'],['op-color'])">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-op">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-op">Clear</button></div>
           </div>
         </div>
       </div>
@@ -304,119 +319,360 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 <div class="toast" id="toast"></div>
 
 <script>
-var _lists={articles:[],ticker:[],videos:[],opinion:[]};
-var vidBgs=["vt1","vt2","vt3","vt4","vt5","vt6"];
+// All JS using addEventListener instead of inline onclick
+var _lists = {articles:[], ticker:[], videos:[], opinion:[]};
+var vidBgs = ["vt1","vt2","vt3","vt4","vt5","vt6"];
 
-// AUTH STATE
-auth.onAuthStateChanged(function(user){
-  if(user && user.email === ADMIN_EMAIL){
-    document.getElementById("login-screen").style.display="none";
-    document.getElementById("admin-app").style.display="block";
-    document.getElementById("topbar-email").textContent=user.email;
+// AUTH STATE LISTENER
+auth.onAuthStateChanged(function(user) {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("admin-app").style.display = "block";
+    document.getElementById("topbar-email").textContent = user.email;
     startListeners();
   } else {
-    document.getElementById("login-screen").style.display="flex";
-    document.getElementById("admin-app").style.display="none";
+    document.getElementById("login-screen").style.display = "flex";
+    document.getElementById("admin-app").style.display = "none";
   }
 });
 
-function togglePwLogin(){
-  var el=document.getElementById("login-pass");
-  var btn=document.getElementById("show-login-pw");
-  el.type=el.type==="password"?"text":"password";
-  btn.textContent=el.type==="password"?"Show":"Hide";
+// LOGIN
+document.getElementById("signin-btn").addEventListener("click", function() {
+  var email = document.getElementById("login-email").value.trim();
+  var pass = document.getElementById("login-pass").value;
+  var errEl = document.getElementById("login-error");
+  errEl.style.display = "none";
+  if (!email || !pass) { errEl.textContent = "Please enter email and password."; errEl.style.display = "block"; return; }
+  auth.signInWithEmailAndPassword(email, pass).catch(function(e) {
+    errEl.textContent = "Incorrect email or password. Please try again.";
+    errEl.style.display = "block";
+  });
+});
+
+document.getElementById("login-pass").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") document.getElementById("signin-btn").click();
+});
+
+document.getElementById("show-pw-btn").addEventListener("click", function() {
+  var el = document.getElementById("login-pass");
+  el.type = el.type === "password" ? "text" : "password";
+  this.textContent = el.type === "password" ? "Show" : "Hide";
+});
+
+document.getElementById("forgot-btn").addEventListener("click", function() {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("forgot-form").style.display = "block";
+  document.getElementById("login-title").textContent = "Reset Password";
+  document.getElementById("login-error").style.display = "none";
+  document.getElementById("login-success").style.display = "none";
+});
+
+document.getElementById("back-btn").addEventListener("click", function() {
+  document.getElementById("login-form").style.display = "block";
+  document.getElementById("forgot-form").style.display = "none";
+  document.getElementById("login-title").textContent = "Sign In";
+  document.getElementById("login-error").style.display = "none";
+  document.getElementById("login-success").style.display = "none";
+});
+
+document.getElementById("send-reset-btn").addEventListener("click", function() {
+  var errEl = document.getElementById("login-error");
+  var okEl = document.getElementById("login-success");
+  errEl.style.display = "none"; okEl.style.display = "none";
+  auth.sendPasswordResetEmail(ADMIN_EMAIL).then(function() {
+    okEl.textContent = "Reset email sent to murtazajaved385@gmail.com — check your inbox!";
+    okEl.style.display = "block";
+  }).catch(function(e) {
+    errEl.textContent = "Error sending email. Please try again.";
+    errEl.style.display = "block";
+  });
+});
+
+document.getElementById("signout-btn").addEventListener("click", function() { auth.signOut(); });
+
+// SIDEBAR NAV
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".nav-item").forEach(function(n) { n.classList.remove("active"); });
+  document.getElementById("page-" + pageId).classList.add("active");
+  document.getElementById("nav-" + pageId).classList.add("active");
+}
+document.getElementById("nav-dashboard").addEventListener("click", function() { showPage("dashboard"); });
+document.getElementById("nav-articles").addEventListener("click", function() { showPage("articles"); });
+document.getElementById("nav-ticker").addEventListener("click", function() { showPage("ticker"); });
+document.getElementById("nav-videos").addEventListener("click", function() { showPage("videos"); });
+document.getElementById("nav-opinion").addEventListener("click", function() { showPage("opinion"); });
+document.getElementById("nav-website").addEventListener("click", function() { window.open("index.html", "_blank"); });
+
+// TABS
+function switchTab(section, tab) {
+  var pg = document.getElementById("page-" + section);
+  pg.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
+  pg.querySelectorAll(".tab-content").forEach(function(t) { t.classList.remove("active"); });
+  document.getElementById("tab-" + section + "-" + tab).classList.add("active");
+  document.getElementById(section + "-" + tab).classList.add("active");
+}
+document.getElementById("tab-articles-list").addEventListener("click", function() { switchTab("articles","list"); });
+document.getElementById("tab-articles-add").addEventListener("click", function() { switchTab("articles","add"); });
+document.getElementById("tab-videos-list").addEventListener("click", function() { switchTab("videos","list"); });
+document.getElementById("tab-videos-add").addEventListener("click", function() { switchTab("videos","add"); });
+document.getElementById("tab-opinion-list").addEventListener("click", function() { switchTab("opinion","list"); });
+document.getElementById("tab-opinion-add").addEventListener("click", function() { switchTab("opinion","add"); });
+document.getElementById("btn-new-article").addEventListener("click", function() { switchTab("articles","add"); });
+
+// TOAST
+function showToast(msg, err) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast" + (err ? " error" : "");
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 3500);
 }
 
-function showForgot(){
-  document.getElementById("login-form").style.display="none";
-  document.getElementById("forgot-form").style.display="block";
-  document.getElementById("login-title").textContent="Reset Password";
-  document.getElementById("login-hint").textContent="We will send a reset link to your Gmail.";
-  document.getElementById("login-error").style.display="none";
-  document.getElementById("login-success").style.display="none";
+// CHAR COUNT
+document.getElementById("art-title").addEventListener("input", function() { document.getElementById("art-tc").textContent = this.value.length; });
+document.getElementById("vid-title").addEventListener("input", function() { document.getElementById("vid-tc").textContent = this.value.length; });
+document.getElementById("op-title").addEventListener("input", function() { document.getElementById("op-tc").textContent = this.value.length; });
+document.getElementById("ticker-input").addEventListener("input", function() { document.getElementById("ticker-cc").textContent = this.value.length; });
+
+// FIREBASE LISTENERS
+function startListeners() {
+  db.collection("articles").orderBy("createdAt","desc").onSnapshot(function(snap) {
+    _lists.articles = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    renderArticles();
+    document.getElementById("stat-articles").textContent = _lists.articles.length;
+    renderDash();
+  });
+  db.collection("ticker").orderBy("createdAt","desc").onSnapshot(function(snap) {
+    _lists.ticker = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    renderTicker();
+    document.getElementById("stat-ticker").textContent = _lists.ticker.length;
+  });
+  db.collection("videos").orderBy("createdAt","desc").onSnapshot(function(snap) {
+    _lists.videos = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    renderVideos();
+    document.getElementById("stat-videos").textContent = _lists.videos.length;
+  });
+  db.collection("opinion").orderBy("createdAt","desc").onSnapshot(function(snap) {
+    _lists.opinion = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    renderOpinion();
+    document.getElementById("stat-opinion").textContent = _lists.opinion.length;
+    renderDash();
+  });
 }
 
-function showLogin(){
-  document.getElementById("login-form").style.display="block";
-  document.getElementById("forgot-form").style.display="none";
-  document.getElementById("login-title").textContent="Sign In";
-  document.getElementById("login-hint").textContent="Sign in with your Gmail to access the dashboard";
-  document.getElementById("login-error").style.display="none";
-  document.getElementById("login-success").style.display="none";
+// DASHBOARD
+function renderDash() {
+  var ra = document.getElementById("dash-recent-articles");
+  ra.innerHTML = _lists.articles.length === 0
+    ? '<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>'
+    : _lists.articles.slice(0,5).map(function(a) {
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">' + a.section + '</span><br>' + a.title + '</div><div class="recent-time">' + (a.time||"Now") + '</div></div>';
+      }).join("");
+  var ro = document.getElementById("dash-recent-opinion");
+  ro.innerHTML = _lists.opinion.length === 0
+    ? '<div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinions yet</div></div>'
+    : _lists.opinion.slice(0,5).map(function(o) {
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">' + o.author + '</span><br>' + o.title + '</div><div class="recent-time">' + (o.time||"Now") + '</div></div>';
+      }).join("");
 }
 
-function doLogin(){
-  var email=document.getElementById("login-email").value.trim();
-  var pass=document.getElementById("login-pass").value;
-  var errEl=document.getElementById("login-error");
-  errEl.style.display="none";
-  if(!email||!pass){errEl.textContent="Please enter email and password.";errEl.style.display="block";return;}
-  auth.signInWithEmailAndPassword(email,pass)
-    .catch(function(e){
-      errEl.textContent="Incorrect email or password. Please try again.";
-      errEl.style.display="block";
+// ARTICLES
+document.getElementById("btn-save-art").addEventListener("click", function() {
+  var title = document.getElementById("art-title").value.trim();
+  var section = document.getElementById("art-section").value;
+  if (!title || !section) { showToast("Please fill headline and section", true); return; }
+  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  db.collection("articles").add({
+    title: title, section: section,
+    cat: document.getElementById("art-cat").value.trim() || section,
+    excerpt: document.getElementById("art-excerpt").value.trim(),
+    body: document.getElementById("art-body").value.trim(),
+    author: document.getElementById("art-author").value.trim() || "Zenit Staff",
+    read: document.getElementById("art-read").value.trim() || "3 min read",
+    status: document.getElementById("art-status").value,
+    time: document.getElementById("art-time").value.trim() || "Just now",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    showToast("Article is now live on your website!");
+    ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time"].forEach(function(id) { document.getElementById(id).value = ""; });
+    document.getElementById("art-section").selectedIndex = 0;
+    document.getElementById("art-status").selectedIndex = 0;
+    document.getElementById("art-tc").textContent = "0";
+    switchTab("articles","list");
+  }).catch(function() { showToast("Error saving. Try again.", true); })
+  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+});
+
+document.getElementById("btn-clear-art").addEventListener("click", function() {
+  ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time"].forEach(function(id) { document.getElementById(id).value = ""; });
+  document.getElementById("art-section").selectedIndex = 0;
+  document.getElementById("art-tc").textContent = "0";
+});
+
+document.getElementById("art-search").addEventListener("input", function() {
+  var q = this.value.toLowerCase();
+  renderArticles(_lists.articles.filter(function(a) { return a.title.toLowerCase().includes(q) || a.section.toLowerCase().includes(q); }));
+});
+
+function renderArticles(list) {
+  var data = list || _lists.articles;
+  var tbody = document.getElementById("articles-table-body");
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(function(a) {
+    return '<tr><td><div class="td-cat">' + (a.cat||a.section) + '</div><div class="td-title">' + a.title + '</div></td>'
+      + '<td>' + a.section + '</td><td><span class="status-' + (a.status||"live") + '">' + (a.status||"live") + '</span></td>'
+      + '<td>' + (a.time||"--") + '</td><td><div class="td-actions"><button class="btn-danger" data-id="' + a.id + '">Delete</button></div></td></tr>';
+  }).join("");
+  tbody.querySelectorAll(".btn-danger").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      if (!confirm("Delete this article?")) return;
+      db.collection("articles").doc(this.getAttribute("data-id")).delete()
+        .then(function() { showToast("Article deleted"); })
+        .catch(function() { showToast("Error", true); });
     });
+  });
 }
 
-function sendReset(){
-  var errEl=document.getElementById("login-error");
-  var okEl=document.getElementById("login-success");
-  errEl.style.display="none";okEl.style.display="none";
-  auth.sendPasswordResetEmail(ADMIN_EMAIL)
-    .then(function(){
-      okEl.textContent="&#10003; Reset email sent to murtazajaved385@gmail.com — check your inbox and spam folder!";
-      okEl.style.display="block";
-    })
-    .catch(function(e){
-      errEl.textContent="Error sending email. Please try again.";
-      errEl.style.display="block";
+// TICKER
+document.getElementById("btn-add-ticker").addEventListener("click", addTicker);
+document.getElementById("ticker-input").addEventListener("keydown", function(e) { if (e.key === "Enter") addTicker(); });
+function addTicker() {
+  var text = document.getElementById("ticker-input").value.trim();
+  if (!text) { showToast("Please enter a headline", true); return; }
+  var btn = document.getElementById("btn-add-ticker");
+  btn.disabled = true; btn.textContent = "Saving...";
+  db.collection("ticker").add({ text: text, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+    .then(function() {
+      document.getElementById("ticker-input").value = "";
+      document.getElementById("ticker-cc").textContent = "0";
+      showToast("Ticker item is now live!");
+    }).catch(function() { showToast("Error", true); })
+    .finally(function() { btn.disabled = false; btn.textContent = "+ Add Item"; });
+}
+
+function renderTicker() {
+  var list = document.getElementById("ticker-list");
+  document.getElementById("ticker-count").textContent = _lists.ticker.length;
+  if (_lists.ticker.length === 0) {
+    list.innerHTML = '<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>';
+    return;
+  }
+  list.innerHTML = _lists.ticker.map(function(t) {
+    return '<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">' + t.text + '</span><button class="btn-danger" data-id="' + t.id + '">Remove</button></div>';
+  }).join("");
+  list.querySelectorAll(".btn-danger").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      db.collection("ticker").doc(this.getAttribute("data-id")).delete()
+        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
     });
+  });
 }
 
-function doLogout(){
-  auth.signOut();
+// VIDEOS
+document.getElementById("btn-save-vid").addEventListener("click", function() {
+  var title = document.getElementById("vid-title").value.trim();
+  var cat = document.getElementById("vid-cat").value;
+  if (!title || !cat) { showToast("Please fill title and category", true); return; }
+  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  db.collection("videos").add({
+    title: title, cat: cat,
+    badge: document.getElementById("vid-badge").value,
+    dur: document.getElementById("vid-dur").value.trim() || "1:00",
+    likes: document.getElementById("vid-likes").value.trim() || "0",
+    bg: vidBgs[_lists.videos.length % vidBgs.length],
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    showToast("Video is now live!");
+    ["vid-title","vid-dur","vid-likes"].forEach(function(id) { document.getElementById(id).value = ""; });
+    document.getElementById("vid-cat").selectedIndex = 0;
+    document.getElementById("vid-tc").textContent = "0";
+    switchTab("videos","list");
+  }).catch(function() { showToast("Error", true); })
+  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+});
+
+document.getElementById("btn-clear-vid").addEventListener("click", function() {
+  ["vid-title","vid-dur","vid-likes"].forEach(function(id) { document.getElementById(id).value = ""; });
+  document.getElementById("vid-cat").selectedIndex = 0;
+  document.getElementById("vid-tc").textContent = "0";
+});
+
+function renderVideos() {
+  var grid = document.getElementById("videos-grid");
+  if (_lists.videos.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>';
+    return;
+  }
+  grid.innerHTML = _lists.videos.map(function(v) {
+    return '<div class="video-admin-card"><div class="video-thumb-admin ' + (v.bg||"vt1") + '"></div>'
+      + '<div class="video-admin-cat">' + v.cat + ' - ' + v.badge + '</div>'
+      + '<div class="video-admin-title">' + v.title + '</div>'
+      + '<div class="video-admin-meta">' + v.dur + ' - ' + v.likes + ' likes</div>'
+      + '<div class="video-admin-actions"><button class="btn-danger" data-id="' + v.id + '">Remove</button></div></div>';
+  }).join("");
+  grid.querySelectorAll(".btn-danger").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      if (!confirm("Delete?")) return;
+      db.collection("videos").doc(this.getAttribute("data-id")).delete()
+        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
+    });
+  });
 }
 
-document.getElementById("login-pass").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+// OPINION
+document.getElementById("btn-save-op").addEventListener("click", function() {
+  var author = document.getElementById("op-author").value.trim();
+  var title = document.getElementById("op-title").value.trim();
+  if (!author || !title) { showToast("Please fill author and title", true); return; }
+  var initials = document.getElementById("op-initials").value.trim() || author.split(" ").map(function(w) { return w[0]; }).join("").toUpperCase().slice(0,2);
+  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  db.collection("opinion").add({
+    author: author, initials: initials,
+    role: document.getElementById("op-role").value.trim(),
+    color: document.getElementById("op-color").value,
+    title: title,
+    deck: document.getElementById("op-deck").value.trim(),
+    read: document.getElementById("op-read").value.trim() || "5 min read",
+    time: document.getElementById("op-time").value.trim() || "Just now",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    showToast("Opinion piece is now live!");
+    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id) { document.getElementById(id).value = ""; });
+    document.getElementById("op-tc").textContent = "0";
+    switchTab("opinion","list");
+  }).catch(function() { showToast("Error", true); })
+  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+});
 
-// LISTENERS
-function startListeners(){
-  db.collection("articles").orderBy("createdAt","desc").onSnapshot(function(snap){_lists.articles=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});renderArticles();document.getElementById("stat-articles").textContent=_lists.articles.length;renderDash();});
-  db.collection("ticker").orderBy("createdAt","desc").onSnapshot(function(snap){_lists.ticker=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});renderTicker();document.getElementById("stat-ticker").textContent=_lists.ticker.length;});
-  db.collection("videos").orderBy("createdAt","desc").onSnapshot(function(snap){_lists.videos=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});renderVideos();document.getElementById("stat-videos").textContent=_lists.videos.length;});
-  db.collection("opinion").orderBy("createdAt","desc").onSnapshot(function(snap){_lists.opinion=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});renderOpinion();document.getElementById("stat-opinion").textContent=_lists.opinion.length;renderDash();});
+document.getElementById("btn-clear-op").addEventListener("click", function() {
+  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id) { document.getElementById(id).value = ""; });
+  document.getElementById("op-tc").textContent = "0";
+});
+
+function renderOpinion() {
+  var grid = document.getElementById("opinion-grid");
+  if (_lists.opinion.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>';
+    return;
+  }
+  grid.innerHTML = _lists.opinion.map(function(o) {
+    return '<div class="op-admin-card"><div class="op-admin-av" style="background:' + (o.color||"linear-gradient(135deg,#c9a84c,#8a6020)") + '">' + (o.initials||"??") + '</div>'
+      + '<div class="op-admin-info"><div class="op-admin-author">' + o.author + (o.role ? " - " + o.role : "") + '</div>'
+      + '<div class="op-admin-title">' + o.title + '</div>'
+      + '<div class="op-admin-actions"><button class="btn-danger" data-id="' + o.id + '">Remove</button></div></div></div>';
+  }).join("");
+  grid.querySelectorAll(".btn-danger").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      if (!confirm("Delete?")) return;
+      db.collection("opinion").doc(this.getAttribute("data-id")).delete()
+        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
+    });
+  });
 }
-
-function showPage(p,el){document.querySelectorAll(".page").forEach(function(x){x.classList.remove("active");});document.querySelectorAll(".nav-item").forEach(function(x){x.classList.remove("active");});document.getElementById("page-"+p).classList.add("active");el.classList.add("active");}
-function switchTab(s,t,el){var pg=document.getElementById("page-"+s);pg.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});pg.querySelectorAll(".tab-content").forEach(function(x){x.classList.remove("active");});el.classList.add("active");document.getElementById(s+"-"+t).classList.add("active");}
-function toast(msg,err){var t=document.getElementById("toast");t.textContent=msg;t.className="toast"+(err?" error":"");t.classList.add("show");setTimeout(function(){t.classList.remove("show");},3500);}
-function cc(i,c,m){var l=document.getElementById(i).value.length;var el=document.getElementById(c);el.textContent=l;el.style.color=l>m?"#e07070":"var(--muted)";}
-function clearForm(inputs,selects){inputs.forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});if(selects)selects.forEach(function(id){var el=document.getElementById(id);if(el)el.selectedIndex=0;});}
-
-function renderDash(){
-  var ra=document.getElementById("dash-recent-articles");
-  ra.innerHTML=_lists.articles.length===0?"<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>":_lists.articles.slice(0,5).map(function(a){return "<div class="recent-item"><div class="recent-title"><span class="recent-cat">"+a.section+"</span><br>"+a.title+"</div><div class="recent-time">"+(a.time||"Now")+"</div></div>";}).join("");
-  var ro=document.getElementById("dash-recent-opinion");
-  ro.innerHTML=_lists.opinion.length===0?"<div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinions yet</div></div>":_lists.opinion.slice(0,5).map(function(o){return "<div class="recent-item"><div class="recent-title"><span class="recent-cat">"+o.author+"</span><br>"+o.title+"</div><div class="recent-time">"+(o.time||"Now")+"</div></div>";}).join("");
-}
-
-async function saveArticle(){var title=document.getElementById("art-title").value.trim();var section=document.getElementById("art-section").value;if(!title||!section){toast("Please fill headline and section",true);return;}var btn=document.getElementById("btn-save-art");btn.disabled=true;btn.innerHTML="<span class="spinner"></span>Saving...";try{await db.collection("articles").add({title:title,section:section,cat:document.getElementById("art-cat").value.trim()||section,excerpt:document.getElementById("art-excerpt").value.trim(),body:document.getElementById("art-body").value.trim(),author:document.getElementById("art-author").value.trim()||"Zenit Staff",read:document.getElementById("art-read").value.trim()||"3 min read",status:document.getElementById("art-status").value,time:document.getElementById("art-time").value.trim()||"Just now",createdAt:firebase.firestore.FieldValue.serverTimestamp()});toast("Article is now live on your website!");clearForm(["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time"],["art-section","art-status"]);switchTab("articles","list",document.querySelector("#page-articles .tab"));}catch(e){toast("Error saving. Try again.",true);}btn.disabled=false;btn.innerHTML="Save to Firebase &rarr;";}
-async function deleteArticle(id){if(!confirm("Delete this article?"))return;try{await db.collection("articles").doc(id).delete();toast("Article deleted");}catch(e){toast("Error",true);}}
-function renderArticles(list){var data=list||_lists.articles;var tbody=document.getElementById("articles-table-body");tbody.innerHTML=data.length===0?"<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>":data.map(function(a){return "<tr><td><div class="td-cat">"+(a.cat||a.section)+"</div><div class="td-title">"+a.title+"</div></td><td>"+a.section+"</td><td><span class="status-"+(a.status||"live")+"">"+(a.status||"live")+"</span></td><td>"+(a.time||"--")+"</td><td><div class="td-actions"><button class="btn-danger" onclick="deleteArticle('"+a.id+"')">Delete</button></div></td></tr>";}).join("");}
-function filterArticles(q){renderArticles(_lists.articles.filter(function(a){return a.title.toLowerCase().includes(q.toLowerCase())||a.section.toLowerCase().includes(q.toLowerCase());}));}
-
-async function addTicker(){var text=document.getElementById("ticker-input").value.trim();if(!text){toast("Please enter a headline",true);return;}var btn=document.getElementById("btn-add-ticker");btn.disabled=true;btn.textContent="Saving...";try{await db.collection("ticker").add({text:text,createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById("ticker-input").value="";document.getElementById("ticker-cc").textContent="0";toast("Ticker item is now live!");}catch(e){toast("Error",true);}btn.disabled=false;btn.textContent="+ Add Item";}
-async function deleteTicker(id){try{await db.collection("ticker").doc(id).delete();toast("Removed");}catch(e){toast("Error",true);}}
-function renderTicker(){var list=document.getElementById("ticker-list");document.getElementById("ticker-count").textContent=_lists.ticker.length;list.innerHTML=_lists.ticker.length===0?"<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>":_lists.ticker.map(function(t){return "<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">"+t.text+"</span><button class="btn-danger" onclick="deleteTicker('"+t.id+"')">Remove</button></div>";}).join("");}
-document.getElementById("ticker-input").addEventListener("keydown",function(e){if(e.key==="Enter")addTicker();});
-
-async function saveVideo(){var title=document.getElementById("vid-title").value.trim();var cat=document.getElementById("vid-cat").value;if(!title||!cat){toast("Please fill title and category",true);return;}var btn=document.getElementById("btn-save-vid");btn.disabled=true;btn.innerHTML="<span class="spinner"></span>Saving...";try{await db.collection("videos").add({title:title,cat:cat,badge:document.getElementById("vid-badge").value,dur:document.getElementById("vid-dur").value.trim()||"1:00",likes:document.getElementById("vid-likes").value.trim()||"0",bg:vidBgs[_lists.videos.length%vidBgs.length],createdAt:firebase.firestore.FieldValue.serverTimestamp()});toast("Video is now live!");clearForm(["vid-title","vid-dur","vid-likes"],["vid-cat","vid-badge"]);switchTab("videos","list",document.querySelector("#page-videos .tab"));}catch(e){toast("Error",true);}btn.disabled=false;btn.innerHTML="Save to Firebase &rarr;";}
-async function deleteVideo(id){if(!confirm("Delete?"))return;try{await db.collection("videos").doc(id).delete();toast("Removed");}catch(e){toast("Error",true);}}
-function renderVideos(){var grid=document.getElementById("videos-grid");grid.innerHTML=_lists.videos.length===0?"<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>":_lists.videos.map(function(v){return "<div class="video-admin-card"><div class="video-thumb-admin "+(v.bg||"vt1")+""></div><div class="video-admin-cat">"+v.cat+" &middot; "+v.badge+"</div><div class="video-admin-title">"+v.title+"</div><div class="video-admin-meta">"+(v.dur)+" &middot; "+(v.likes)+" likes</div><div class="video-admin-actions"><button class="btn-danger" onclick="deleteVideo('"+v.id+"')">Remove</button></div></div>";}).join("");}
-
-async function saveOpinion(){var author=document.getElementById("op-author").value.trim();var title=document.getElementById("op-title").value.trim();if(!author||!title){toast("Please fill author and title",true);return;}var initials=document.getElementById("op-initials").value.trim()||author.split(" ").map(function(w){return w[0];}).join("").toUpperCase().slice(0,2);var btn=document.getElementById("btn-save-op");btn.disabled=true;btn.innerHTML="<span class="spinner"></span>Saving...";try{await db.collection("opinion").add({author:author,initials:initials,role:document.getElementById("op-role").value.trim(),color:document.getElementById("op-color").value,title:title,deck:document.getElementById("op-deck").value.trim(),read:document.getElementById("op-read").value.trim()||"5 min read",time:document.getElementById("op-time").value.trim()||"Just now",createdAt:firebase.firestore.FieldValue.serverTimestamp()});toast("Opinion piece is now live!");clearForm(["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"],["op-color"]);switchTab("opinion","list",document.querySelector("#page-opinion .tab"));}catch(e){toast("Error",true);}btn.disabled=false;btn.innerHTML="Save to Firebase &rarr;";}
-async function deleteOpinion(id){if(!confirm("Delete?"))return;try{await db.collection("opinion").doc(id).delete();toast("Removed");}catch(e){toast("Error",true);}}
-function renderOpinion(){var grid=document.getElementById("opinion-grid");grid.innerHTML=_lists.opinion.length===0?"<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>":_lists.opinion.map(function(o){return "<div class="op-admin-card"><div class="op-admin-av" style="background:"+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+"">"+(o.initials||"??")+"</div><div class="op-admin-info"><div class="op-admin-author">"+o.author+(o.role?" &middot; "+o.role:"")+"</div><div class="op-admin-title">"+o.title+"</div><div class="op-admin-actions"><button class="btn-danger" onclick="deleteOpinion('"+o.id+"')">Remove</button></div></div></div>";}).join("");}
 </script>
 </body>
 </html>
