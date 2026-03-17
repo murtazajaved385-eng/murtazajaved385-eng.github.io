@@ -451,10 +451,11 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
       +'<div class="reel-bot"><div class="rcat">'+v.cat+'</div><div class="rtitle">'+v.title+'</div>'
       +'<div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div>';
   }).join('');
-  scroll.querySelectorAll('.reel-card').forEach(function(card){
-    card.addEventListener('click', function(){
-      openReelPlayer(parseInt(this.getAttribute('data-vidindex')), window._allVideos);
-    });
+  // Use event delegation - works even after DOM updates
+  scroll.onclick = null;
+  scroll.addEventListener('click', function(e){
+    var card = e.target.closest('.reel-card');
+    if(card) openReelPlayer(parseInt(card.getAttribute('data-vidindex')), window._allVideos);
   });
 });
 

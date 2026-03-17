@@ -333,11 +333,10 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
       +'</div>';
   }).join('');
   // Add click handlers
-  grid.querySelectorAll('.vid-card').forEach(function(card){
-    card.addEventListener('click', function(){
-      var idx = parseInt(this.getAttribute('data-vidindex'));
-      openReelPlayer(idx, window._allVideos);
-    });
+  grid.onclick = null;
+  grid.addEventListener('click', function(e){
+    var card = e.target.closest('.vid-card');
+    if(card) openReelPlayer(parseInt(card.getAttribute('data-vidindex')), window._allVideos);
   });
 });
 </script>
