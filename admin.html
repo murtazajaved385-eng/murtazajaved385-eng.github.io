@@ -639,7 +639,14 @@ var TICKER_MAX    = 20;
             </div>
             <button class="btn-primary" style="margin-top:1.4rem" id="btn-add-section">+ Add Section</button>
           </div>
-          <div class="sections-note">Section names are capitalised automatically. Adding a section makes it available immediately in article &amp; video dropdowns. Removing a section only removes the navigation link — existing articles are kept in Firestore.<br><br><strong style="color:var(--gold-light);font-style:normal">Firestore Rules:</strong> Make sure your Firestore security rules allow reads/writes to the <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">sections</code> collection for authenticated users. In the Firebase console go to <em>Firestore → Rules</em> and ensure your rule covers <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">match /sections/{doc}</code> with <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">allow read, write: if request.auth != null;</code></div>
+          <div class="sections-note">Section names are capitalised automatically. Adding a section makes it available immediately in article &amp; video dropdowns. Removing a section only removes the navigation link — existing articles stay in Firestore.</div>
+          <div style="margin-top:1rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:1rem 1.25rem;border-left:3px solid var(--gold)">
+            <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">&#9888; Required: Firestore Rules</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem;line-height:1.5">If sections show 0 or you get errors, your Firestore rules need to allow access to the <strong style="font-style:normal;color:var(--text)">sections</strong> collection. In the <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold-light)">Firebase Console</a> go to <strong style="font-style:normal;color:var(--text)">Firestore → Rules</strong> and make sure you have:</div>
+            <pre style="background:var(--panel2);border:1px solid var(--border);padding:0.85rem 1rem;font-family:monospace;font-size:0.72rem;color:#a0d8a0;line-height:1.7;overflow-x:auto">match /sections/{doc} {
+  allow read, write: if request.auth != null;
+}</pre>
+          </div>
         </div>
         <div class="section-count-label">Active Sections (<span id="sections-count">0</span>)</div>
         <div class="sections-grid" id="sections-grid">
@@ -957,30 +964,62 @@ function startListeners() {
     _lists.opinion = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderOpinion();
   });
-  // Sections: seed defaults once only, debounce render to prevent grid jumping
-  var _sectionsSeeded = false;
+  // Sections: no orderBy (avoids index requirement), stable sort client-side
+  // Use a flag to track whether we've already triggered a seed write
+  var _seedAttempted = false;
   var _sectionsRenderTimer = null;
-  db.collection("sections").orderBy("name","asc").onSnapshot(function(snap){
-    if(snap.empty && !_sectionsSeeded) {
-      _sectionsSeeded = true;
+
+  db.collection("sections").onSnapshot(function(snap){
+    // If truly empty and we haven't tried seeding yet, seed the defaults
+    if(snap.empty && !_seedAttempted) {
+      _seedAttempted = true;
       var batch = db.batch();
       _defaultSections.forEach(function(name){
         batch.set(db.collection("sections").doc(), {
           name: name,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          order: _defaultSections.indexOf(name)
         });
       });
-      batch.commit().catch(function(e){ console.error("Seed error:", e); });
-      return;
+      batch.commit()
+        .then(function(){ console.log("Sections seeded."); })
+        .catch(function(e){
+          // Firestore rules may block write — load defaults locally so UI still works
+          console.warn("Seed blocked (rules?):", e.code, e.message);
+          _lists.sections = _defaultSections.map(function(n,i){
+            return {id:"local-"+i, name:n};
+          });
+          renderSections();
+          populateSectionDropdowns();
+          document.getElementById("sections-count").textContent = _lists.sections.length;
+          showToast("Sections loaded locally. Update Firestore rules to persist them.",true);
+        });
+      return; // wait for the onSnapshot to re-fire after the batch write
     }
-    _sectionsSeeded = true;
-    _lists.sections = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+
+    // Non-empty: update state and re-render (debounced to prevent grid jumping)
+    _seedAttempted = true;
+    _lists.sections = snap.docs
+      .map(function(d){ return Object.assign({id:d.id}, d.data()); })
+      .sort(function(a,b){
+        // Sort by order field if present, otherwise alphabetically
+        if(a.order !== undefined && b.order !== undefined) return a.order - b.order;
+        return a.name.localeCompare(b.name);
+      });
+
     if(_sectionsRenderTimer) clearTimeout(_sectionsRenderTimer);
     _sectionsRenderTimer = setTimeout(function(){
       renderSections();
       populateSectionDropdowns();
       document.getElementById("sections-count").textContent = _lists.sections.length;
-    }, 150);
+    }, 80);
+  }, function(err){
+    // onSnapshot error handler — e.g. rules deny read
+    console.error("Sections listener error:", err.code, err.message);
+    _lists.sections = _defaultSections.map(function(n,i){ return {id:"local-"+i, name:n}; });
+    renderSections();
+    populateSectionDropdowns();
+    document.getElementById("sections-count").textContent = _lists.sections.length;
+    showToast("Could not load sections from Firestore — check your rules.",true);
   });
 }
 
@@ -1260,16 +1299,17 @@ function addSection() {
     showToast("Section already exists",true); return;
   }
   var btn = document.getElementById("btn-add-section"); btn.disabled=true;
-  db.collection("sections").add({name:name, createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+  var newOrder = _lists.sections.length; // append at end
+  db.collection("sections").add({name:name, order:newOrder})
     .then(function(){
       document.getElementById("section-new-name").value="";
       showToast("Section '"+name+"' added!");
     }).catch(function(err){
       console.error("Add section error:", err.code, err.message);
       if(err.code === "permission-denied") {
-        showToast("Permission denied — update your Firestore rules to include 'sections'",true);
+        showToast("Permission denied — add 'sections' collection to your Firestore rules",true);
       } else {
-        showToast("Error: "+err.message,true);
+        showToast("Error adding section: "+err.message,true);
       }
     })
     .finally(function(){ btn.disabled=false; });
@@ -1293,6 +1333,7 @@ function renderSections() {
       var docId = btn.getAttribute("data-id");
       var name  = btn.getAttribute("data-name");
       if(!docId){ showToast("Error: missing section ID",true); return; }
+      if(docId.startsWith("local-")){ showToast("Update Firestore rules first — sections are loaded locally only.",true); return; }
       if(!confirm("Remove section '"+name+"'?\nExisting articles stay in Firestore.")) return;
       btn.disabled = true;
       btn.textContent = "...";
@@ -1301,9 +1342,9 @@ function renderSections() {
         .catch(function(err){
           console.error("Delete failed:", err.code, err.message);
           if(err.code === "permission-denied") {
-            showToast("Permission denied — add 'sections' to your Firestore rules",true);
+            showToast("Permission denied — add 'sections' collection to your Firestore rules",true);
           } else {
-            showToast("Error: "+err.message,true);
+            showToast("Error removing: "+err.message,true);
           }
           btn.disabled = false;
           btn.textContent = "Remove";
