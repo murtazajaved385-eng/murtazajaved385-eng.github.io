@@ -192,6 +192,35 @@ footer{background:var(--gold-footer);margin-top:3rem}
 .fi-thumb{border-radius:2px}
 .feed-section-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;padding:1.5rem 0 0.5rem;border-top:2px solid var(--black);margin-top:1rem}
 </style>
+
+<style>
+#reel-modal{display:none;position:fixed;inset:0;background:#000;z-index:9999;flex-direction:row;align-items:center;justify-content:center}
+#reel-modal.open{display:flex}
+.reel-modal-inner{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.reel-video-wrap{position:relative;width:400px;height:100vh;max-height:100vh;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.reel-video-wrap video{width:100%;height:100%;object-fit:contain}
+.reel-video-wrap iframe{width:100%;height:100%;border:none}
+.reel-embed-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#000}
+.reel-sidebar{position:absolute;right:calc(50% - 240px);bottom:6rem;display:flex;flex-direction:column;align-items:center;gap:1.5rem;z-index:10}
+.reel-action{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.reel-action-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;transition:background .2s}
+.reel-action-btn:hover{background:rgba(255,255,255,0.25)}
+.reel-action-label{font-family:'Jost',sans-serif;font-size:0.55rem;color:rgba(255,255,255,0.6);letter-spacing:0.06em}
+.reel-info{position:absolute;bottom:0;left:0;right:0;padding:2rem 1.5rem;background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,transparent 100%);z-index:10}
+.reel-info-cat{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold-light,#e0c070);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.4rem}
+.reel-info-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:0.4rem}
+.reel-info-meta{font-family:'Jost',sans-serif;font-size:0.6rem;color:rgba(255,255,255,0.5)}
+.reel-close{position:fixed;top:1.5rem;right:1.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;z-index:20;transition:background .2s}
+.reel-close:hover{background:rgba(255,255,255,0.25)}
+.reel-nav-btn{position:fixed;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;z-index:20;transition:background .2s;top:50%;transform:translateY(-50%)}
+.reel-nav-btn:hover{background:rgba(255,255,255,0.25)}
+#reel-prev{left:1.5rem}
+#reel-next{right:1.5rem}
+.reel-counter{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;z-index:20}
+.reel-progress{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.1);z-index:20}
+.reel-progress-bar{height:100%;background:var(--gold,#c9a84c);transition:width .3s}
+</style>
+
 </head>
 <body>
 
@@ -299,28 +328,155 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
 
 </script>
 
-<div id="video-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
-  <button onclick="closeVideo()" style="position:absolute;top:1.5rem;right:1.5rem;background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 16px;font-family:Jost,sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">&#10005; Close</button>
-  <video id="modal-video" controls style="max-width:90vw;max-height:80vh;border-radius:4px"></video>
+
+
+
+<!-- REEL PLAYER MODAL -->
+<div id="reel-modal">
+  <div class="reel-progress"><div class="reel-progress-bar" id="reel-progress-bar"></div></div>
+  <div class="reel-counter" id="reel-counter">1 / 1</div>
+  <button class="reel-close" onclick="closeReelPlayer()">&#10005;</button>
+  <button class="reel-nav-btn" id="reel-prev" onclick="reelNav(-1)">&#8249;</button>
+  <button class="reel-nav-btn" id="reel-next" onclick="reelNav(1)">&#8250;</button>
+  <div class="reel-modal-inner">
+    <div class="reel-video-wrap" id="reel-video-wrap">
+      <!-- content injected by JS -->
+    </div>
+    <div class="reel-info" id="reel-info"></div>
+    <div class="reel-sidebar">
+      <div class="reel-action" onclick="reelLike()">
+        <div class="reel-action-btn" id="reel-like-btn">&#9829;</div>
+        <div class="reel-action-label" id="reel-like-count">0</div>
+      </div>
+      <div class="reel-action" onclick="reelShare()">
+        <div class="reel-action-btn">&#8679;</div>
+        <div class="reel-action-label">Share</div>
+      </div>
+    </div>
+  </div>
 </div>
+
 <script>
-function playVideo(url) {
-  if(!url) return;
-  var modal = document.getElementById('video-modal');
-  var vid = document.getElementById('modal-video');
-  vid.src = url;
-  modal.style.display = 'flex';
-  vid.play();
+var _reelVideos = [];
+var _reelIndex = 0;
+var _likedReels = {};
+
+function getYoutubeId(url) {
+  var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
+  return m ? m[1] : null;
 }
-function closeVideo() {
-  var modal = document.getElementById('video-modal');
-  var vid = document.getElementById('modal-video');
-  vid.pause();
-  vid.src = '';
-  modal.style.display = 'none';
+function getInstagramId(url) {
+  var m = url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
+  return m ? m[2] : null;
 }
-document.getElementById('video-modal').addEventListener('click', function(e) {
-  if(e.target === this) closeVideo();
+function isYoutube(url) { return url && (url.includes('youtube.com') || url.includes('youtu.be')); }
+function isInstagram(url) { return url && url.includes('instagram.com'); }
+
+function openReelPlayer(index, videos) {
+  _reelVideos = videos;
+  _reelIndex = index;
+  document.getElementById('reel-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderReelSlide();
+}
+
+function closeReelPlayer() {
+  document.getElementById('reel-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  var wrap = document.getElementById('reel-video-wrap');
+  wrap.innerHTML = '';
+}
+
+function reelNav(dir) {
+  _reelIndex = (_reelIndex + dir + _reelVideos.length) % _reelVideos.length;
+  renderReelSlide();
+}
+
+function renderReelSlide() {
+  if(!_reelVideos.length) return;
+  var v = _reelVideos[_reelIndex];
+  var wrap = document.getElementById('reel-video-wrap');
+  var info = document.getElementById('reel-info');
+  var counter = document.getElementById('reel-counter');
+  var progressBar = document.getElementById('reel-progress-bar');
+
+  counter.textContent = (_reelIndex+1) + ' / ' + _reelVideos.length;
+  progressBar.style.width = ((_reelIndex+1)/_reelVideos.length*100) + '%';
+
+  // Hide prev/next if only one video
+  document.getElementById('reel-prev').style.display = _reelVideos.length > 1 ? 'flex' : 'none';
+  document.getElementById('reel-next').style.display = _reelVideos.length > 1 ? 'flex' : 'none';
+
+  // Render video content
+  var url = v.videoUrl || '';
+  if(isYoutube(url)) {
+    var ytId = getYoutubeId(url);
+    wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>';
+  } else if(isInstagram(url)) {
+    var igId = getInstagramId(url);
+    wrap.innerHTML = '<div class="reel-embed-wrap"><iframe src="https://www.instagram.com/p/'+igId+'/embed/" scrolling="no" allowtransparency="true" allowfullscreen></iframe></div>';
+  } else if(url) {
+    wrap.innerHTML = '<video src="'+url+'" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain"></video>';
+  } else if(v.thumbnailUrl) {
+    wrap.innerHTML = '<img src="'+v.thumbnailUrl+'" style="width:100%;height:100%;object-fit:contain">';
+  } else {
+    var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
+    wrap.innerHTML = '<div style="width:100%;height:100%;background:'+(bgMap[v.bg]||bgMap.vt1)+';display:flex;align-items:center;justify-content:center"><span style=\'font-family:Cormorant Garamond,serif;font-size:1.2rem;color:rgba(255,255,255,0.3)\'>No video file</span></div>';
+  }
+
+  // Render info
+  info.innerHTML = '<div class="reel-info-cat">'+v.cat+'</div>'
+    +'<div class="reel-info-title">'+v.title+'</div>'
+    +'<div class="reel-info-meta">'+(v.dur||'')+(v.dur&&v.likes?' &middot; ':'')+(v.likes?v.likes+' likes':'')+'</div>';
+
+  // Likes
+  var liked = _likedReels[v.id] || false;
+  document.getElementById('reel-like-btn').style.color = liked ? '#e07070' : '#fff';
+  document.getElementById('reel-like-count').textContent = v.likes || '0';
+}
+
+function reelLike() {
+  if(!_reelVideos.length) return;
+  var v = _reelVideos[_reelIndex];
+  _likedReels[v.id] = !_likedReels[v.id];
+  var btn = document.getElementById('reel-like-btn');
+  btn.style.color = _likedReels[v.id] ? '#e07070' : '#fff';
+}
+
+function reelShare() {
+  if(!_reelVideos.length) return;
+  var v = _reelVideos[_reelIndex];
+  if(navigator.share) {
+    navigator.share({title: v.title, text: v.title, url: window.location.href});
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(function(){
+      alert('Link copied to clipboard!');
+    });
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  var modal = document.getElementById('reel-modal');
+  if(!modal.classList.contains('open')) return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') reelNav(1);
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') reelNav(-1);
+  if(e.key === 'Escape') closeReelPlayer();
+});
+
+// Touch swipe support
+var _touchStartX = 0;
+var _touchStartY = 0;
+document.getElementById('reel-modal').addEventListener('touchstart', function(e) {
+  _touchStartX = e.touches[0].clientX;
+  _touchStartY = e.touches[0].clientY;
+});
+document.getElementById('reel-modal').addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - _touchStartX;
+  var dy = e.changedTouches[0].clientY - _touchStartY;
+  if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) {
+    reelNav(dy > 0 ? -1 : 1);
+  }
 });
 </script>
 

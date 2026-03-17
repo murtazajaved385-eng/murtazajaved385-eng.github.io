@@ -321,17 +321,42 @@ var UPLOAD_PRESET = "zenit_uploads";
               <div class="form-group"><label>Duration <span style="color:var(--muted);font-size:0.55rem;text-transform:none">(auto-detected after upload)</span></label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
               <div class="form-group"><label>Likes Count</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
 
-              <!-- VIDEO FILE UPLOAD -->
+              <!-- VIDEO SOURCE TABS -->
               <div class="form-group full">
-                <label>Video File * <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(MP4, MOV, WebM — max 100MB on free plan)</span></label>
-                <div class="upload-area" id="vid-upload-area">
-                  <input type="file" id="vid-file" accept="video/*">
-                  <div class="upload-area-icon">&#127916;</div>
-                  <div class="upload-area-text">Click or drag to upload your video file<br><span style="font-size:0.6rem">MP4 recommended for best compatibility</span></div>
-                  <video id="vid-preview" class="preview-video" controls></video>
+                <label>Video Source *</label>
+                <div style="display:flex;gap:0;margin-bottom:1rem;border-bottom:1px solid var(--border)">
+                  <div class="tab active" id="vid-tab-upload" style="cursor:pointer">Upload File</div>
+                  <div class="tab" id="vid-tab-youtube" style="cursor:pointer">YouTube URL</div>
+                  <div class="tab" id="vid-tab-instagram" style="cursor:pointer">Instagram URL</div>
                 </div>
-                <div class="upload-progress" id="vid-progress"><div class="upload-progress-bar" id="vid-progress-bar"></div></div>
-                <div class="upload-status" id="vid-status"></div>
+
+                <!-- FILE UPLOAD -->
+                <div id="vid-source-upload">
+                  <div class="upload-area" id="vid-upload-area">
+                    <input type="file" id="vid-file" accept="video/*">
+                    <div class="upload-area-icon">&#127916;</div>
+                    <div class="upload-area-text">Click or drag to upload your video file<br><span style="font-size:0.6rem">MP4 recommended — max 100MB on free plan</span></div>
+                    <video id="vid-preview" class="preview-video" controls></video>
+                  </div>
+                  <div class="upload-progress" id="vid-progress"><div class="upload-progress-bar" id="vid-progress-bar"></div></div>
+                  <div class="upload-status" id="vid-status"></div>
+                </div>
+
+                <!-- YOUTUBE URL -->
+                <div id="vid-source-youtube" style="display:none">
+                  <input type="text" id="vid-youtube-url" placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtu.be/...">
+                  <div style="font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);margin-top:6px">Paste any YouTube video or Shorts URL</div>
+                  <div id="vid-youtube-preview" style="margin-top:0.75rem;display:none">
+                    <iframe id="vid-youtube-iframe" width="100%" height="200" frameborder="0" allowfullscreen style="border-radius:3px"></iframe>
+                  </div>
+                </div>
+
+                <!-- INSTAGRAM URL -->
+                <div id="vid-source-instagram" style="display:none">
+                  <input type="text" id="vid-instagram-url" placeholder="e.g. https://www.instagram.com/reel/ABC123/">
+                  <div style="font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);margin-top:6px">Paste any Instagram Reel or Post URL</div>
+                </div>
+
                 <input type="hidden" id="vid-url">
                 <input type="hidden" id="vid-thumb-url">
               </div>
@@ -548,6 +573,52 @@ document.getElementById("art-body-file").addEventListener("change", function() {
   });
 });
 
+// VIDEO SOURCE TABS
+var vidSource = 'upload';
+document.getElementById("vid-tab-upload").addEventListener("click", function() {
+  vidSource = 'upload';
+  document.getElementById("vid-source-upload").style.display = "block";
+  document.getElementById("vid-source-youtube").style.display = "none";
+  document.getElementById("vid-source-instagram").style.display = "none";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
+  this.classList.add("active");
+});
+document.getElementById("vid-tab-youtube").addEventListener("click", function() {
+  vidSource = 'youtube';
+  document.getElementById("vid-source-upload").style.display = "none";
+  document.getElementById("vid-source-youtube").style.display = "block";
+  document.getElementById("vid-source-instagram").style.display = "none";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
+  this.classList.add("active");
+});
+document.getElementById("vid-tab-instagram").addEventListener("click", function() {
+  vidSource = 'instagram';
+  document.getElementById("vid-source-upload").style.display = "none";
+  document.getElementById("vid-source-youtube").style.display = "none";
+  document.getElementById("vid-source-instagram").style.display = "block";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
+  this.classList.add("active");
+});
+
+// YouTube URL preview
+document.getElementById("vid-youtube-url").addEventListener("input", function() {
+  var url = this.value.trim();
+  var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([-\w]{11})/);
+  if(m) {
+    var ytId = m[1];
+    document.getElementById("vid-youtube-iframe").src = "https://www.youtube.com/embed/" + ytId;
+    document.getElementById("vid-youtube-preview").style.display = "block";
+    document.getElementById("vid-url").value = url;
+    // Auto-set thumbnail
+    document.getElementById("vid-thumb-url").value = "https://img.youtube.com/vi/" + ytId + "/hqdefault.jpg";
+  }
+});
+
+// Instagram URL
+document.getElementById("vid-instagram-url").addEventListener("input", function() {
+  document.getElementById("vid-url").value = this.value.trim();
+});
+
 // VIDEO FILE PREVIEW
 document.getElementById("vid-file").addEventListener("change", function() {
   var file = this.files[0];
@@ -737,9 +808,17 @@ function renderTicker() {
 document.getElementById("btn-save-vid").addEventListener("click", function() {
   var title = document.getElementById("vid-title").value.trim();
   var cat = document.getElementById("vid-cat").value;
-  var vidUrl = document.getElementById("vid-url").value;
+  // Get video URL based on source type
+  var vidUrl = "";
+  if(vidSource === "youtube") {
+    vidUrl = document.getElementById("vid-youtube-url").value.trim();
+  } else if(vidSource === "instagram") {
+    vidUrl = document.getElementById("vid-instagram-url").value.trim();
+  } else {
+    vidUrl = document.getElementById("vid-url").value;
+  }
   if(!title||!cat) { showToast("Please fill title and category",true); return; }
-  if(!vidUrl) { showToast("Please upload a video file first",true); return; }
+  if(!vidUrl) { showToast("Please add a video — upload a file or paste a URL",true); return; }
   var btn = this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Publishing...';
   db.collection("videos").add({
     title:title, cat:cat,
