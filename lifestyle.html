@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifestyle — ZENIT · The Whole Picture · Every Angle</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0a0a0a;--bg:#f0ece3;--gold:#c9a84c;--gold-light:#e0c070;--gold-pale:#f5e6b8;--gold-footer:#d4a832;--burgundy:#7a1c2e;--text:#1a1612;--muted:#6b5f4e;--rule:#d0c8b8}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+.masthead{background:var(--gold-footer);border-bottom:3px solid rgba(0,0,0,0.18);padding:16px 3rem;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:100px;position:sticky;top:0;z-index:200}
+.mast-left{display:flex;flex-direction:column;gap:4px}
+.mast-date{font-family:'Jost',sans-serif;font-size:0.72rem;font-weight:500;color:var(--black);letter-spacing:0.1em;text-transform:uppercase}
+.mast-time{font-family:'EB Garamond',serif;font-size:0.85rem;font-style:italic;color:rgba(0,0,0,0.55)}
+.mast-center{text-align:center}
+.logo{font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:700;color:var(--black);letter-spacing:0.22em;line-height:1;text-decoration:none;display:block}
+.logo-sub{font-family:'Jost',sans-serif;font-size:0.5rem;font-weight:400;color:rgba(0,0,0,0.55);letter-spacing:0.4em;text-transform:uppercase;margin-top:4px}
+.mast-right{display:flex;justify-content:flex-end}
+.search-btn{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.08);border:1.5px solid rgba(0,0,0,0.4);color:var(--black);padding:8px 20px;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .2s}
+.search-btn:hover{background:rgba(0,0,0,0.16);border-color:var(--black)}
+.nav{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.07)}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:center}
+.nav-inner a{color:rgba(255,255,255,0.78);font-family:'Jost',sans-serif;font-size:0.64rem;font-weight:400;text-decoration:none;padding:0 1.05rem;height:46px;display:flex;align-items:center;letter-spacing:0.12em;text-transform:uppercase;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s}
+.nav-inner a:hover,.nav-inner a.active{color:#fff;border-bottom-color:var(--gold)}
+.ticker{background:var(--gold-pale);padding:7px 0;overflow:hidden;display:flex;align-items:center}
+.ticker-label{background:var(--black);color:var(--gold-light);font-family:'Jost',sans-serif;font-size:0.56rem;font-weight:500;padding:0 1.3rem;letter-spacing:0.18em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:7px;flex-shrink:0;margin-right:1.5rem}
+.tdot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:tpulse 1.5s ease-in-out infinite}
+@keyframes tpulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ticker-track{display:flex;gap:3.5rem;animation:tscroll 50s linear infinite;white-space:nowrap}
+.ticker-track span{font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:500;color:#1a1000}
+.ticker-track span::before{content:'◆';margin-right:0.55rem;font-size:0.4rem;color:var(--gold);vertical-align:middle}
+@keyframes tscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.date-rule{padding:10px 3rem;display:flex;align-items:center;gap:1.5rem;border-bottom:1px solid var(--rule);background:var(--bg)}
+.date-rule::before,.date-rule::after{content:'';flex:1;height:1px;background:var(--rule)}
+.date-text{font-family:'EB Garamond',serif;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;white-space:nowrap;font-style:italic}
+.section-banner{padding:2.5rem 3rem 2rem;border-bottom:4px solid var(--gold)}
+.section-banner-inner{max-width:1400px;margin:0 auto}
+.section-eyebrow{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;color:var(--gold-light);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.5rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:3.8rem;font-weight:700;color:#fff;letter-spacing:0.06em;line-height:1}
+.section-desc{font-family:'EB Garamond',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,0.45);margin-top:8px}
+.featured-card{background:#fff;box-shadow:0 2px 28px rgba(0,0,0,0.11);cursor:pointer;transition:box-shadow .3s;margin-bottom:1.25rem}
+.featured-card:hover{box-shadow:0 8px 40px rgba(0,0,0,0.17)}
+.feat-img{height:390px;position:relative;overflow:hidden}
+.feat-pattern{position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.015) 0,rgba(255,255,255,0.015) 1px,transparent 1px,transparent 12px)}
+.feat-fade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.28) 55%,transparent 100%)}
+.feat-body{position:absolute;bottom:0;left:0;right:0;padding:2rem 2rem 1.8rem;z-index:2}
+.tag-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem}
+.tag-break{background:var(--burgundy);color:#fff;font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;padding:3px 10px;letter-spacing:0.15em;text-transform:uppercase}
+.tag-cat{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--gold-light);letter-spacing:0.12em;text-transform:uppercase}
+.feat-headline{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:#fff;line-height:1.13;margin-bottom:0.65rem}
+.feat-deck{font-family:'EB Garamond',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,0.66);line-height:1.6}
+.feat-byline{display:flex;gap:1.5rem;margin-top:0.9rem;padding-top:0.85rem;border-top:1px solid rgba(255,255,255,0.1)}
+.feat-byline span{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(255,255,255,0.4)}
+.feat-byline .author{color:rgba(255,255,255,0.65)}
+.hero-wrap{background:var(--bg);padding:2rem 3rem 1.75rem;max-width:1400px;margin:0 auto}
+.hero-grid{display:grid;grid-template-columns:1fr 295px;gap:2rem;align-items:start}
+.small-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.small-card{background:#fff;padding:1.1rem 1.25rem;box-shadow:0 1px 12px rgba(0,0,0,0.07);cursor:pointer;transition:box-shadow .2s;border-top:3px solid transparent}
+.small-card:hover{box-shadow:0 4px 22px rgba(0,0,0,0.13);border-top-color:var(--gold)}
+.sc-cat{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;color:var(--burgundy);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+.sc-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;line-height:1.35;color:var(--text);margin-bottom:6px}
+.sc-time{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted)}
+.hero-rail{background:#fff;box-shadow:0 2px 22px rgba(0,0,0,0.09)}
+.rail-hdr{background:var(--black);padding:0.9rem 1.25rem;display:flex;align-items:center;gap:0.6rem}
+.rail-dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.rail-label{font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;color:#fff;letter-spacing:0.18em;text-transform:uppercase}
+.trend-item{display:flex;gap:0.85rem;padding:1rem 1.25rem;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .2s;align-items:flex-start}
+.trend-item:last-child{border-bottom:none}
+.trend-item:hover{background:#faf8f4}
+.tnum{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--rule);line-height:1;min-width:28px;flex-shrink:0;transition:color .2s}
+.trend-item:hover .tnum{color:var(--gold)}
+.tcat{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;color:var(--burgundy);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px}
+.ttitle{font-family:'Cormorant Garamond',serif;font-size:0.93rem;font-weight:600;line-height:1.35;color:var(--text)}
+.trend-item:hover .ttitle{color:var(--black)}
+.ttime{font-family:'Jost',sans-serif;font-size:0.52rem;color:var(--muted);margin-top:3px}
+.page-break{background:var(--black);height:5px}
+.reels-section{background:var(--black);padding:2.5rem 3rem 3rem}
+.reels-inner{max-width:1400px;margin:0 auto}
+.reels-hdr{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.75rem;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.9rem}
+.reels-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:#fff}
+.reels-rule{flex:1;height:1px;background:rgba(255,255,255,0.1)}
+.reels-hint{font-family:'Jost',sans-serif;font-size:0.54rem;color:rgba(255,255,255,0.28);letter-spacing:0.06em;margin-right:0.5rem}
+.reels-more{font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light);cursor:pointer;text-decoration:none}
+.reels-wrap{position:relative}
+.reels-scroll{display:flex;gap:1.1rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:0.5rem;-webkit-overflow-scrolling:touch}
+.reels-scroll::-webkit-scrollbar{display:none}
+.reel-card{flex:0 0 192px;scroll-snap-align:start;cursor:pointer}
+.reel-visual{height:345px;border-radius:3px;overflow:hidden;position:relative;transition:transform .28s}
+.reel-card:hover .reel-visual{transform:translateY(-6px)}
+.rb1{background:linear-gradient(170deg,#0a0a14,#1a2040,#2a3060)}
+.rb2{background:linear-gradient(170deg,#140a0a,#401a1a,#602020)}
+.rb3{background:linear-gradient(170deg,#0a140a,#1a3520,#256030)}
+.rb4{background:linear-gradient(170deg,#14120a,#3a2e10,#6a5218)}
+.rb5{background:linear-gradient(170deg,#0e0a14,#2a1840,#4a2868)}
+.rb6{background:linear-gradient(170deg,#140a0e,#401520,#6e2030)}
+.reel-bg{width:100%;height:100%}
+.reel-ol{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.96) 0%,rgba(0,0,0,0.32) 52%,rgba(0,0,0,0.08) 100%);display:flex;flex-direction:column;justify-content:space-between;padding:0.85rem 0.85rem 1rem}
+.reel-top{display:flex;justify-content:space-between;align-items:center}
+.rbadge{font-family:'Jost',sans-serif;font-size:0.5rem;font-weight:500;padding:2px 8px;letter-spacing:0.12em;text-transform:uppercase;border-radius:2px}
+.rbadge.live{background:var(--burgundy);color:#fff}
+.rbadge.recap{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);border:0.5px solid rgba(255,255,255,0.18)}
+.rbadge.analysis{background:rgba(201,168,76,0.18);color:var(--gold-light);border:0.5px solid rgba(201,168,76,0.35)}
+.rdur{font-family:'Jost',sans-serif;font-size:0.56rem;color:rgba(255,255,255,0.42)}
+.reel-acts{display:flex;flex-direction:column;align-items:center;gap:0.55rem;position:absolute;right:0.75rem;bottom:5rem}
+.ract{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ract-ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(255,255,255,0.75)}
+.ract-ct{font-family:'Jost',sans-serif;font-size:0.48rem;color:rgba(255,255,255,0.5)}
+.reel-bot{}
+.rcat{font-family:'Jost',sans-serif;font-size:0.54rem;color:var(--gold-light);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px}
+.rtitle{font-family:'Cormorant Garamond',serif;font-size:0.93rem;font-weight:600;color:#fff;line-height:1.35}
+.rplay{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;margin-top:8px;transition:background .2s}
+.reel-card:hover .rplay{background:rgba(255,255,255,0.18)}
+.rplay-tri{width:0;height:0;border-style:solid;border-width:5px 0 5px 9px;border-color:transparent transparent transparent rgba(255,255,255,0.88);margin-left:2px}
+.rnav{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);cursor:pointer;display:flex;align-items:center;justify-content:center;position:absolute;top:50%;transform:translateY(-50%);z-index:10;transition:background .2s}
+.rnav:hover{background:rgba(255,255,255,0.18)}
+.rnav-l{left:-18px}.rnav-r{right:-18px}
+.ntl{width:0;height:0;border-style:solid;border-width:5px 8px 5px 0;border-color:transparent var(--gold-light) transparent transparent;margin-right:1px}
+.ntr{width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent var(--gold-light);margin-left:1px}
+.module{padding:2.25rem 3rem 0;max-width:1400px;margin:0 auto}
+.mod-hdr{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;border-bottom:2px solid var(--black);padding-bottom:0.75rem}
+.mod-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:var(--black)}
+.mod-line{flex:1;height:1px;background:var(--rule)}
+.mod-more{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);cursor:pointer;text-decoration:none;transition:color .2s}
+.mod-more:hover{color:var(--burgundy)}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.news-card{background:#fff;box-shadow:0 1px 12px rgba(0,0,0,0.07);cursor:pointer;transition:box-shadow .22s,transform .22s;border-top:3px solid transparent}
+.news-card:hover{box-shadow:0 5px 24px rgba(0,0,0,0.13);transform:translateY(-2px);border-top-color:var(--gold)}
+.card-thumb{width:100%;height:150px}
+.th-pak{background:linear-gradient(140deg,#0a1f0a,#1a4020)}
+.th-biz{background:linear-gradient(140deg,#1a0f00,#5c3200)}
+.th-sport{background:linear-gradient(140deg,#0a0a1a,#1a2050)}
+.th-world{background:linear-gradient(140deg,#0f1a30,#1a2744)}
+.th-life{background:linear-gradient(140deg,#1a0a14,#5c1a30)}
+.th-uae{background:linear-gradient(140deg,#1a1000,#4a3800)}
+.th-india{background:linear-gradient(140deg,#1a0800,#5c2000)}
+.th-sci{background:linear-gradient(140deg,#001a1a,#003a3a)}
+.th-op{background:linear-gradient(140deg,#0a0a0a,#2a2a2a)}
+.card-body{padding:1rem 1.1rem 1.1rem}
+.card-cat{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;color:var(--burgundy);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:0.4rem}
+.card-excerpt{font-family:'EB Garamond',serif;font-size:0.88rem;font-style:italic;color:var(--muted);line-height:1.5}
+.card-meta{display:flex;gap:1rem;margin-top:0.5rem}
+.card-meta span{font-family:'Jost',sans-serif;font-size:0.54rem;color:var(--muted)}
+.opinion-section{background:var(--black);padding:2.5rem 3rem;margin-top:2.5rem}
+.opinion-inner{max-width:1400px;margin:0 auto}
+.op-hdr{display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:0.9rem}
+.op-hdr-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:#fff}
+.op-hdr-rule{flex:1;height:1px;background:rgba(255,255,255,0.1)}
+.op-hdr-more{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light);cursor:pointer}
+.op-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.op-card{padding:0 1.5rem 0 0;border-right:1px solid rgba(255,255,255,0.08);cursor:pointer}
+.op-card:last-child{padding:0 0 0 1.5rem;border-right:none}
+.op-card:nth-child(2),.op-card:nth-child(3){padding:0 1.5rem}
+.op-card:hover .op-title{color:var(--gold-light)}
+.op-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a6020);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--black);margin-bottom:0.8rem}
+.op-line{width:24px;height:1px;background:var(--gold);margin-bottom:8px}
+.op-author{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--gold-light);letter-spacing:0.06em;margin-bottom:5px}
+.op-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:rgba(255,255,255,0.85);line-height:1.45;transition:color .2s}
+footer{background:var(--gold-footer);margin-top:3rem}
+.footer-main{padding:2.5rem 3rem 2rem;max-width:1400px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr;gap:2.5rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.15);margin-bottom:1.75rem}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--black);letter-spacing:0.2em;line-height:1}
+.footer-tagline{font-family:'EB Garamond',serif;font-size:0.85rem;font-style:italic;color:rgba(0,0,0,0.55);margin-top:5px;margin-bottom:1.25rem}
+.nl-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(0,0,0,0.55);margin-bottom:7px}
+.nl-input{width:100%;background:rgba(0,0,0,0.08);border:1px solid rgba(0,0,0,0.2);color:var(--black);padding:8px 10px;font-family:'Jost',sans-serif;font-size:0.7rem;outline:none;margin-bottom:7px;border-radius:1px}
+.nl-input::placeholder{color:rgba(0,0,0,0.38)}
+.nl-btn{background:var(--black);color:var(--gold-light);border:none;padding:8px 0;font-family:'Jost',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;border-radius:1px;transition:opacity .2s}
+.nl-btn:hover{opacity:0.85}
+.fcol-title{font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;color:var(--black);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(0,0,0,0.18)}
+.fcol a{display:block;font-family:'Jost',sans-serif;font-size:0.7rem;color:rgba(0,0,0,0.65);text-decoration:none;margin-bottom:0.5rem;transition:color .2s}
+.fcol a:hover{color:var(--black)}
+.footer-bottom{background:rgba(0,0,0,0.12);padding:1.25rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.55);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--black)}
+.footer-copy{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.45);letter-spacing:0.04em}
+.pb-section{padding-bottom:2.5rem}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="mast-left"><div class="mast-date">Tuesday, March 17, 2026</div><div class="mast-time">Morning Dispatch</div></div>
+  <div class="mast-center"><a href="index.html" class="logo">ZENIT</a><div class="logo-sub">The Whole Picture &nbsp;·&nbsp; Every Angle</div></div>
+  <div class="mast-right"><button class="search-btn">&#9906; &nbsp;Search</button></div>
+</header>
+<nav class="nav"><div class="nav-inner"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="pakistan.html">Pakistan</a><a href="uae.html">UAE</a><a href="india.html">India</a><a href="business.html">Business</a><a href="sports.html">Sports</a><a href="lifestyle.html" class="active">Lifestyle</a><a href="opinion.html">Opinion</a><a href="world.html">World</a><a href="scitech.html">Sci-Tech</a><a href="video.html">Video</a></div></nav>
+<div class="ticker"><div class="ticker-label"><span class="tdot"></span>Breaking</div><div style="overflow:hidden;flex:1"><div class="ticker-track"><span>Iran–US standoff threatens global energy supply chains and food prices</span><span>Pakistan vows to continue anti-terror operations in Afghanistan</span><span>Attacks hit UAE after Iran blames it for strikes on Gulf infrastructure</span><span>KSE-100 recovers 800 points following ceasefire talks</span><span>Trump administration signals new Hormuz naval escort policy</span><span>UN condemns Israeli airstrike on Tehran prison as a war crime</span><span>Iran–US standoff threatens global energy supply chains and food prices</span><span>Pakistan vows to continue anti-terror operations in Afghanistan</span><span>Attacks hit UAE after Iran blames it for strikes on Gulf infrastructure</span><span>KSE-100 recovers 800 points following ceasefire talks</span></div></div></div>
+<div class="section-banner" style="background:linear-gradient(135deg,#1a0a14,#3a1030,#5c1a40)">
+  <div class="section-banner-inner">
+    <div class="section-eyebrow">Zenit Coverage</div>
+    <div class="section-title">Lifestyle</div>
+    <div class="section-desc">Culture, food, music, fashion and the way we live</div>
+  </div>
+</div><div class="date-rule"><span class="date-text">Lifestyle Desk &nbsp;·&nbsp; Tuesday, 17th March 2026 &nbsp;·&nbsp; Culture Edition</span></div><div class="hero-wrap"><div class="hero-grid"><div><div class="featured-card"><div class="feat-img" style="background:linear-gradient(155deg,#1a0a14 0%,#3a1030 40%,#5c1a40 100%)"><div class="feat-pattern"></div><div class="feat-fade"></div><div class="feat-body"><div class="tag-row"><span class="tag-break">Feature</span><span class="tag-cat">Lifestyle · Music</span></div><div class="feat-headline">Karachi's underground rap scene finally gets its mainstream moment — and it earned every bit of it</div><div class="feat-deck">From secret basement cyphers to a prime-time reality show, the city's rappers have fought gatekeepers, censors and sceptics for two decades. This is their time.</div><div class="feat-byline"><span class="author">By Nadia Mirza</span><span>Feb 25 · 8 min read</span></div></div></div></div><div class="small-pair"><div class="small-card"><div class="sc-cat">Lifestyle · Food</div><div class="sc-title">Karachi's Burns Road biryani is now on three continents — and it's only getting bigger</div><div class="sc-time">1d ago</div></div><div class="small-card"><div class="sc-cat">Lifestyle · Fashion</div><div class="sc-title">Pakistan Fashion Week Lahore 2026: the looks, the designers, the drama</div><div class="sc-time">2d ago</div></div></div></div><div class="hero-rail"><div class="rail-hdr"><div class="rail-dot"></div><div class="rail-label">Trending Now</div></div><div class="trend-item"><div class="tnum">01</div><div><div class="tcat">Lifestyle · Music</div><div class="ttitle">Pakistan's first rap reality show brings Karachi's street sound national</div><div class="ttime">Feb 25</div></div></div><div class="trend-item"><div class="tnum">02</div><div><div class="tcat">Lifestyle · Food</div><div class="ttitle">Karachi's Burns Road biryani is now on three continents — how it happened</div><div class="ttime">1d ago</div></div></div><div class="trend-item"><div class="tnum">03</div><div><div class="tcat">Lifestyle · Fashion</div><div class="ttitle">Pakistan Fashion Week Lahore 2026: the standout looks and designers</div><div class="ttime">2d ago</div></div></div><div class="trend-item"><div class="tnum">04</div><div><div class="tcat">Lifestyle · Wellness</div><div class="ttitle">How Pakistanis are managing anxiety during the Gulf crisis — psychologists speak</div><div class="ttime">5h ago</div></div></div><div class="trend-item"><div class="tnum">05</div><div><div class="tcat">Lifestyle · Tech</div><div class="ttitle">Pakistani Gen Z is ditching Instagram for homegrown social app Chatter</div><div class="ttime">3d ago</div></div></div></div></div></div><div class="page-break"></div><div class="reels-section"><div class="reels-inner"><div class="reels-hdr"><div class="reels-title">Video Shorts</div><div class="reels-rule"></div><span class="reels-hint">Scroll to explore</span><a class="reels-more" href="video.html">All Videos →</a></div><div class="reels-wrap"><button class="rnav rnav-l" onclick="document.getElementById('rs-life').scrollBy({left:-430,behavior:'smooth'})"><div class="ntl"></div></button><div class="reels-scroll" id="rs-life"><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb1"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge live">Live</span><span class="rdur">0:58</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">7.4k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">2.1k</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">Karachi's rap scene goes national with Rap Icon after Eid</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb2"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge recap">Recap</span><span class="rdur">2:34</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">14k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">3.2k</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">Inside Lahore's underground art movement taking on the mainstream</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb3"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge analysis">Analysis</span><span class="rdur">1:48</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">9.1k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">1.8k</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">Pakistan's street food is going global — here's how</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb4"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge recap">Recap</span><span class="rdur">3:12</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">8.4k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">2.8k</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">Mental wellness in wartime: how Pakistanis are coping</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb5"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge analysis">Analysis</span><span class="rdur">4:05</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">11k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">4.4k</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">The new Pakistani designers dressing the global diaspora</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div><div class="reel-card"><div class="reel-visual"><div class="reel-bg rb6"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge live">Live</span><span class="rdur">1:22</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">♥</div><div class="ract-ct">5.8k</div></div><div class="ract"><div class="ract-ic">↗</div><div class="ract-ct">990</div></div></div><div class="reel-bot"><div class="rcat">Lifestyle</div><div class="rtitle">Streaming wars: Pakistani shows dominating OTT platforms</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div></div><button class="rnav rnav-r" onclick="document.getElementById('rs-life').scrollBy({left:430,behavior:'smooth'})"><div class="ntr"></div></button></div></div></div><div class="module" style="padding-top:2.25rem"><div class="mod-hdr"><div class="mod-title">Latest Lifestyle</div><div class="mod-line"></div><a class="mod-more" href="lifestyle.html">More Lifestyle →</a></div><div class="cards-grid"><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Music</div><div class="card-title">Pakistan's first rap reality show brings Karachi's street sound to a national audience</div><div class="card-excerpt">The show's finale drew 12 million viewers across linear and streaming platforms</div><div class="card-meta"><span>Feb 25</span><span>5 min read</span></div></div></div><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Wellness</div><div class="card-title">How Pakistanis are managing anxiety during the Gulf crisis — psychologists speak</div><div class="card-meta"><span>5h ago</span><span>4 min read</span></div></div></div><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Food</div><div class="card-title">The desi brunch revolution: how Pakistani millennials reinvented the weekend meal</div><div class="card-meta"><span>3d ago</span><span>4 min read</span></div></div></div></div></div><div class="opinion-section"><div class="opinion-inner"><div class="op-hdr"><div class="op-hdr-title">Opinion & Analysis</div><div class="op-hdr-rule"></div><div class="op-hdr-more">All Opinions →</div></div><div class="op-grid"><div class="op-card"><div class="op-av" style="background:linear-gradient(135deg,#5c1020,#8b2030)">NM</div><div class="op-line"></div><div class="op-author">Nadia Mirza</div><div class="op-title">Karachi's underground rap scene deserves its mainstream moment — and it got one</div></div><div class="op-card"><div class="op-av">SA</div><div class="op-line"></div><div class="op-author">Sana Aslam</div><div class="op-title">Pakistani fashion is no longer playing catch-up — it is setting the agenda</div></div><div class="op-card"><div class="op-av" style="background:linear-gradient(135deg,#3a1020,#6a1a38)">FA</div><div class="op-line"></div><div class="op-author">Fatima Akhtar</div><div class="op-title">The wellness industry in Pakistan is booming — but who is it really for?</div></div><div class="op-card"><div class="op-av" style="background:linear-gradient(135deg,#1a3020,#2d5040)">OA</div><div class="op-line"></div><div class="op-author">Omar Al-Rashid</div><div class="op-title">Why Pakistani food deserves its own global fine-dining moment right now</div></div></div></div></div><div class="module" style="padding-top:2.25rem;padding-bottom:2.5rem"><div class="mod-hdr"><div class="mod-title">More Stories</div><div class="mod-line"></div><a class="mod-more" href="lifestyle.html">All Lifestyle →</a></div><div class="cards-grid"><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Tech</div><div class="card-title">Pakistani Gen Z is ditching Instagram for homegrown social app Chatter</div><div class="card-meta"><span>3d ago</span><span>3 min read</span></div></div></div><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Film</div><div class="card-title">Joyland director's new film selected for Cannes 2026 Un Certain Regard section</div><div class="card-meta"><span>2d ago</span><span>3 min read</span></div></div></div><div class="news-card"><div class="card-thumb th-life"></div><div class="card-body"><div class="card-cat">Lifestyle · Travel</div><div class="card-title">Five Pakistani cities that should be on every traveller's 2026 itinerary</div><div class="card-meta"><span>4d ago</span><span>5 min read</span></div></div></div></div></div>
+<footer><div class="footer-main"><div class="footer-top"><div><div class="footer-logo">ZENIT</div><div class="footer-tagline">The whole picture. Every angle.</div><div class="nl-label">Daily Dispatch Newsletter</div><input class="nl-input" placeholder="Your email address"><button class="nl-btn">Subscribe Free</button></div><div class="fcol"><div class="fcol-title">Coverage</div><a href="pakistan.html">Pakistan</a><a href="uae.html">UAE</a><a href="india.html">India</a><a href="world.html">World</a></div><div class="fcol"><div class="fcol-title">Topics</div><a href="business.html">Business</a><a href="sports.html">Sports</a><a href="lifestyle.html" class="active">Lifestyle</a><a href="scitech.html">Sci-Tech</a><a href="opinion.html">Opinion</a></div><div class="fcol"><div class="fcol-title">Video</div><a href="video.html">Latest Shorts</a><a href="video.html">Programs</a><a href="video.html">Live Coverage</a><a href="video.html">Documentaries</a></div><div class="fcol"><div class="fcol-title">Company</div><a href="#">About Zenit</a><a href="#">The Studio</a><a href="#">Careers</a><a href="#">Advertise</a><a href="#">Contact</a></div></div></div><div class="footer-bottom"><div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Policy</a><a href="#">Accessibility</a></div><div class="footer-copy">© 2026 Zenit Media Group. All rights reserved.</div></div></footer>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,onSnapshot,query,orderBy}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",authDomain:"zenit-website.firebaseapp.com",projectId:"zenit-website",storageBucket:"zenit-website.firebasestorage.app",messagingSenderId:"690745286720",appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"};
+const app=initializeApp(cfg);
+const db=getFirestore(app);
+const bgMap={vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
+
+// LIVE TICKER
+const tt=document.querySelector('.ticker-track');
+if(tt){onSnapshot(query(collection(db,'ticker'),orderBy('createdAt','desc')),snap=>{const items=snap.docs.map(d=>d.data());if(items.length>0){const all=[...items,...items];tt.innerHTML=all.map(t=>`<span>${t.text}</span>`).join('');}})}
+
+// LIVE ARTICLES
+onSnapshot(query(collection(db,'articles'),orderBy('createdAt','desc')),snap=>{
+  const arts=snap.docs.map(d=>({id:d.id,...d.data()})).filter(a=>a.status==='live');
+  if(!arts.length)return;
+  const sections={};arts.forEach(a=>{if(!sections[a.section])sections[a.section]=[];sections[a.section].push(a);});
+  document.querySelectorAll('.module').forEach(mod=>{
+    const title=mod.querySelector('.mod-title');if(!title)return;
+    const sn=title.textContent.trim();const matching=sections[sn];
+    if(!matching||!matching.length)return;
+    const grid=mod.querySelector('.cards-grid');if(!grid)return;
+    const newCards=matching.slice(0,3).map(a=>`<div class="news-card" style="border-top:3px solid var(--gold)"><div class="card-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);display:flex;align-items:center;justify-content:center"><span style="font-family:'Jost',sans-serif;font-size:0.5rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase">NEW</span></div><div class="card-body"><div class="card-cat">${a.cat||a.section}</div><div class="card-title">${a.title}</div>${a.excerpt?`<div class="card-excerpt">${a.excerpt}</div>`:''}<div class="card-meta"><span>${a.time||'Just now'}</span><span>${a.read||'3 min read'}</span></div></div></div>`).join('');
+    grid.insertAdjacentHTML('afterbegin',newCards);
+    const allCards=grid.querySelectorAll('.news-card');allCards.forEach((c,i)=>{if(i>=3)c.remove();});
+  });
+  // Also update latest feed if present
+  const feed=document.getElementById('firebase-feed');
+  if(feed&&arts.length>0){
+    feed.innerHTML=arts.map(a=>`<div class="feed-item"><div><div class="fi-cat">${a.cat||a.section}</div><div class="fi-title">${a.title}</div>${a.excerpt?`<div class="fi-deck">${a.excerpt}</div>`:''}<div class="fi-meta"><span>${a.time||'Just now'}</span><span>${a.read||'3 min read'}</span></div></div><div class="fi-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);height:90px;border-radius:2px"></div></div>`).join('');
+  }
+});
+
+// LIVE OPINION
+onSnapshot(query(collection(db,'opinion'),orderBy('createdAt','desc')),snap=>{
+  const ops=snap.docs.map(d=>({id:d.id,...d.data()}));if(!ops.length)return;
+  const grids=document.querySelectorAll('.op-grid');
+  grids.forEach(grid=>{
+    const newOps=ops.slice(0,4).map(o=>`<div class="op-card"><div class="op-av" style="background:${o.color||'linear-gradient(135deg,#c9a84c,#8a6020)'}">${o.initials||'??'}</div><div class="op-line"></div><div class="op-author">${o.author}</div><div class="op-title">${o.title}</div></div>`).join('');
+    grid.insertAdjacentHTML('afterbegin',newOps);
+    const allOps=grid.querySelectorAll('.op-card');allOps.forEach((op,i)=>{if(i>=4)op.remove();});
+  });
+  // opinion page full cards
+  const opFull=document.getElementById('firebase-opinion-full');
+  if(opFull&&ops.length>0){
+    opFull.innerHTML=ops.map(o=>`<div class="op-full-card"><div class="op-full-av" style="background:${o.color||'linear-gradient(135deg,#c9a84c,#8a6020)'}">${o.initials||'??'}</div><div class="op-full-author">${o.author}</div><div class="op-full-role">${o.role||''}</div><div class="op-full-title">${o.title}</div><div class="op-full-deck">${o.deck||''}</div><div class="op-full-meta"><span>${o.time||'Just now'}</span><span>${o.read||'5 min read'}</span></div></div>`).join('');
+  }
+});
+
+// LIVE VIDEOS
+onSnapshot(query(collection(db,'videos'),orderBy('createdAt','desc')),snap=>{
+  const vids=snap.docs.map(d=>({id:d.id,...d.data()}));if(!vids.length)return;
+  const scrolls=document.querySelectorAll('.reels-scroll');
+  scrolls.forEach(scroll=>{
+    const newReels=vids.slice(0,6).map(v=>`<div class="reel-card"><div class="reel-visual"><div class="reel-bg" style="background:${bgMap[v.bg]||bgMap.vt1};width:100%;height:100%"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge ${v.badge||'recap'}">${v.badge||'Recap'}</span><span class="rdur">${v.dur||'1:00'}</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">&#9829;</div><div class="ract-ct">${v.likes||'0'}</div></div></div><div class="reel-bot"><div class="rcat">${v.cat}</div><div class="rtitle">${v.title}</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div>`).join('');
+    scroll.insertAdjacentHTML('afterbegin',newReels);
+  });
+  // video page grid
+  const vidFull=document.getElementById('firebase-videos-full');
+  if(vidFull&&vids.length>0){
+    vidFull.innerHTML=vids.map(v=>`<div class="vid-card"><div class="vid-thumb"><div class="vid-thumb-img" style="background:${bgMap[v.bg]||bgMap.vt1}"></div><div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div><span class="vid-dur">${v.dur||'1:00'}</span><div class="vid-badge"><span class="rbadge ${v.badge||'recap'}">${v.badge||'Recap'}</span></div></div><div class="vid-cat">${v.cat}</div><div class="vid-title">${v.title}</div><div class="vid-meta"><span>Just now</span><span>${v.likes||'0'} views</span></div></div>`).join('');
+  }
+});
+</script>
+
+</body>
+</html>
