@@ -485,5 +485,17 @@ document.getElementById('reel-modal').addEventListener('touchend', function(e) {
 });
 </script>
 
+
+<script>
+// Global click handler for article cards
+document.addEventListener('click', function(e) {
+  var card = e.target.closest('[href*="article.html"]');
+  if(card) {
+    e.preventDefault();
+    window.location.href = card.getAttribute('href');
+  }
+});
+</script>
+<!-- globalCardClickHandler -->
 </body>
 </html>

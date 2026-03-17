@@ -351,7 +351,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
         +'<div class="feat-byline"><span class="author">'+(feat.author||'Zenit Staff')+'</span><span>'+(feat.time||'Just now')+'</span></div>'
         +'</div></div></div>'
         +(arts.length>1?'<div class="small-pair">'+arts.slice(1,3).map(function(a){
-          return '<div class="small-card"><div class="sc-cat">'+(a.cat||a.section)+'</div><div class="sc-title">'+a.title+'</div><div class="sc-time">'+(a.time||'Just now')+'</div></div>';
+          return '<a class="small-card" href="article.html?id='+a.id+'" style="display:block;text-decoration:none"><div class="sc-cat">'+(a.cat||a.section)+'</div><div class="sc-title">'+a.title+'</div><div class="sc-time">'+(a.time||'Just now')+'</div></a>';
         }).join('')+'</div>':'');
     }
   }
@@ -362,7 +362,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
       trendWrap.innerHTML = '<div style="padding:1.5rem;text-align:center;font-family:EB Garamond,serif;font-style:italic;color:var(--muted)">No trending stories yet</div>';
     } else {
       trendWrap.innerHTML = arts.slice(0,5).map(function(a,i){
-        return '<a class="trend-item" href="article.html?id='+a.id+'" style="text-decoration:none"><div class="tnum">0'+(i+1)+'</div><div><div class="tcat">'+(a.cat||a.section)+'</div><div class="ttitle">'+a.title+'</div><div class="ttime">'+(a.time||'Just now')+'</div></div></a>';
+        return '<a class="trend-item" href="article.html?id='+a.id+'" style="text-decoration:none;color:inherit;display:flex"><div class="tnum">0'+(i+1)+'</div><div><div class="tcat">'+(a.cat||a.section)+'</div><div class="ttitle">'+a.title+'</div><div class="ttime">'+(a.time||'Just now')+'</div></div></a>';
       }).join('');
     }
   }
@@ -379,7 +379,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
         var cardThumb = a.thumbnailUrl
           ? '<img src="'+a.thumbnailUrl+'" style="width:100%;height:150px;object-fit:cover;display:block">'
           : '<div class="card-thumb" style="background:'+thumb+'"><div style="height:100%;display:flex;align-items:center;justify-content:center;padding:1rem"><span style=\'font-family:Cormorant Garamond,serif;font-size:0.95rem;font-weight:600;color:rgba(255,255,255,0.5);text-align:center;line-height:1.4\'>'+a.title+'</span></div></div>';
-        return '<a class="news-card" href="article.html?id='+a.id+'" style="text-decoration:none;display:block">'+cardThumb
+        return '<a class="news-card" href="article.html?id='+a.id+'" onclick="window.location.href=\'article.html?id='+a.id+'\';return false;" style="text-decoration:none;display:block;color:inherit">'+cardThumb
           +'<div class="card-body"><div class="card-cat">'+(a.cat||a.section)+'</div>'
           +'<div class="card-title">'+a.title+'</div>'
           +(a.excerpt?'<div class="card-excerpt">'+a.excerpt+'</div>':'')
@@ -577,5 +577,17 @@ document.getElementById('reel-modal').addEventListener('touchend', function(e) {
 });
 </script>
 
+
+<script>
+// Global click handler for article cards
+document.addEventListener('click', function(e) {
+  var card = e.target.closest('[href*="article.html"]');
+  if(card) {
+    e.preventDefault();
+    window.location.href = card.getAttribute('href');
+  }
+});
+</script>
+<!-- globalCardClickHandler -->
 </body>
 </html>
