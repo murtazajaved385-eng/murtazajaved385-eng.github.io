@@ -235,6 +235,29 @@ firebase.initializeApp({
 });
 var db = firebase.firestore();
 
+function formatTime(val) {
+  if (!val) return 'Just now';
+  var d;
+  if (val && typeof val.toDate === 'function') {
+    d = val.toDate();
+  } else if (val && val.seconds) {
+    d = new Date(val.seconds * 1000);
+  } else {
+    d = new Date(val);
+  }
+  if (isNaN(d.getTime())) return 'Just now';
+  var now = new Date();
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff/3600) + ' hr ago';
+  if (diff < 172800) {
+    return 'Yesterday, ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }
+  return d.toLocaleDateString([],{month:'short',day:'numeric'}) + ', ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+
 function shareWA(title, url) {
   var text = title + ' - Read on ZENIT: ' + url;
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
@@ -352,10 +375,10 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
         +'<div class="tag-row"><span class="tag-break">'+feat.section+'</span><span class="tag-cat">'+(feat.cat||feat.section)+'</span></div>'
         +'<div class="feat-headline">'+feat.title+'</div>'
         +(feat.excerpt?'<div class="feat-deck">'+feat.excerpt+'</div>':'')
-        +'<div class="feat-byline"><span class="author">'+(feat.author||'Zenit Staff')+'</span><span>'+(feat.time||'Just now')+'</span></div>'
+        +'<div class="feat-byline"><span class="author">'+(feat.author||'Zenit Staff')+'</span><span>'+formatTime(feat.createdAt)+'</span></div>'
         +'</div></div></div>'
         +(arts.length>1?'<div class="small-pair">'+arts.slice(1,3).map(function(a){
-          return '<a class="small-card" href="article.html?id='+a.id+'" style="display:block;text-decoration:none"><div class="sc-cat">'+(a.cat||a.section)+'</div><div class="sc-title">'+a.title+'</div><div class="sc-time">'+(a.time||'Just now')+'</div></a>';
+          return '<a class="small-card" href="article.html?id='+a.id+'" style="display:block;text-decoration:none"><div class="sc-cat">'+(a.cat||a.section)+'</div><div class="sc-title">'+a.title+'</div><div class="sc-time">'+formatTime(a.createdAt)+'</div></a>';
         }).join('')+'</div>':'');
     }
   }
@@ -366,7 +389,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
       trendWrap.innerHTML = '<div style="padding:1.5rem;text-align:center;font-family:EB Garamond,serif;font-style:italic;color:var(--muted)">No trending stories yet</div>';
     } else {
       trendWrap.innerHTML = arts.slice(0,5).map(function(a,i){
-        return '<a class="trend-item" href="article.html?id='+a.id+'" style="text-decoration:none;color:inherit;display:flex"><div class="tnum">0'+(i+1)+'</div><div><div class="tcat">'+(a.cat||a.section)+'</div><div class="ttitle">'+a.title+'</div><div class="ttime">'+(a.time||'Just now')+'</div></div></a>';
+        return '<a class="trend-item" href="article.html?id='+a.id+'" style="text-decoration:none;color:inherit;display:flex"><div class="tnum">0'+(i+1)+'</div><div><div class="tcat">'+(a.cat||a.section)+'</div><div class="ttitle">'+a.title+'</div><div class="ttime">'+formatTime(a.createdAt)+'</div></div></a>';
       }).join('');
     }
   }
@@ -387,7 +410,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
           +'<div class="card-body"><div class="card-cat">'+(a.cat||a.section)+'</div>'
           +'<div class="card-title">'+a.title+'</div>'
           +(a.excerpt?'<div class="card-excerpt">'+a.excerpt+'</div>':'')
-          +'<div class="card-meta"><span>'+(a.time||'Just now')+'</span><span>'+(a.read||'3 min read')+'</span></div>'
+          +'<div class="card-meta"><span>'+formatTime(a.createdAt)+'</span><span>'+(a.read||'3 min read')+'</span></div>'
           +'<div style="padding:0.4rem 1.1rem 0.8rem"><span class="wa-btn" data-t="'+a.title+'" data-u="'+window.location.origin+'/article.html?id='+a.id+'" style="display:inline-flex;align-items:center;gap:4px;background:#25D366;color:#fff;padding:4px 10px;font-family:Jost,sans-serif;font-size:0.55rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-weight:500">&#128279; Share</span></div>'
           +'</div></a>';
       }).join('');

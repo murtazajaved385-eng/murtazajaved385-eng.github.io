@@ -235,6 +235,29 @@ firebase.initializeApp({
 });
 var db = firebase.firestore();
 
+function formatTime(val) {
+  if (!val) return 'Just now';
+  var d;
+  if (val && typeof val.toDate === 'function') {
+    d = val.toDate();
+  } else if (val && val.seconds) {
+    d = new Date(val.seconds * 1000);
+  } else {
+    d = new Date(val);
+  }
+  if (isNaN(d.getTime())) return 'Just now';
+  var now = new Date();
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff/3600) + ' hr ago';
+  if (diff < 172800) {
+    return 'Yesterday, ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }
+  return d.toLocaleDateString([],{month:'short',day:'numeric'}) + ', ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+
 function shareWA(title, url) {
   var text = title + ' - Read on ZENIT: ' + url;
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
@@ -323,7 +346,7 @@ db.collection('opinion').orderBy('createdAt','desc').onSnapshot(function(snap){
         +'<div class="op-full-role">'+(o.role||'')+'</div>'
         +'<div class="op-full-title">'+o.title+'</div>'
         +'<div class="op-full-deck">'+(o.deck||'')+'</div>'
-        +'<div class="op-full-meta"><span>'+(o.time||'Just now')+'</span><span>'+(o.read||'5 min read')+'</span></div>'
+        +'<div class="op-full-meta"><span>'+formatTime(o.createdAt)+'</span><span>'+(o.read||'5 min read')+'</span></div>'
         +'</div>';
     }).join('');
   }
