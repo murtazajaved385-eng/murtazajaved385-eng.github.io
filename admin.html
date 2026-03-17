@@ -12,7 +12,7 @@ html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem}
 .login-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);letter-spacing:0.3em}
-.login-sub{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;margin-top:-1.5rem}
+.login-sub{font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--gold);letter-spacing:0.5em;text-transform:uppercase;margin-top:0.4rem;opacity:0.75}
 .login-box{background:var(--panel);border:1px solid var(--border);padding:2.5rem;width:380px}
 .login-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:0.4rem}
 .login-hint{font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem}
@@ -180,8 +180,10 @@ var UPLOAD_PRESET = "zenit_uploads";
 <!-- LOGIN -->
 <div id="login-screen">
   <div style="text-align:center">
-    <div class="login-logo">ZENIT</div>
-    <div class="login-sub">Admin Panel</div>
+    <div style="text-align:center">
+      <div class="login-logo">ZENIT</div>
+      <div class="login-sub">Admin Panel</div>
+    </div>
   </div>
   <div class="login-box">
     <div class="login-title" id="login-title">Sign In</div>
@@ -457,8 +459,8 @@ document.getElementById("signin-btn").addEventListener("click", function() {
   var pass = document.getElementById("login-pass").value;
   var errEl = document.getElementById("login-error");
   errEl.style.display = "none";
-  auth.signInWithEmailAndPassword(email, pass).catch(function() {
-    errEl.textContent = "Incorrect email or password.";
+  auth.signInWithEmailAndPassword(email, pass).catch(function(err) {
+    errEl.textContent = err.message || "Incorrect email or password.";
     errEl.style.display = "block";
   });
 });
