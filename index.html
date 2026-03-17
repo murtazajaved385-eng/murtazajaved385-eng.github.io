@@ -661,67 +661,79 @@ footer{background:var(--gold-footer);margin-top:3rem}
 </footer>
 
 
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,onSnapshot,query,orderBy}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
 const cfg={apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",authDomain:"zenit-website.firebaseapp.com",projectId:"zenit-website",storageBucket:"zenit-website.firebasestorage.app",messagingSenderId:"690745286720",appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"};
-const app=initializeApp(cfg);
-const db=getFirestore(app);
+firebase.initializeApp(cfg);
+const db=firebase.firestore();
 const bgMap={vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
 
 // LIVE TICKER
 const tt=document.querySelector('.ticker-track');
-if(tt){onSnapshot(query(collection(db,'ticker'),orderBy('createdAt','desc')),snap=>{const items=snap.docs.map(d=>d.data());if(items.length>0){const all=[...items,...items];tt.innerHTML=all.map(t=>`<span>${t.text}</span>`).join('');}})}
+if(tt){
+  db.collection('ticker').orderBy('createdAt','desc').onSnapshot(snap=>{
+    const items=snap.docs.map(d=>d.data());
+    if(items.length>0){
+      const all=[...items,...items];
+      tt.innerHTML=all.map(t=>'<span>'+t.text+'</span>').join('');
+    }
+  });
+}
 
 // LIVE ARTICLES
-onSnapshot(query(collection(db,'articles'),orderBy('createdAt','desc')),snap=>{
-  const arts=snap.docs.map(d=>({id:d.id,...d.data()})).filter(a=>a.status==='live');
+db.collection('articles').orderBy('createdAt','desc').onSnapshot(snap=>{
+  const arts=snap.docs.map(d=>Object.assign({id:d.id},d.data())).filter(a=>a.status==='live');
   if(!arts.length)return;
-  const sections={};arts.forEach(a=>{if(!sections[a.section])sections[a.section]=[];sections[a.section].push(a);});
+  const sections={};
+  arts.forEach(a=>{if(!sections[a.section])sections[a.section]=[];sections[a.section].push(a);});
   document.querySelectorAll('.module').forEach(mod=>{
-    const title=mod.querySelector('.mod-title');if(!title)return;
-    const sn=title.textContent.trim();const matching=sections[sn];
+    const title=mod.querySelector('.mod-title');
+    if(!title)return;
+    const sn=title.textContent.trim();
+    const matching=sections[sn];
     if(!matching||!matching.length)return;
-    const grid=mod.querySelector('.cards-grid');if(!grid)return;
-    const newCards=matching.slice(0,3).map(a=>`<div class="news-card" style="border-top:3px solid var(--gold)"><div class="card-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);display:flex;align-items:center;justify-content:center"><span style="font-family:'Jost',sans-serif;font-size:0.5rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase">NEW</span></div><div class="card-body"><div class="card-cat">${a.cat||a.section}</div><div class="card-title">${a.title}</div>${a.excerpt?`<div class="card-excerpt">${a.excerpt}</div>`:''}<div class="card-meta"><span>${a.time||'Just now'}</span><span>${a.read||'3 min read'}</span></div></div></div>`).join('');
+    const grid=mod.querySelector('.cards-grid');
+    if(!grid)return;
+    const newCards=matching.slice(0,3).map(a=>'<div class="news-card" style="border-top:3px solid var(--gold)"><div class="card-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);display:flex;align-items:center;justify-content:center"><span style="font-family:Jost,sans-serif;font-size:0.5rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase">NEW</span></div><div class="card-body"><div class="card-cat">'+(a.cat||a.section)+'</div><div class="card-title">'+a.title+'</div>'+(a.excerpt?'<div class="card-excerpt">'+a.excerpt+'</div>':'')+'<div class="card-meta"><span>'+(a.time||'Just now')+'</span><span>'+(a.read||'3 min read')+'</span></div></div></div>').join('');
     grid.insertAdjacentHTML('afterbegin',newCards);
-    const allCards=grid.querySelectorAll('.news-card');allCards.forEach((c,i)=>{if(i>=3)c.remove();});
+    const allCards=grid.querySelectorAll('.news-card');
+    allCards.forEach(function(c,i){if(i>=3)c.remove();});
   });
-  // Also update latest feed if present
+  // Latest feed
   const feed=document.getElementById('firebase-feed');
-  if(feed&&arts.length>0){
-    feed.innerHTML=arts.map(a=>`<div class="feed-item"><div><div class="fi-cat">${a.cat||a.section}</div><div class="fi-title">${a.title}</div>${a.excerpt?`<div class="fi-deck">${a.excerpt}</div>`:''}<div class="fi-meta"><span>${a.time||'Just now'}</span><span>${a.read||'3 min read'}</span></div></div><div class="fi-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);height:90px;border-radius:2px"></div></div>`).join('');
+  if(feed){
+    feed.innerHTML=arts.map(a=>'<div class="feed-item"><div><div class="fi-cat">'+(a.cat||a.section)+'</div><div class="fi-title">'+a.title+'</div>'+(a.excerpt?'<div class="fi-deck">'+a.excerpt+'</div>':'')+'<div class="fi-meta"><span>'+(a.time||'Just now')+'</span><span>'+(a.read||'3 min read')+'</span></div></div><div class="fi-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);height:90px;border-radius:2px"></div></div>').join('');
   }
 });
 
 // LIVE OPINION
-onSnapshot(query(collection(db,'opinion'),orderBy('createdAt','desc')),snap=>{
-  const ops=snap.docs.map(d=>({id:d.id,...d.data()}));if(!ops.length)return;
-  const grids=document.querySelectorAll('.op-grid');
-  grids.forEach(grid=>{
-    const newOps=ops.slice(0,4).map(o=>`<div class="op-card"><div class="op-av" style="background:${o.color||'linear-gradient(135deg,#c9a84c,#8a6020)'}">${o.initials||'??'}</div><div class="op-line"></div><div class="op-author">${o.author}</div><div class="op-title">${o.title}</div></div>`).join('');
+db.collection('opinion').orderBy('createdAt','desc').onSnapshot(snap=>{
+  const ops=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+  if(!ops.length)return;
+  document.querySelectorAll('.op-grid').forEach(function(grid){
+    const newOps=ops.slice(0,4).map(o=>'<div class="op-card"><div class="op-av" style="background:'+(o.color||'linear-gradient(135deg,#c9a84c,#8a6020)')+'">'+o.initials+'</div><div class="op-line"></div><div class="op-author">'+o.author+'</div><div class="op-title">'+o.title+'</div></div>').join('');
     grid.insertAdjacentHTML('afterbegin',newOps);
-    const allOps=grid.querySelectorAll('.op-card');allOps.forEach((op,i)=>{if(i>=4)op.remove();});
+    const allOps=grid.querySelectorAll('.op-card');
+    allOps.forEach(function(op,i){if(i>=4)op.remove();});
   });
-  // opinion page full cards
   const opFull=document.getElementById('firebase-opinion-full');
-  if(opFull&&ops.length>0){
-    opFull.innerHTML=ops.map(o=>`<div class="op-full-card"><div class="op-full-av" style="background:${o.color||'linear-gradient(135deg,#c9a84c,#8a6020)'}">${o.initials||'??'}</div><div class="op-full-author">${o.author}</div><div class="op-full-role">${o.role||''}</div><div class="op-full-title">${o.title}</div><div class="op-full-deck">${o.deck||''}</div><div class="op-full-meta"><span>${o.time||'Just now'}</span><span>${o.read||'5 min read'}</span></div></div>`).join('');
+  if(opFull){
+    opFull.innerHTML=ops.map(o=>'<div class="op-full-card"><div class="op-full-av" style="background:'+(o.color||'linear-gradient(135deg,#c9a84c,#8a6020)')+'">'+o.initials+'</div><div class="op-full-author">'+o.author+'</div><div class="op-full-role">'+(o.role||'')+'</div><div class="op-full-title">'+o.title+'</div><div class="op-full-deck">'+(o.deck||'')+'</div><div class="op-full-meta"><span>'+(o.time||'Just now')+'</span><span>'+(o.read||'5 min read')+'</span></div></div>').join('');
   }
 });
 
 // LIVE VIDEOS
-onSnapshot(query(collection(db,'videos'),orderBy('createdAt','desc')),snap=>{
-  const vids=snap.docs.map(d=>({id:d.id,...d.data()}));if(!vids.length)return;
-  const scrolls=document.querySelectorAll('.reels-scroll');
-  scrolls.forEach(scroll=>{
-    const newReels=vids.slice(0,6).map(v=>`<div class="reel-card"><div class="reel-visual"><div class="reel-bg" style="background:${bgMap[v.bg]||bgMap.vt1};width:100%;height:100%"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge ${v.badge||'recap'}">${v.badge||'Recap'}</span><span class="rdur">${v.dur||'1:00'}</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">&#9829;</div><div class="ract-ct">${v.likes||'0'}</div></div></div><div class="reel-bot"><div class="rcat">${v.cat}</div><div class="rtitle">${v.title}</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div>`).join('');
+db.collection('videos').orderBy('createdAt','desc').onSnapshot(snap=>{
+  const vids=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+  if(!vids.length)return;
+  document.querySelectorAll('.reels-scroll').forEach(function(scroll){
+    const newReels=vids.slice(0,6).map(v=>'<div class="reel-card"><div class="reel-visual"><div class="reel-bg" style="background:'+(bgMap[v.bg]||bgMap.vt1)+';width:100%;height:100%"></div><div class="reel-ol"><div class="reel-top"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span><span class="rdur">'+(v.dur||'1:00')+'</span></div><div class="reel-acts"><div class="ract"><div class="ract-ic">&#9829;</div><div class="ract-ct">'+(v.likes||'0')+'</div></div></div><div class="reel-bot"><div class="rcat">'+v.cat+'</div><div class="rtitle">'+v.title+'</div><div class="rplay"><div class="rplay-tri"></div></div></div></div></div></div>').join('');
     scroll.insertAdjacentHTML('afterbegin',newReels);
   });
-  // video page grid
   const vidFull=document.getElementById('firebase-videos-full');
-  if(vidFull&&vids.length>0){
-    vidFull.innerHTML=vids.map(v=>`<div class="vid-card"><div class="vid-thumb"><div class="vid-thumb-img" style="background:${bgMap[v.bg]||bgMap.vt1}"></div><div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div><span class="vid-dur">${v.dur||'1:00'}</span><div class="vid-badge"><span class="rbadge ${v.badge||'recap'}">${v.badge||'Recap'}</span></div></div><div class="vid-cat">${v.cat}</div><div class="vid-title">${v.title}</div><div class="vid-meta"><span>Just now</span><span>${v.likes||'0'} views</span></div></div>`).join('');
+  if(vidFull){
+    vidFull.innerHTML=vids.map(v=>'<div class="vid-card"><div class="vid-thumb"><div class="vid-thumb-img" style="background:'+(bgMap[v.bg]||bgMap.vt1)+'"></div><div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div><span class="vid-dur">'+(v.dur||'1:00')+'</span><div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div></div><div class="vid-cat">'+v.cat+'</div><div class="vid-title">'+v.title+'</div><div class="vid-meta"><span>Just now</span><span>'+(v.likes||'0')+' views</span></div></div>').join('');
   }
 });
 </script>
