@@ -105,6 +105,13 @@ footer{background:#d4a832;margin-top:3rem}
 #reel-info{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(400px,100vw);padding:1.5rem;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);z-index:5;pointer-events:none}
 </style>
 </head>
+<script>
+// Force reel modal hidden immediately - prevents flash of black screen
+document.addEventListener('DOMContentLoaded', function(){
+  var modal = document.getElementById('reel-modal');
+  if(modal) modal.style.display = 'none';
+});
+</script>
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -195,7 +202,7 @@ var db = firebase.firestore();
 </footer>
 
 <!-- REEL MODAL -->
-<div id="reel-modal">
+<div id="reel-modal" style="display:none">
   <div id="reel-progress"><div id="reel-progress-bar"></div></div>
   <div id="reel-counter"></div>
   <div id="reel-close-btn" onclick="closeReel()">&#10005;</div>
@@ -392,7 +399,7 @@ function showReelSlide(){
 
 // Keyboard nav
 document.addEventListener('keydown', function(e){
-  if(document.getElementById('reel-modal').style.display === 'none') return;
+  if(document.getElementById('reel-modal').style.display !== 'flex') return;
   if(e.key==='Escape') closeReel();
   if(e.key==='ArrowRight'||e.key==='ArrowDown') reelNav(1);
   if(e.key==='ArrowLeft'||e.key==='ArrowUp') reelNav(-1);

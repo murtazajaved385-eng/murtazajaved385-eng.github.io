@@ -623,7 +623,7 @@ function renderReelSlide() {
 
 document.addEventListener('keydown', function(e) {
   var modal = document.getElementById('reel-modal');
-  if(!modal || modal.style.display === 'none') return;
+  if(!modal || modal.style.display !== 'flex') return;
   if(e.key === 'ArrowRight' || e.key === 'ArrowDown') reelNav(1);
   if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') reelNav(-1);
   if(e.key === 'Escape') closeReelPlayer();
@@ -632,12 +632,12 @@ document.addEventListener('keydown', function(e) {
 var _tx = 0, _ty = 0;
 document.addEventListener('touchstart', function(e) {
   var modal = document.getElementById('reel-modal');
-  if(!modal || modal.style.display === 'none') return;
+  if(!modal || modal.style.display !== 'flex') return;
   _tx = e.touches[0].clientX; _ty = e.touches[0].clientY;
 }, {passive:true});
 document.addEventListener('touchend', function(e) {
   var modal = document.getElementById('reel-modal');
-  if(!modal || modal.style.display === 'none') return;
+  if(!modal || modal.style.display !== 'flex') return;
   var dx = e.changedTouches[0].clientX - _tx;
   var dy = e.changedTouches[0].clientY - _ty;
   if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) reelNav(dy > 0 ? -1 : 1);
