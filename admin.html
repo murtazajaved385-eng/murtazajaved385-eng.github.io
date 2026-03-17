@@ -639,7 +639,7 @@ var TICKER_MAX    = 20;
             </div>
             <button class="btn-primary" style="margin-top:1.4rem" id="btn-add-section">+ Add Section</button>
           </div>
-          <div class="sections-note">Section names are capitalised automatically. Adding a section makes it available immediately in article &amp; video dropdowns. Removing a section only removes the navigation link — existing articles are kept in Firestore.</div>
+          <div class="sections-note">Section names are capitalised automatically. Adding a section makes it available immediately in article &amp; video dropdowns. Removing a section only removes the navigation link — existing articles are kept in Firestore.<br><br><strong style="color:var(--gold-light);font-style:normal">Firestore Rules:</strong> Make sure your Firestore security rules allow reads/writes to the <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">sections</code> collection for authenticated users. In the Firebase console go to <em>Firestore → Rules</em> and ensure your rule covers <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">match /sections/{doc}</code> with <code style="background:rgba(201,168,76,0.12);padding:1px 6px;border-radius:2px;font-family:monospace;font-size:0.8rem">allow read, write: if request.auth != null;</code></div>
         </div>
         <div class="section-count-label">Active Sections (<span id="sections-count">0</span>)</div>
         <div class="sections-grid" id="sections-grid">
@@ -957,19 +957,30 @@ function startListeners() {
     _lists.opinion = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderOpinion();
   });
-  db.collection("sections").orderBy("createdAt","asc").onSnapshot(function(snap){
-    if(snap.empty) {
+  // Sections: seed defaults once only, debounce render to prevent grid jumping
+  var _sectionsSeeded = false;
+  var _sectionsRenderTimer = null;
+  db.collection("sections").orderBy("name","asc").onSnapshot(function(snap){
+    if(snap.empty && !_sectionsSeeded) {
+      _sectionsSeeded = true;
       var batch = db.batch();
       _defaultSections.forEach(function(name){
-        batch.set(db.collection("sections").doc(), {name:name, createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+        batch.set(db.collection("sections").doc(), {
+          name: name,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
       });
-      batch.commit();
+      batch.commit().catch(function(e){ console.error("Seed error:", e); });
       return;
     }
+    _sectionsSeeded = true;
     _lists.sections = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-    renderSections();
-    populateSectionDropdowns();
-    document.getElementById("sections-count").textContent = _lists.sections.length;
+    if(_sectionsRenderTimer) clearTimeout(_sectionsRenderTimer);
+    _sectionsRenderTimer = setTimeout(function(){
+      renderSections();
+      populateSectionDropdowns();
+      document.getElementById("sections-count").textContent = _lists.sections.length;
+    }, 150);
   });
 }
 
@@ -1253,14 +1264,21 @@ function addSection() {
     .then(function(){
       document.getElementById("section-new-name").value="";
       showToast("Section '"+name+"' added!");
-    }).catch(function(){ showToast("Error",true); })
+    }).catch(function(err){
+      console.error("Add section error:", err.code, err.message);
+      if(err.code === "permission-denied") {
+        showToast("Permission denied — update your Firestore rules to include 'sections'",true);
+      } else {
+        showToast("Error: "+err.message,true);
+      }
+    })
     .finally(function(){ btn.disabled=false; });
 }
 
 function renderSections() {
   var grid = document.getElementById("sections-grid");
   if(_lists.sections.length===0){
-    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:2rem"><div class="empty-icon">&#9783;</div><div class="empty-text">No sections</div></div>';
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:2rem"><div class="empty-icon">&#9783;</div><div class="empty-text">No sections yet</div></div>';
     return;
   }
   grid.innerHTML = _lists.sections.map(function(s){
@@ -1270,12 +1288,26 @@ function renderSections() {
       +'</div>';
   }).join("");
   grid.querySelectorAll(".btn-chip-del").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      var n=this.getAttribute("data-name");
-      if(!confirm("Remove section '"+n+"'? Existing articles with this section are kept in Firestore.")) return;
-      db.collection("sections").doc(this.getAttribute("data-id")).delete()
-        .then(function(){ showToast("Section '"+n+"' removed"); })
-        .catch(function(){ showToast("Error",true); });
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      var docId = btn.getAttribute("data-id");
+      var name  = btn.getAttribute("data-name");
+      if(!docId){ showToast("Error: missing section ID",true); return; }
+      if(!confirm("Remove section '"+name+"'?\nExisting articles stay in Firestore.")) return;
+      btn.disabled = true;
+      btn.textContent = "...";
+      db.collection("sections").doc(docId).delete()
+        .then(function(){ showToast("Section '"+name+"' removed"); })
+        .catch(function(err){
+          console.error("Delete failed:", err.code, err.message);
+          if(err.code === "permission-denied") {
+            showToast("Permission denied — add 'sections' to your Firestore rules",true);
+          } else {
+            showToast("Error: "+err.message,true);
+          }
+          btn.disabled = false;
+          btn.textContent = "Remove";
+        });
     });
   });
 }
