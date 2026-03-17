@@ -311,212 +311,33 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
   window._allVideos = vids;
   var grid = document.getElementById('vid-full-grid');
   if(!grid) return;
+  var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
   if(vids.length === 0){
     grid.innerHTML = '<div class="empty-section" style="grid-column:1/-1"><p>No videos yet. Add some from the admin panel.</p></div>';
-  } else {
-    grid.innerHTML = vids.map(function(v, i){
-      var hasVideo = v.videoUrl ? true : false;
-      var thumbStyle = v.thumbnailUrl ? 'background:#000;background-image:url('+v.thumbnailUrl+');background-size:cover;background-position:center' : 'background:'+(bgMap[v.bg]||bgMap.vt1);
-      return '<div class="vid-card">'
-        +'<div class="vid-thumb" style="cursor:'+(hasVideo?'pointer':'default')+'" onclick="'+(hasVideo?'playVideo(\''+v.videoUrl+'\')':'')+'">'
-        +'<div class="vid-thumb-img" style="'+thumbStyle+'"></div>'
-        +'<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
-        +'<span class="vid-dur">'+(v.dur||'1:00')+'</span>'
-        +'<div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div></div>'
-        +'<div class="vid-cat">'+v.cat+'</div>'
-        +'<div class="vid-title">'+v.title+'</div>'
-        +'<div class="vid-meta"><span>Just now</span><span>'+(v.likes||'0')+' views</span></div>'
-        +'</div>';
-    }).join('');
+    return;
   }
-});
-
-</script>
-
-
-
-
-<!-- REEL PLAYER MODAL -->
-<div id="reel-modal">
-  <div class="reel-progress"><div class="reel-progress-bar" id="reel-progress-bar"></div></div>
-  <div class="reel-counter" id="reel-counter">1 / 1</div>
-  <button class="reel-close" onclick="closeReelPlayer()">&#10005;</button>
-  <button class="reel-nav-btn" id="reel-prev" onclick="reelNav(-1)">&#8249;</button>
-  <button class="reel-nav-btn" id="reel-next" onclick="reelNav(1)">&#8250;</button>
-  <div class="reel-modal-inner">
-    <div class="reel-video-wrap" id="reel-video-wrap">
-      <!-- content injected by JS -->
-    </div>
-    <div class="reel-info" id="reel-info"></div>
-    <div class="reel-sidebar">
-      <div class="reel-action" onclick="reelLike()">
-        <div class="reel-action-btn" id="reel-like-btn">&#9829;</div>
-        <div class="reel-action-label" id="reel-like-count">0</div>
-      </div>
-      <div class="reel-action" onclick="reelShare()">
-        <div class="reel-action-btn">&#8679;</div>
-        <div class="reel-action-label">Share</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-var _reelVideos = [];
-var _reelIndex = 0;
-var _likedReels = {};
-
-function getYoutubeId(url) {
-  // Handle all YouTube URL formats including Shorts
-  var patterns = [
-    /youtu\.be\/([\w-]{11})/,
-    /youtube\.com\/watch\?v=([\w-]{11})/,
-    /youtube\.com\/embed\/([\w-]{11})/,
-    /youtube\.com\/v\/([\w-]{11})/,
-    /youtube\.com\/shorts\/([\w-]{11})/
-  ];
-  for(var i=0;i<patterns.length;i++){
-    var m = url.match(patterns[i]);
-    if(m) return m[1];
-  }
-  return null;
-}
-function getInstagramId(url) {
-  var m = url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
-  return m ? m[2] : null;
-}
-function isYoutube(url) { return url && (url.includes('youtube.com') || url.includes('youtu.be')); }
-function isInstagram(url) { return url && url.includes('instagram.com'); }
-
-function openReelPlayer(index, videos) {
-  _reelVideos = videos;
-  _reelIndex = index;
-  document.getElementById('reel-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  renderReelSlide();
-}
-
-function closeReelPlayer() {
-  document.getElementById('reel-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  var wrap = document.getElementById('reel-video-wrap');
-  wrap.innerHTML = '';
-}
-
-function reelNav(dir) {
-  _reelIndex = (_reelIndex + dir + _reelVideos.length) % _reelVideos.length;
-  renderReelSlide();
-}
-
-function renderReelSlide() {
-  if(!_reelVideos.length) return;
-  var v = _reelVideos[_reelIndex];
-  var wrap = document.getElementById('reel-video-wrap');
-  var info = document.getElementById('reel-info');
-  var counter = document.getElementById('reel-counter');
-  var progressBar = document.getElementById('reel-progress-bar');
-
-  counter.textContent = (_reelIndex+1) + ' / ' + _reelVideos.length;
-  progressBar.style.width = ((_reelIndex+1)/_reelVideos.length*100) + '%';
-
-  // Hide prev/next if only one video
-  document.getElementById('reel-prev').style.display = _reelVideos.length > 1 ? 'flex' : 'none';
-  document.getElementById('reel-next').style.display = _reelVideos.length > 1 ? 'flex' : 'none';
-
-  // Render video content
-  var url = v.videoUrl || '';
-  if(isYoutube(url)) {
-    var ytId = getYoutubeId(url);
-    // Works for regular videos, Shorts, and embeds
-    var embedUrl = 'https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1&origin='+encodeURIComponent(window.location.origin);
-    // Show YouTube thumbnail with play button - clicking opens in new tab
-    var ytThumb = 'https://img.youtube.com/vi/'+ytId+'/maxresdefault.jpg';
-    var ytUrl = 'https://www.youtube.com/watch?v='+ytId;
-    // Use iframe embed directly - works on most browsers
-    wrap.innerHTML = '<iframe src="'+embedUrl+'" style="width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"></iframe>';
-  } else if(isInstagram(url)) {
-    var igId = getInstagramId(url);
-    wrap.innerHTML = '<div style="width:100%;height:100%;overflow-y:auto;background:#000;display:flex;align-items:flex-start;justify-content:center;padding:1rem">'
-        +'<iframe src="https://www.instagram.com/p/'+igId+'/embed/captioned/"'
-        +' style="width:400px;min-height:500px;border:none;border-radius:8px"'
-        +' scrolling="yes" allowtransparency="true" allowfullscreen loading="lazy"></iframe>'
-        +'</div>';
-  } else if(url) {
-    wrap.innerHTML = '<video src="'+url+'" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain"></video>';
-  } else if(v.thumbnailUrl) {
-    wrap.innerHTML = '<img src="'+v.thumbnailUrl+'" style="width:100%;height:100%;object-fit:contain">';
-  } else {
-    var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
-    wrap.innerHTML = '<div style="width:100%;height:100%;background:'+(bgMap[v.bg]||bgMap.vt1)+';display:flex;align-items:center;justify-content:center"><span style=\'font-family:Cormorant Garamond,serif;font-size:1.2rem;color:rgba(255,255,255,0.3)\'>No video file</span></div>';
-  }
-
-  // Render info
-  info.innerHTML = '<div class="reel-info-cat">'+v.cat+'</div>'
-    +'<div class="reel-info-title">'+v.title+'</div>'
-    +'<div class="reel-info-meta">'+(v.dur||'')+(v.dur&&v.likes?' &middot; ':'')+(v.likes?v.likes+' likes':'')+'</div>';
-
-  // Likes
-  var liked = _likedReels[v.id] || false;
-  document.getElementById('reel-like-btn').style.color = liked ? '#e07070' : '#fff';
-  document.getElementById('reel-like-count').textContent = v.likes || '0';
-}
-
-function reelLike() {
-  if(!_reelVideos.length) return;
-  var v = _reelVideos[_reelIndex];
-  _likedReels[v.id] = !_likedReels[v.id];
-  var btn = document.getElementById('reel-like-btn');
-  btn.style.color = _likedReels[v.id] ? '#e07070' : '#fff';
-}
-
-function reelShare() {
-  if(!_reelVideos.length) return;
-  var v = _reelVideos[_reelIndex];
-  if(navigator.share) {
-    navigator.share({title: v.title, text: v.title, url: window.location.href});
-  } else {
-    navigator.clipboard.writeText(window.location.href).then(function(){
-      alert('Link copied to clipboard!');
+  grid.innerHTML = vids.map(function(v, i){
+    var thumbStyle = v.thumbnailUrl
+      ? 'background:#000;background-image:url('+v.thumbnailUrl+');background-size:cover;background-position:center'
+      : 'background:'+(bgMap[v.bg]||bgMap.vt1);
+    return '<div class="vid-card" style="cursor:pointer" data-vidindex="'+i+'">'
+      +'<div class="vid-thumb">'
+      +'<div class="vid-thumb-img" style="'+thumbStyle+'"></div>'
+      +'<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
+      +'<span class="vid-dur">'+(v.dur||'1:00')+'</span>'
+      +'<div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div>'
+      +'</div>'
+      +'<div class="vid-cat">'+v.cat+'</div>'
+      +'<div class="vid-title">'+v.title+'</div>'
+      +'<div class="vid-meta"><span>Just now</span><span>'+(v.likes||'0')+' views</span></div>'
+      +'</div>';
+  }).join('');
+  // Add click handlers
+  grid.querySelectorAll('.vid-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var idx = parseInt(this.getAttribute('data-vidindex'));
+      openReelPlayer(idx, window._allVideos);
     });
-  }
-}
-
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-  var modal = document.getElementById('reel-modal');
-  if(!modal.classList.contains('open')) return;
-  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') reelNav(1);
-  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') reelNav(-1);
-  if(e.key === 'Escape') closeReelPlayer();
-});
-
-// Touch swipe support
-var _touchStartX = 0;
-var _touchStartY = 0;
-document.getElementById('reel-modal').addEventListener('touchstart', function(e) {
-  _touchStartX = e.touches[0].clientX;
-  _touchStartY = e.touches[0].clientY;
-});
-document.getElementById('reel-modal').addEventListener('touchend', function(e) {
-  var dx = e.changedTouches[0].clientX - _touchStartX;
-  var dy = e.changedTouches[0].clientY - _touchStartY;
-  if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) {
-    reelNav(dy > 0 ? -1 : 1);
-  }
+  });
 });
 </script>
-
-
-<script>
-// Global click handler for article cards
-document.addEventListener('click', function(e) {
-  var card = e.target.closest('[href*="article.html"]');
-  if(card) {
-    e.preventDefault();
-    window.location.href = card.getAttribute('href');
-  }
-});
-</script>
-<!-- globalCardClickHandler -->
-</body>
-</html>
