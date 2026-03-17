@@ -28,7 +28,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overfl
 .ticker-label{background:var(--black);color:var(--gold-light);font-family:'Jost',sans-serif;font-size:0.56rem;font-weight:500;padding:0 1.3rem;letter-spacing:0.18em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:7px;flex-shrink:0;margin-right:1.5rem}
 .tdot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:tpulse 1.5s ease-in-out infinite}
 @keyframes tpulse{0%,100%{opacity:1}50%{opacity:.3}}
-.ticker-track{display:flex;gap:3.5rem;animation:tscroll 50s linear infinite;white-space:nowrap}
+.ticker-track{display:flex;gap:3.5rem;animation:tscroll 40s linear infinite;white-space:nowrap}
 .ticker-track span{font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:500;color:#1a1000}
 .ticker-track span::before{content:'◆';margin-right:0.55rem;font-size:0.4rem;color:var(--gold);vertical-align:middle}
 @keyframes tscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -257,10 +257,21 @@ db.collection('ticker').orderBy('createdAt','desc').onSnapshot(function(snap){
   if(!tt) return;
   var items = snap.docs.map(function(d){ return d.data().text; });
   if(items.length === 0){
-    tt.innerHTML = '<span>Welcome to ZENIT — The Whole Picture, Every Angle</span><span>Welcome to ZENIT — The Whole Picture, Every Angle</span>';
+    tt.innerHTML = '<span>Welcome to ZENIT — The Whole Picture, Every Angle</span>';
+    tt.style.animation = 'none';
   } else {
-    var doubled = items.concat(items);
-    tt.innerHTML = doubled.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+    // We need enough items to fill the screen for seamless loop
+    // Duplicate only if needed for smooth animation
+    var minItems = Math.ceil(10 / items.length);
+    var repeated = [];
+    for(var i = 0; i < minItems + 1; i++){
+      repeated = repeated.concat(items);
+    }
+    tt.innerHTML = repeated.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+    // Reset animation
+    tt.style.animation = 'none';
+    tt.offsetHeight; // trigger reflow
+    tt.style.animation = '';
   }
 });
 
