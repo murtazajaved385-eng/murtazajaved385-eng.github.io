@@ -285,8 +285,11 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
     grid.innerHTML = '<div class="empty-section" style="grid-column:1/-1"><p>No videos yet. Add some from the admin panel.</p></div>';
   } else {
     grid.innerHTML = vids.map(function(v){
+      var hasVideo = v.videoUrl ? true : false;
+      var thumbStyle = v.thumbnailUrl ? 'background:#000;background-image:url('+v.thumbnailUrl+');background-size:cover;background-position:center' : 'background:'+(bgMap[v.bg]||bgMap.vt1);
       return '<div class="vid-card">'
-        +'<div class="vid-thumb"><div class="vid-thumb-img" style="background:'+(bgMap[v.bg]||bgMap.vt1)+'"></div>'
+        +'<div class="vid-thumb" style="cursor:'+(hasVideo?'pointer':'default')+'" onclick="'+(hasVideo?'playVideo(\''+v.videoUrl+'\')':'')+'">'
+        +'<div class="vid-thumb-img" style="'+thumbStyle+'"></div>'
         +'<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
         +'<span class="vid-dur">'+(v.dur||'1:00')+'</span>'
         +'<div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div></div>'
@@ -299,5 +302,31 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
 });
 
 </script>
+
+<div id="video-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
+  <button onclick="closeVideo()" style="position:absolute;top:1.5rem;right:1.5rem;background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 16px;font-family:Jost,sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">&#10005; Close</button>
+  <video id="modal-video" controls style="max-width:90vw;max-height:80vh;border-radius:4px"></video>
+</div>
+<script>
+function playVideo(url) {
+  if(!url) return;
+  var modal = document.getElementById('video-modal');
+  var vid = document.getElementById('modal-video');
+  vid.src = url;
+  modal.style.display = 'flex';
+  vid.play();
+}
+function closeVideo() {
+  var modal = document.getElementById('video-modal');
+  var vid = document.getElementById('modal-video');
+  vid.pause();
+  vid.src = '';
+  modal.style.display = 'none';
+}
+document.getElementById('video-modal').addEventListener('click', function(e) {
+  if(e.target === this) closeVideo();
+});
+</script>
+
 </body>
 </html>

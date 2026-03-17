@@ -64,7 +64,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .form-group{margin-bottom:1.25rem}.form-group.full{grid-column:1/-1}
 label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
-input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0}
+input[type=text],input[type=email],input[type=password],select,textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0}
 input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 select option{background:var(--panel2)}
 textarea{resize:vertical;min-height:100px;font-family:'EB Garamond',serif;font-size:0.95rem;font-style:italic}
@@ -87,6 +87,7 @@ td{padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.06);font-fa
 tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)}
 .td-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;line-height:1.3}
 .td-cat{display:inline-block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.1);padding:2px 8px;margin-bottom:4px}
+.td-thumb{width:60px;height:40px;border-radius:2px;object-fit:cover}
 .td-actions{display:flex;gap:0.5rem}
 .status-live{background:rgba(45,106,63,0.25);color:#7ecf94;border:1px solid rgba(45,106,63,0.4);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
 .status-draft{background:rgba(100,100,100,0.2);color:#999;border:1px solid rgba(100,100,100,0.3);font-family:'Jost',sans-serif;font-size:0.5rem;padding:3px 8px;display:inline-block}
@@ -95,12 +96,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)
 .ticker-item:last-child{border-bottom:none}
 .ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)}
 .ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa}
-.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
-.video-admin-card{background:var(--panel);border:1px solid var(--border);padding:1rem}
-.video-thumb-admin{height:80px;margin-bottom:0.75rem;border-radius:2px}
-.vt1{background:linear-gradient(170deg,#0a0a14,#1a2040)}.vt2{background:linear-gradient(170deg,#140a0a,#401a1a)}
-.vt3{background:linear-gradient(170deg,#0a140a,#1a3520)}.vt4{background:linear-gradient(170deg,#14120a,#3a2e10)}
-.vt5{background:linear-gradient(170deg,#0e0a14,#2a1840)}.vt6{background:linear-gradient(170deg,#140a0e,#401520)}
+.video-admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.video-admin-card{background:var(--panel);border:1px solid var(--border);padding:1rem;display:flex;gap:1rem}
+.video-admin-thumb{width:120px;height:75px;border-radius:3px;object-fit:cover;flex-shrink:0;background:var(--panel2)}
+.video-admin-thumb video{width:100%;height:100%;object-fit:cover}
+.video-admin-info{flex:1}
 .video-admin-cat{font-family:'Jost',sans-serif;font-size:0.52rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
 .video-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.5rem}
 .video-admin-meta{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);margin-bottom:0.75rem}
@@ -120,6 +120,17 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)
 .char-count{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);text-align:right;margin-top:3px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
+/* Upload area */
+.upload-area{border:2px dashed var(--border);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:var(--panel2)}
+.upload-area:hover{border-color:var(--gold)}
+.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-area-text{font-family:'Jost',sans-serif;font-size:0.7rem;color:var(--muted)}
+.upload-area-icon{font-size:1.5rem;margin-bottom:0.5rem;color:var(--gold)}
+.preview-img{max-width:100%;max-height:150px;margin-top:0.75rem;border-radius:2px;display:none}
+.preview-video{max-width:100%;max-height:150px;margin-top:0.75rem;border-radius:2px;display:none}
+.upload-progress{height:3px;background:var(--panel2);border-radius:2px;margin-top:0.75rem;display:none}
+.upload-progress-bar{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .3s}
+.upload-status{font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--gold);margin-top:0.5rem;display:none}
 </style>
 </head>
 <body>
@@ -139,6 +150,8 @@ firebase.initializeApp({
 var auth = firebase.auth();
 var db = firebase.firestore();
 var ADMIN_EMAIL = "murtazajaved385@gmail.com";
+var CLOUD_NAME = "dr8zqvhlh";
+var UPLOAD_PRESET = "zenit_uploads";
 </script>
 
 <!-- LOGIN -->
@@ -162,10 +175,7 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <button class="btn-forgot" id="forgot-btn">Forgot Password? Send Reset Email</button>
     </div>
     <div id="forgot-form" style="display:none">
-      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">
-        A password reset link will be sent to:<br>
-        <strong style="color:var(--gold)">murtazajaved385@gmail.com</strong>
-      </div>
+      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)">murtazajaved385@gmail.com</strong></div>
       <button class="btn-gold" id="send-reset-btn">Send Reset Email &rarr;</button>
       <button class="btn-forgot" id="back-btn">Back to Sign In</button>
     </div>
@@ -177,12 +187,9 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 <!-- ADMIN APP -->
 <div id="admin-app">
   <div class="admin-topbar">
-    <div style="display:flex;align-items:center">
-      <div class="topbar-logo">ZENIT</div>
-      <span class="topbar-badge">Admin</span>
-    </div>
+    <div style="display:flex;align-items:center"><div class="topbar-logo">ZENIT</div><span class="topbar-badge">Admin</span></div>
     <div class="topbar-right">
-      <div class="firebase-status"><span class="firebase-dot"></span><span>Firebase Connected</span></div>
+      <div class="firebase-status"><span class="firebase-dot"></span><span>Firebase + Cloudinary</span></div>
       <span class="topbar-user" id="topbar-email"></span>
       <button id="signout-btn" class="btn-logout">Sign Out</button>
     </div>
@@ -200,6 +207,7 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
       <div class="sidebar-section">Site</div>
       <div class="nav-item" id="nav-website"><span class="nav-icon">&#8853;</span> View Website</div>
     </div>
+
     <div class="main-content">
 
       <!-- DASHBOARD -->
@@ -213,25 +221,22 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
         </div>
         <div class="dash-grid">
           <div class="dash-card"><div class="dash-card-title">Recent Articles</div><div id="dash-recent-articles"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></div></div>
-          <div class="dash-card"><div class="dash-card-title">Recent Opinion Pieces</div><div id="dash-recent-opinion"><div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div></div></div>
+          <div class="dash-card"><div class="dash-card-title">Recent Videos</div><div id="dash-recent-videos"><div class="empty-state"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div></div></div>
         </div>
       </div>
 
       <!-- ARTICLES -->
       <div class="page" id="page-articles">
-        <div class="page-header"><div class="page-title">Articles</div><div class="page-desc">Add articles — they appear live on your website instantly.</div></div>
+        <div class="page-header"><div class="page-title">Articles</div><div class="page-desc">Add articles with optional thumbnail and body images. Changes go live instantly.</div></div>
         <div class="tabs">
           <div class="tab active" id="tab-articles-list">All Articles</div>
           <div class="tab" id="tab-articles-add">Add New Article</div>
         </div>
         <div class="tab-content active" id="articles-list">
           <div class="table-wrap">
-            <div class="table-toolbar">
-              <input class="table-search" type="text" id="art-search" placeholder="Search articles...">
-              <button class="btn-primary" id="btn-new-article">+ New Article</button>
-            </div>
-            <table><thead><tr><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
-            <tbody id="articles-table-body"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr></tbody></table>
+            <div class="table-toolbar"><input class="table-search" type="text" id="art-search" placeholder="Search articles..."><button class="btn-primary" id="btn-new-article">+ New Article</button></div>
+            <table><thead><tr><th>Thumbnail</th><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
+            <tbody id="articles-table-body"><tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr></tbody></table>
           </div>
         </div>
         <div class="tab-content" id="articles-add">
@@ -240,14 +245,43 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
               <div class="form-group full"><label>Headline *</label><input type="text" id="art-title" placeholder="Enter article headline..."><div class="char-count"><span id="art-tc">0</span>/120</div></div>
               <div class="form-group"><label>Section *</label><select id="art-section"><option value="">Select section...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Opinion</option><option>Sci-Tech</option></select></div>
               <div class="form-group"><label>Category Tag</label><input type="text" id="art-cat" placeholder="e.g. Pakistan - Security"></div>
-              <div class="form-group full"><label>Excerpt</label><input type="text" id="art-excerpt" placeholder="Brief summary..."></div>
+              <div class="form-group full"><label>Excerpt</label><input type="text" id="art-excerpt" placeholder="Brief summary shown under headline..."></div>
               <div class="form-group full"><label>Article Body</label><textarea id="art-body" rows="5" placeholder="Full article content..."></textarea></div>
+
+              <!-- THUMBNAIL UPLOAD -->
+              <div class="form-group full">
+                <label>Thumbnail Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — if not uploaded, a color gradient will be shown)</span></label>
+                <div class="upload-area" id="thumb-upload-area">
+                  <input type="file" id="art-thumb-file" accept="image/*">
+                  <div class="upload-area-icon">&#128247;</div>
+                  <div class="upload-area-text">Click or drag to upload thumbnail image<br><span style="font-size:0.6rem">JPG, PNG, WebP — max 10MB</span></div>
+                  <img id="art-thumb-preview" class="preview-img">
+                </div>
+                <div class="upload-progress" id="thumb-progress"><div class="upload-progress-bar" id="thumb-progress-bar"></div></div>
+                <div class="upload-status" id="thumb-status"></div>
+                <input type="hidden" id="art-thumb-url">
+              </div>
+
+              <!-- BODY IMAGE UPLOAD -->
+              <div class="form-group full">
+                <label>Body Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — appears inside the article)</span></label>
+                <div class="upload-area" id="body-upload-area">
+                  <input type="file" id="art-body-file" accept="image/*">
+                  <div class="upload-area-icon">&#128444;</div>
+                  <div class="upload-area-text">Click or drag to upload an image for inside the article<br><span style="font-size:0.6rem">JPG, PNG, WebP — max 10MB</span></div>
+                  <img id="art-body-preview" class="preview-img">
+                </div>
+                <div class="upload-progress" id="body-progress"><div class="upload-progress-bar" id="body-progress-bar"></div></div>
+                <div class="upload-status" id="body-status"></div>
+                <input type="hidden" id="art-body-img-url">
+              </div>
+
               <div class="form-group"><label>Author</label><input type="text" id="art-author" placeholder="e.g. Ayesha Khalid"></div>
               <div class="form-group"><label>Read Time</label><input type="text" id="art-read" placeholder="e.g. 4 min read"></div>
               <div class="form-group"><label>Status</label><select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select></div>
               <div class="form-group"><label>Time Label</label><input type="text" id="art-time" placeholder="e.g. 2h ago"></div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-art">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-art">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-art">Save Article &rarr;</button><button class="btn-secondary" id="btn-clear-art">Clear</button></div>
           </div>
         </div>
       </div>
@@ -268,22 +302,54 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 
       <!-- VIDEOS -->
       <div class="page" id="page-videos">
-        <div class="page-header"><div class="page-title">Video Reels</div><div class="page-desc">Add video reels — they appear on your website instantly.</div></div>
+        <div class="page-header"><div class="page-title">Video Reels</div><div class="page-desc">Upload actual video files. They stream directly on your website.</div></div>
         <div class="tabs">
           <div class="tab active" id="tab-videos-list">All Videos</div>
-          <div class="tab" id="tab-videos-add">Add New Video</div>
+          <div class="tab" id="tab-videos-add">Upload New Video</div>
         </div>
-        <div class="tab-content active" id="videos-list"><div class="video-grid" id="videos-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div></div></div>
+        <div class="tab-content active" id="videos-list">
+          <div class="video-admin-grid" id="videos-grid">
+            <div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div>
+          </div>
+        </div>
         <div class="tab-content" id="videos-add">
           <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
               <div class="form-group full"><label>Video Title *</label><input type="text" id="vid-title" placeholder="Enter video title..."><div class="char-count"><span id="vid-tc">0</span>/80</div></div>
-              <div class="form-group"><label>Category *</label><select id="vid-cat"><option value="">Select...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Sci-Tech</option></select></div>
+              <div class="form-group"><label>Section / Category *</label><select id="vid-cat"><option value="">Select...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Sci-Tech</option></select></div>
               <div class="form-group"><label>Badge</label><select id="vid-badge"><option value="live">Live</option><option value="recap">Recap</option><option value="analysis">Analysis</option></select></div>
-              <div class="form-group"><label>Duration</label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
-              <div class="form-group"><label>Likes</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
+              <div class="form-group"><label>Duration <span style="color:var(--muted);font-size:0.55rem;text-transform:none">(auto-detected after upload)</span></label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
+              <div class="form-group"><label>Likes Count</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
+
+              <!-- VIDEO FILE UPLOAD -->
+              <div class="form-group full">
+                <label>Video File * <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(MP4, MOV, WebM — max 100MB on free plan)</span></label>
+                <div class="upload-area" id="vid-upload-area">
+                  <input type="file" id="vid-file" accept="video/*">
+                  <div class="upload-area-icon">&#127916;</div>
+                  <div class="upload-area-text">Click or drag to upload your video file<br><span style="font-size:0.6rem">MP4 recommended for best compatibility</span></div>
+                  <video id="vid-preview" class="preview-video" controls></video>
+                </div>
+                <div class="upload-progress" id="vid-progress"><div class="upload-progress-bar" id="vid-progress-bar"></div></div>
+                <div class="upload-status" id="vid-status"></div>
+                <input type="hidden" id="vid-url">
+                <input type="hidden" id="vid-thumb-url">
+              </div>
+
+              <!-- VIDEO THUMBNAIL -->
+              <div class="form-group full">
+                <label>Video Thumbnail <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — auto-generated from video if not uploaded)</span></label>
+                <div class="upload-area" id="vid-thumb-area">
+                  <input type="file" id="vid-thumb-file" accept="image/*">
+                  <div class="upload-area-icon">&#128247;</div>
+                  <div class="upload-area-text">Click or drag to upload a thumbnail for this video</div>
+                  <img id="vid-thumb-preview" class="preview-img">
+                </div>
+                <div class="upload-progress" id="vid-thumb-progress"><div class="upload-progress-bar" id="vid-thumb-progress-bar"></div></div>
+                <div class="upload-status" id="vid-thumb-status"></div>
+              </div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-vid">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-vid">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-vid">Upload &amp; Publish Video &rarr;</button><button class="btn-secondary" id="btn-clear-vid">Clear</button></div>
           </div>
         </div>
       </div>
@@ -295,7 +361,11 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
           <div class="tab active" id="tab-opinion-list">All Opinions</div>
           <div class="tab" id="tab-opinion-add">Add New Opinion</div>
         </div>
-        <div class="tab-content active" id="opinion-list"><div class="opinion-admin-grid" id="opinion-grid"><div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div></div></div>
+        <div class="tab-content active" id="opinion-list">
+          <div class="opinion-admin-grid" id="opinion-grid">
+            <div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">Loading...</div></div>
+          </div>
+        </div>
         <div class="tab-content" id="opinion-add">
           <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
@@ -308,7 +378,7 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
               <div class="form-group"><label>Read Time</label><input type="text" id="op-read" placeholder="e.g. 6 min read"></div>
               <div class="form-group"><label>Time Label</label><input type="text" id="op-time" placeholder="e.g. 3h ago"></div>
             </div>
-            <div class="form-actions"><button class="btn-primary" id="btn-save-op">Save to Firebase &rarr;</button><button class="btn-secondary" id="btn-clear-op">Clear</button></div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-op">Save Opinion &rarr;</button><button class="btn-secondary" id="btn-clear-op">Clear</button></div>
           </div>
         </div>
       </div>
@@ -319,11 +389,9 @@ var ADMIN_EMAIL = "murtazajaved385@gmail.com";
 <div class="toast" id="toast"></div>
 
 <script>
-// All JS using addEventListener instead of inline onclick
 var _lists = {articles:[], ticker:[], videos:[], opinion:[]};
-var vidBgs = ["vt1","vt2","vt3","vt4","vt5","vt6"];
 
-// AUTH STATE LISTENER
+// AUTH
 auth.onAuthStateChanged(function(user) {
   if (user && user.email === ADMIN_EMAIL) {
     document.getElementById("login-screen").style.display = "none";
@@ -336,128 +404,217 @@ auth.onAuthStateChanged(function(user) {
   }
 });
 
-// LOGIN
 document.getElementById("signin-btn").addEventListener("click", function() {
   var email = document.getElementById("login-email").value.trim();
   var pass = document.getElementById("login-pass").value;
   var errEl = document.getElementById("login-error");
   errEl.style.display = "none";
-  if (!email || !pass) { errEl.textContent = "Please enter email and password."; errEl.style.display = "block"; return; }
-  auth.signInWithEmailAndPassword(email, pass).catch(function(e) {
-    errEl.textContent = "Incorrect email or password. Please try again.";
+  auth.signInWithEmailAndPassword(email, pass).catch(function() {
+    errEl.textContent = "Incorrect email or password.";
     errEl.style.display = "block";
   });
 });
-
-document.getElementById("login-pass").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("signin-btn").click();
-});
-
+document.getElementById("login-pass").addEventListener("keydown", function(e) { if(e.key==="Enter") document.getElementById("signin-btn").click(); });
 document.getElementById("show-pw-btn").addEventListener("click", function() {
   var el = document.getElementById("login-pass");
-  el.type = el.type === "password" ? "text" : "password";
-  this.textContent = el.type === "password" ? "Show" : "Hide";
+  el.type = el.type==="password"?"text":"password";
+  this.textContent = el.type==="password"?"Show":"Hide";
 });
-
 document.getElementById("forgot-btn").addEventListener("click", function() {
   document.getElementById("login-form").style.display = "none";
   document.getElementById("forgot-form").style.display = "block";
   document.getElementById("login-title").textContent = "Reset Password";
-  document.getElementById("login-error").style.display = "none";
-  document.getElementById("login-success").style.display = "none";
 });
-
 document.getElementById("back-btn").addEventListener("click", function() {
   document.getElementById("login-form").style.display = "block";
   document.getElementById("forgot-form").style.display = "none";
   document.getElementById("login-title").textContent = "Sign In";
-  document.getElementById("login-error").style.display = "none";
-  document.getElementById("login-success").style.display = "none";
 });
-
 document.getElementById("send-reset-btn").addEventListener("click", function() {
-  var errEl = document.getElementById("login-error");
-  var okEl = document.getElementById("login-success");
-  errEl.style.display = "none"; okEl.style.display = "none";
   auth.sendPasswordResetEmail(ADMIN_EMAIL).then(function() {
-    okEl.textContent = "Reset email sent to murtazajaved385@gmail.com — check your inbox!";
-    okEl.style.display = "block";
-  }).catch(function(e) {
-    errEl.textContent = "Error sending email. Please try again.";
-    errEl.style.display = "block";
+    document.getElementById("login-success").textContent = "Reset email sent! Check your inbox.";
+    document.getElementById("login-success").style.display = "block";
+  }).catch(function() {
+    document.getElementById("login-error").textContent = "Error sending email.";
+    document.getElementById("login-error").style.display = "block";
   });
 });
-
 document.getElementById("signout-btn").addEventListener("click", function() { auth.signOut(); });
 
-// SIDEBAR NAV
-function showPage(pageId) {
-  document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
-  document.querySelectorAll(".nav-item").forEach(function(n) { n.classList.remove("active"); });
-  document.getElementById("page-" + pageId).classList.add("active");
-  document.getElementById("nav-" + pageId).classList.add("active");
+// NAV
+function showPage(p) {
+  document.querySelectorAll(".page").forEach(function(x){ x.classList.remove("active"); });
+  document.querySelectorAll(".nav-item").forEach(function(x){ x.classList.remove("active"); });
+  document.getElementById("page-"+p).classList.add("active");
+  document.getElementById("nav-"+p).classList.add("active");
 }
-document.getElementById("nav-dashboard").addEventListener("click", function() { showPage("dashboard"); });
-document.getElementById("nav-articles").addEventListener("click", function() { showPage("articles"); });
-document.getElementById("nav-ticker").addEventListener("click", function() { showPage("ticker"); });
-document.getElementById("nav-videos").addEventListener("click", function() { showPage("videos"); });
-document.getElementById("nav-opinion").addEventListener("click", function() { showPage("opinion"); });
-document.getElementById("nav-website").addEventListener("click", function() { window.open("index.html", "_blank"); });
+document.getElementById("nav-dashboard").addEventListener("click", function(){ showPage("dashboard"); });
+document.getElementById("nav-articles").addEventListener("click", function(){ showPage("articles"); });
+document.getElementById("nav-ticker").addEventListener("click", function(){ showPage("ticker"); });
+document.getElementById("nav-videos").addEventListener("click", function(){ showPage("videos"); });
+document.getElementById("nav-opinion").addEventListener("click", function(){ showPage("opinion"); });
+document.getElementById("nav-website").addEventListener("click", function(){ window.open("index.html","_blank"); });
 
-// TABS
-function switchTab(section, tab) {
-  var pg = document.getElementById("page-" + section);
-  pg.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
-  pg.querySelectorAll(".tab-content").forEach(function(t) { t.classList.remove("active"); });
-  document.getElementById("tab-" + section + "-" + tab).classList.add("active");
-  document.getElementById(section + "-" + tab).classList.add("active");
+function switchTab(s,t) {
+  var pg = document.getElementById("page-"+s);
+  pg.querySelectorAll(".tab").forEach(function(x){ x.classList.remove("active"); });
+  pg.querySelectorAll(".tab-content").forEach(function(x){ x.classList.remove("active"); });
+  document.getElementById("tab-"+s+"-"+t).classList.add("active");
+  document.getElementById(s+"-"+t).classList.add("active");
 }
-document.getElementById("tab-articles-list").addEventListener("click", function() { switchTab("articles","list"); });
-document.getElementById("tab-articles-add").addEventListener("click", function() { switchTab("articles","add"); });
-document.getElementById("tab-videos-list").addEventListener("click", function() { switchTab("videos","list"); });
-document.getElementById("tab-videos-add").addEventListener("click", function() { switchTab("videos","add"); });
-document.getElementById("tab-opinion-list").addEventListener("click", function() { switchTab("opinion","list"); });
-document.getElementById("tab-opinion-add").addEventListener("click", function() { switchTab("opinion","add"); });
-document.getElementById("btn-new-article").addEventListener("click", function() { switchTab("articles","add"); });
+document.getElementById("tab-articles-list").addEventListener("click", function(){ switchTab("articles","list"); });
+document.getElementById("tab-articles-add").addEventListener("click", function(){ switchTab("articles","add"); });
+document.getElementById("tab-videos-list").addEventListener("click", function(){ switchTab("videos","list"); });
+document.getElementById("tab-videos-add").addEventListener("click", function(){ switchTab("videos","add"); });
+document.getElementById("tab-opinion-list").addEventListener("click", function(){ switchTab("opinion","list"); });
+document.getElementById("tab-opinion-add").addEventListener("click", function(){ switchTab("opinion","add"); });
+document.getElementById("btn-new-article").addEventListener("click", function(){ switchTab("articles","add"); });
 
-// TOAST
 function showToast(msg, err) {
   var t = document.getElementById("toast");
   t.textContent = msg;
-  t.className = "toast" + (err ? " error" : "");
+  t.className = "toast"+(err?" error":"");
   t.classList.add("show");
-  setTimeout(function() { t.classList.remove("show"); }, 3500);
+  setTimeout(function(){ t.classList.remove("show"); }, 3500);
 }
 
-// CHAR COUNT
-document.getElementById("art-title").addEventListener("input", function() { document.getElementById("art-tc").textContent = this.value.length; });
-document.getElementById("vid-title").addEventListener("input", function() { document.getElementById("vid-tc").textContent = this.value.length; });
-document.getElementById("op-title").addEventListener("input", function() { document.getElementById("op-tc").textContent = this.value.length; });
-document.getElementById("ticker-input").addEventListener("input", function() { document.getElementById("ticker-cc").textContent = this.value.length; });
+// CLOUDINARY UPLOAD
+function uploadToCloudinary(file, progressBarId, statusId, progressContainerId, callback) {
+  var formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+  formData.append("cloud_name", CLOUD_NAME);
+
+  var progressContainer = document.getElementById(progressContainerId);
+  var progressBar = document.getElementById(progressBarId);
+  var status = document.getElementById(statusId);
+
+  progressContainer.style.display = "block";
+  status.style.display = "block";
+  status.textContent = "Uploading...";
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/auto/upload");
+
+  xhr.upload.onprogress = function(e) {
+    if(e.lengthComputable) {
+      var pct = Math.round((e.loaded/e.total)*100);
+      progressBar.style.width = pct+"%";
+      status.textContent = "Uploading... "+pct+"%";
+    }
+  };
+
+  xhr.onload = function() {
+    if(xhr.status === 200) {
+      var resp = JSON.parse(xhr.responseText);
+      status.textContent = "&#10003; Upload complete!";
+      progressBar.style.width = "100%";
+      callback(resp.secure_url, resp);
+    } else {
+      status.textContent = "Upload failed. Try again.";
+      status.style.color = "#e07070";
+    }
+  };
+
+  xhr.onerror = function() {
+    status.textContent = "Upload failed. Check connection.";
+    status.style.color = "#e07070";
+  };
+
+  xhr.send(formData);
+}
+
+// ARTICLE THUMBNAIL PREVIEW
+document.getElementById("art-thumb-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("art-thumb-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "thumb-progress-bar", "thumb-status", "thumb-progress", function(url) {
+    document.getElementById("art-thumb-url").value = url;
+  });
+});
+
+// ARTICLE BODY IMAGE PREVIEW
+document.getElementById("art-body-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("art-body-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "body-progress-bar", "body-status", "body-progress", function(url) {
+    document.getElementById("art-body-img-url").value = url;
+  });
+});
+
+// VIDEO FILE PREVIEW
+document.getElementById("vid-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("vid-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+
+  // Auto detect duration
+  preview.addEventListener("loadedmetadata", function() {
+    var dur = Math.floor(preview.duration);
+    var mins = Math.floor(dur/60);
+    var secs = dur%60;
+    document.getElementById("vid-dur").value = mins+":"+(secs<10?"0":"")+secs;
+  });
+
+  uploadToCloudinary(file, "vid-progress-bar", "vid-status", "vid-progress", function(url, resp) {
+    document.getElementById("vid-url").value = url;
+    // Auto set thumbnail from Cloudinary
+    if(resp.resource_type === "video") {
+      var thumbUrl = url.replace("/upload/", "/upload/so_0/").replace(/\.[^.]+$/, ".jpg");
+      document.getElementById("vid-thumb-url").value = thumbUrl;
+    }
+  });
+});
+
+// VIDEO THUMBNAIL PREVIEW
+document.getElementById("vid-thumb-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("vid-thumb-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "vid-thumb-progress-bar", "vid-thumb-status", "vid-thumb-progress", function(url) {
+    document.getElementById("vid-thumb-url").value = url;
+  });
+});
+
+// CHAR COUNTS
+document.getElementById("art-title").addEventListener("input", function(){ document.getElementById("art-tc").textContent = this.value.length; });
+document.getElementById("vid-title").addEventListener("input", function(){ document.getElementById("vid-tc").textContent = this.value.length; });
+document.getElementById("op-title").addEventListener("input", function(){ document.getElementById("op-tc").textContent = this.value.length; });
+document.getElementById("ticker-input").addEventListener("input", function(){ document.getElementById("ticker-cc").textContent = this.value.length; });
 
 // FIREBASE LISTENERS
 function startListeners() {
   db.collection("articles").orderBy("createdAt","desc").onSnapshot(function(snap) {
-    _lists.articles = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    _lists.articles = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderArticles();
     document.getElementById("stat-articles").textContent = _lists.articles.length;
     renderDash();
   });
   db.collection("ticker").orderBy("createdAt","desc").onSnapshot(function(snap) {
-    _lists.ticker = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    _lists.ticker = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderTicker();
     document.getElementById("stat-ticker").textContent = _lists.ticker.length;
   });
   db.collection("videos").orderBy("createdAt","desc").onSnapshot(function(snap) {
-    _lists.videos = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    _lists.videos = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderVideos();
     document.getElementById("stat-videos").textContent = _lists.videos.length;
+    renderDash();
   });
   db.collection("opinion").orderBy("createdAt","desc").onSnapshot(function(snap) {
-    _lists.opinion = snap.docs.map(function(d) { return Object.assign({id:d.id}, d.data()); });
+    _lists.opinion = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderOpinion();
     document.getElementById("stat-opinion").textContent = _lists.opinion.length;
-    renderDash();
   });
 }
 
@@ -467,158 +624,168 @@ function renderDash() {
   ra.innerHTML = _lists.articles.length === 0
     ? '<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>'
     : _lists.articles.slice(0,5).map(function(a) {
-        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">' + a.section + '</span><br>' + a.title + '</div><div class="recent-time">' + (a.time||"Now") + '</div></div>';
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span><br>'+a.title+'</div><div class="recent-time">'+(a.time||"Now")+'</div></div>';
       }).join("");
-  var ro = document.getElementById("dash-recent-opinion");
-  ro.innerHTML = _lists.opinion.length === 0
-    ? '<div class="empty-state"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinions yet</div></div>'
-    : _lists.opinion.slice(0,5).map(function(o) {
-        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">' + o.author + '</span><br>' + o.title + '</div><div class="recent-time">' + (o.time||"Now") + '</div></div>';
+  var rv = document.getElementById("dash-recent-videos");
+  rv.innerHTML = _lists.videos.length === 0
+    ? '<div class="empty-state"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>'
+    : _lists.videos.slice(0,5).map(function(v) {
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+v.cat+'</span><br>'+v.title+'</div><div class="recent-time">'+(v.dur||"--")+'</div></div>';
       }).join("");
 }
 
-// ARTICLES
+// SAVE ARTICLE
 document.getElementById("btn-save-art").addEventListener("click", function() {
   var title = document.getElementById("art-title").value.trim();
   var section = document.getElementById("art-section").value;
-  if (!title || !section) { showToast("Please fill headline and section", true); return; }
-  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  if(!title||!section) { showToast("Please fill headline and section",true); return; }
+  var thumbUrl = document.getElementById("art-thumb-url").value;
+  var bodyImgUrl = document.getElementById("art-body-img-url").value;
+  var btn = this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
   db.collection("articles").add({
-    title: title, section: section,
-    cat: document.getElementById("art-cat").value.trim() || section,
-    excerpt: document.getElementById("art-excerpt").value.trim(),
-    body: document.getElementById("art-body").value.trim(),
-    author: document.getElementById("art-author").value.trim() || "Zenit Staff",
-    read: document.getElementById("art-read").value.trim() || "3 min read",
-    status: document.getElementById("art-status").value,
-    time: document.getElementById("art-time").value.trim() || "Just now",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    title:title, section:section,
+    cat:document.getElementById("art-cat").value.trim()||section,
+    excerpt:document.getElementById("art-excerpt").value.trim(),
+    body:document.getElementById("art-body").value.trim(),
+    thumbnailUrl: thumbUrl || "",
+    bodyImageUrl: bodyImgUrl || "",
+    author:document.getElementById("art-author").value.trim()||"Zenit Staff",
+    read:document.getElementById("art-read").value.trim()||"3 min read",
+    status:document.getElementById("art-status").value,
+    time:document.getElementById("art-time").value.trim()||"Just now",
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
   }).then(function() {
     showToast("Article is now live on your website!");
-    ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time"].forEach(function(id) { document.getElementById(id).value = ""; });
-    document.getElementById("art-section").selectedIndex = 0;
-    document.getElementById("art-status").selectedIndex = 0;
-    document.getElementById("art-tc").textContent = "0";
+    // Clear form
+    ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
+    document.getElementById("art-section").selectedIndex=0;
+    document.getElementById("art-status").selectedIndex=0;
+    document.getElementById("art-tc").textContent="0";
+    document.getElementById("art-thumb-preview").style.display="none";
+    document.getElementById("art-body-preview").style.display="none";
+    document.getElementById("thumb-progress").style.display="none";
+    document.getElementById("body-progress").style.display="none";
+    document.getElementById("thumb-status").style.display="none";
+    document.getElementById("body-status").style.display="none";
     switchTab("articles","list");
-  }).catch(function() { showToast("Error saving. Try again.", true); })
-  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+  }).catch(function(){ showToast("Error saving",true); })
+  .finally(function(){ btn.disabled=false; btn.innerHTML="Save Article &rarr;"; });
 });
 
 document.getElementById("btn-clear-art").addEventListener("click", function() {
-  ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time"].forEach(function(id) { document.getElementById(id).value = ""; });
-  document.getElementById("art-section").selectedIndex = 0;
-  document.getElementById("art-tc").textContent = "0";
+  ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
+  document.getElementById("art-thumb-preview").style.display="none";
+  document.getElementById("art-body-preview").style.display="none";
+  document.getElementById("art-tc").textContent="0";
 });
 
 document.getElementById("art-search").addEventListener("input", function() {
   var q = this.value.toLowerCase();
-  renderArticles(_lists.articles.filter(function(a) { return a.title.toLowerCase().includes(q) || a.section.toLowerCase().includes(q); }));
+  renderArticles(_lists.articles.filter(function(a){ return a.title.toLowerCase().includes(q)||a.section.toLowerCase().includes(q); }));
 });
 
 function renderArticles(list) {
-  var data = list || _lists.articles;
+  var data = list||_lists.articles;
   var tbody = document.getElementById("articles-table-body");
-  if (data.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>';
+  if(data.length===0) {
+    tbody.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>';
     return;
   }
   tbody.innerHTML = data.map(function(a) {
-    return '<tr><td><div class="td-cat">' + (a.cat||a.section) + '</div><div class="td-title">' + a.title + '</div></td>'
-      + '<td>' + a.section + '</td><td><span class="status-' + (a.status||"live") + '">' + (a.status||"live") + '</span></td>'
-      + '<td>' + (a.time||"--") + '</td><td><div class="td-actions"><button class="btn-danger" data-id="' + a.id + '">Delete</button></div></td></tr>';
+    var thumb = a.thumbnailUrl ? '<img src="'+a.thumbnailUrl+'" class="td-thumb">' : '<div class="td-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);border-radius:2px"></div>';
+    return '<tr><td>'+thumb+'</td><td><div class="td-cat">'+(a.cat||a.section)+'</div><div class="td-title">'+a.title+'</div></td><td>'+a.section+'</td><td><span class="status-'+(a.status||"live")+'">'+(a.status||"live")+'</span></td><td>'+(a.time||"--")+'</td><td><div class="td-actions"><button class="btn-danger" data-id="'+a.id+'">Delete</button></div></td></tr>';
   }).join("");
   tbody.querySelectorAll(".btn-danger").forEach(function(btn) {
     btn.addEventListener("click", function() {
-      if (!confirm("Delete this article?")) return;
+      if(!confirm("Delete this article?")) return;
       db.collection("articles").doc(this.getAttribute("data-id")).delete()
-        .then(function() { showToast("Article deleted"); })
-        .catch(function() { showToast("Error", true); });
+        .then(function(){ showToast("Deleted"); }).catch(function(){ showToast("Error",true); });
     });
   });
 }
 
 // TICKER
 document.getElementById("btn-add-ticker").addEventListener("click", addTicker);
-document.getElementById("ticker-input").addEventListener("keydown", function(e) { if (e.key === "Enter") addTicker(); });
+document.getElementById("ticker-input").addEventListener("keydown", function(e){ if(e.key==="Enter") addTicker(); });
 function addTicker() {
   var text = document.getElementById("ticker-input").value.trim();
-  if (!text) { showToast("Please enter a headline", true); return; }
+  if(!text) { showToast("Please enter a headline",true); return; }
   var btn = document.getElementById("btn-add-ticker");
-  btn.disabled = true; btn.textContent = "Saving...";
-  db.collection("ticker").add({ text: text, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-    .then(function() {
-      document.getElementById("ticker-input").value = "";
-      document.getElementById("ticker-cc").textContent = "0";
-      showToast("Ticker item is now live!");
-    }).catch(function() { showToast("Error", true); })
-    .finally(function() { btn.disabled = false; btn.textContent = "+ Add Item"; });
+  btn.disabled=true; btn.textContent="Saving...";
+  db.collection("ticker").add({text:text,createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+    .then(function(){ document.getElementById("ticker-input").value=""; document.getElementById("ticker-cc").textContent="0"; showToast("Ticker item is now live!"); })
+    .catch(function(){ showToast("Error",true); })
+    .finally(function(){ btn.disabled=false; btn.textContent="+ Add Item"; });
 }
-
 function renderTicker() {
   var list = document.getElementById("ticker-list");
   document.getElementById("ticker-count").textContent = _lists.ticker.length;
-  if (_lists.ticker.length === 0) {
-    list.innerHTML = '<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>';
-    return;
-  }
-  list.innerHTML = _lists.ticker.map(function(t) {
-    return '<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">' + t.text + '</span><button class="btn-danger" data-id="' + t.id + '">Remove</button></div>';
-  }).join("");
-  list.querySelectorAll(".btn-danger").forEach(function(btn) {
-    btn.addEventListener("click", function() {
+  list.innerHTML = _lists.ticker.length===0
+    ? '<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>'
+    : _lists.ticker.map(function(t){
+        return '<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">'+t.text+'</span><button class="btn-danger" data-id="'+t.id+'">Remove</button></div>';
+      }).join("");
+  list.querySelectorAll(".btn-danger").forEach(function(btn){
+    btn.addEventListener("click", function(){
       db.collection("ticker").doc(this.getAttribute("data-id")).delete()
-        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
+        .then(function(){ showToast("Removed"); }).catch(function(){ showToast("Error",true); });
     });
   });
 }
 
-// VIDEOS
+// SAVE VIDEO
 document.getElementById("btn-save-vid").addEventListener("click", function() {
   var title = document.getElementById("vid-title").value.trim();
   var cat = document.getElementById("vid-cat").value;
-  if (!title || !cat) { showToast("Please fill title and category", true); return; }
-  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  var vidUrl = document.getElementById("vid-url").value;
+  if(!title||!cat) { showToast("Please fill title and category",true); return; }
+  if(!vidUrl) { showToast("Please upload a video file first",true); return; }
+  var btn = this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Publishing...';
   db.collection("videos").add({
-    title: title, cat: cat,
-    badge: document.getElementById("vid-badge").value,
-    dur: document.getElementById("vid-dur").value.trim() || "1:00",
-    likes: document.getElementById("vid-likes").value.trim() || "0",
-    bg: vidBgs[_lists.videos.length % vidBgs.length],
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
-    showToast("Video is now live!");
-    ["vid-title","vid-dur","vid-likes"].forEach(function(id) { document.getElementById(id).value = ""; });
-    document.getElementById("vid-cat").selectedIndex = 0;
-    document.getElementById("vid-tc").textContent = "0";
+    title:title, cat:cat,
+    badge:document.getElementById("vid-badge").value,
+    dur:document.getElementById("vid-dur").value.trim()||"1:00",
+    likes:document.getElementById("vid-likes").value.trim()||"0",
+    videoUrl:vidUrl,
+    thumbnailUrl:document.getElementById("vid-thumb-url").value||"",
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    showToast("Video is now live on your website!");
+    ["vid-title","vid-dur","vid-likes","vid-url","vid-thumb-url"].forEach(function(id){ document.getElementById(id).value=""; });
+    document.getElementById("vid-cat").selectedIndex=0;
+    document.getElementById("vid-tc").textContent="0";
+    document.getElementById("vid-preview").style.display="none";
+    document.getElementById("vid-thumb-preview").style.display="none";
+    document.getElementById("vid-progress").style.display="none";
+    document.getElementById("vid-status").style.display="none";
     switchTab("videos","list");
-  }).catch(function() { showToast("Error", true); })
-  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+  }).catch(function(){ showToast("Error",true); })
+  .finally(function(){ btn.disabled=false; btn.innerHTML="Upload &amp; Publish Video &rarr;"; });
 });
 
-document.getElementById("btn-clear-vid").addEventListener("click", function() {
-  ["vid-title","vid-dur","vid-likes"].forEach(function(id) { document.getElementById(id).value = ""; });
-  document.getElementById("vid-cat").selectedIndex = 0;
-  document.getElementById("vid-tc").textContent = "0";
+document.getElementById("btn-clear-vid").addEventListener("click", function(){
+  ["vid-title","vid-dur","vid-likes","vid-url","vid-thumb-url"].forEach(function(id){ document.getElementById(id).value=""; });
+  document.getElementById("vid-preview").style.display="none";
+  document.getElementById("vid-thumb-preview").style.display="none";
+  document.getElementById("vid-tc").textContent="0";
 });
 
 function renderVideos() {
   var grid = document.getElementById("videos-grid");
-  if (_lists.videos.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>';
+  if(_lists.videos.length===0) {
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet. Upload your first reel!</div></div>';
     return;
   }
-  grid.innerHTML = _lists.videos.map(function(v) {
-    return '<div class="video-admin-card"><div class="video-thumb-admin ' + (v.bg||"vt1") + '"></div>'
-      + '<div class="video-admin-cat">' + v.cat + ' - ' + v.badge + '</div>'
-      + '<div class="video-admin-title">' + v.title + '</div>'
-      + '<div class="video-admin-meta">' + v.dur + ' - ' + v.likes + ' likes</div>'
-      + '<div class="video-admin-actions"><button class="btn-danger" data-id="' + v.id + '">Remove</button></div></div>';
+  grid.innerHTML = _lists.videos.map(function(v){
+    var thumb = v.thumbnailUrl ? '<img src="'+v.thumbnailUrl+'" style="width:120px;height:75px;object-fit:cover;border-radius:3px;flex-shrink:0">'
+      : '<div style="width:120px;height:75px;background:linear-gradient(170deg,#0a0a14,#1a2040);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:1.5rem">&#9654;</div>';
+    return '<div class="video-admin-card">'+thumb+'<div class="video-admin-info"><div class="video-admin-cat">'+v.cat+' &middot; '+v.badge+'</div><div class="video-admin-title">'+v.title+'</div><div class="video-admin-meta">'+v.dur+' &middot; '+v.likes+' likes</div><div class="video-admin-actions"><button class="btn-danger" data-id="'+v.id+'">Remove</button></div></div></div>';
   }).join("");
-  grid.querySelectorAll(".btn-danger").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      if (!confirm("Delete?")) return;
+  grid.querySelectorAll(".btn-danger").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      if(!confirm("Delete this video?")) return;
       db.collection("videos").doc(this.getAttribute("data-id")).delete()
-        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
+        .then(function(){ showToast("Removed"); }).catch(function(){ showToast("Error",true); });
     });
   });
 }
@@ -627,49 +794,46 @@ function renderVideos() {
 document.getElementById("btn-save-op").addEventListener("click", function() {
   var author = document.getElementById("op-author").value.trim();
   var title = document.getElementById("op-title").value.trim();
-  if (!author || !title) { showToast("Please fill author and title", true); return; }
-  var initials = document.getElementById("op-initials").value.trim() || author.split(" ").map(function(w) { return w[0]; }).join("").toUpperCase().slice(0,2);
-  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  if(!author||!title) { showToast("Please fill author and title",true); return; }
+  var initials = document.getElementById("op-initials").value.trim()||author.split(" ").map(function(w){return w[0];}).join("").toUpperCase().slice(0,2);
+  var btn=this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
   db.collection("opinion").add({
-    author: author, initials: initials,
-    role: document.getElementById("op-role").value.trim(),
-    color: document.getElementById("op-color").value,
-    title: title,
-    deck: document.getElementById("op-deck").value.trim(),
-    read: document.getElementById("op-read").value.trim() || "5 min read",
-    time: document.getElementById("op-time").value.trim() || "Just now",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
+    author:author,initials:initials,
+    role:document.getElementById("op-role").value.trim(),
+    color:document.getElementById("op-color").value,
+    title:title,
+    deck:document.getElementById("op-deck").value.trim(),
+    read:document.getElementById("op-read").value.trim()||"5 min read",
+    time:document.getElementById("op-time").value.trim()||"Just now",
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
     showToast("Opinion piece is now live!");
-    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id) { document.getElementById(id).value = ""; });
-    document.getElementById("op-tc").textContent = "0";
+    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
+    document.getElementById("op-tc").textContent="0";
     switchTab("opinion","list");
-  }).catch(function() { showToast("Error", true); })
-  .finally(function() { btn.disabled = false; btn.innerHTML = "Save to Firebase &rarr;"; });
+  }).catch(function(){showToast("Error",true);})
+  .finally(function(){btn.disabled=false;btn.innerHTML="Save Opinion &rarr;";});
 });
 
-document.getElementById("btn-clear-op").addEventListener("click", function() {
-  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id) { document.getElementById(id).value = ""; });
-  document.getElementById("op-tc").textContent = "0";
+document.getElementById("btn-clear-op").addEventListener("click", function(){
+  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
+  document.getElementById("op-tc").textContent="0";
 });
 
 function renderOpinion() {
   var grid = document.getElementById("opinion-grid");
-  if (_lists.opinion.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>';
+  if(_lists.opinion.length===0) {
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>';
     return;
   }
-  grid.innerHTML = _lists.opinion.map(function(o) {
-    return '<div class="op-admin-card"><div class="op-admin-av" style="background:' + (o.color||"linear-gradient(135deg,#c9a84c,#8a6020)") + '">' + (o.initials||"??") + '</div>'
-      + '<div class="op-admin-info"><div class="op-admin-author">' + o.author + (o.role ? " - " + o.role : "") + '</div>'
-      + '<div class="op-admin-title">' + o.title + '</div>'
-      + '<div class="op-admin-actions"><button class="btn-danger" data-id="' + o.id + '">Remove</button></div></div></div>';
+  grid.innerHTML = _lists.opinion.map(function(o){
+    return '<div class="op-admin-card"><div class="op-admin-av" style="background:'+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+'">'+o.initials+'</div><div class="op-admin-info"><div class="op-admin-author">'+o.author+(o.role?" - "+o.role:"")+'</div><div class="op-admin-title">'+o.title+'</div><div class="op-admin-actions"><button class="btn-danger" data-id="'+o.id+'">Remove</button></div></div></div>';
   }).join("");
-  grid.querySelectorAll(".btn-danger").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      if (!confirm("Delete?")) return;
+  grid.querySelectorAll(".btn-danger").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      if(!confirm("Delete?")) return;
       db.collection("opinion").doc(this.getAttribute("data-id")).delete()
-        .then(function() { showToast("Removed"); }).catch(function() { showToast("Error", true); });
+        .then(function(){showToast("Removed");}).catch(function(){showToast("Error",true);});
     });
   });
 }
