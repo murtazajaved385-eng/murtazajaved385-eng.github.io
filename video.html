@@ -46,7 +46,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overfl
 .featured-card:hover{box-shadow:0 8px 40px rgba(0,0,0,0.17)}
 .feat-img{height:390px;position:relative;overflow:hidden}
 .feat-fade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.28) 55%,transparent 100%)}
-.feat-body{position:absolute;bottom:0;left:0;right:0;padding:2rem 2rem 1.8rem;z-index:2}
+.feat-.feat-body{position:absolute;bottom:0;left:0;right:0;padding:2rem 2rem 1.8rem;z-index:2}
 .tag-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem}
 .tag-break{background:var(--burgundy);color:#fff;font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;padding:3px 10px;letter-spacing:0.15em;text-transform:uppercase}
 .tag-cat{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--gold-light);letter-spacing:0.12em;text-transform:uppercase}
@@ -114,7 +114,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overfl
 .news-card{background:#fff;box-shadow:0 1px 12px rgba(0,0,0,0.07);cursor:pointer;transition:box-shadow .22s,transform .22s;border-top:3px solid transparent}
 .news-card:hover{box-shadow:0 5px 24px rgba(0,0,0,0.13);transform:translateY(-2px);border-top-color:var(--gold)}
 .card-thumb{width:100%;height:150px}
-.card-body{padding:1rem 1.1rem 1.1rem}
+.card-.card-body{padding:1rem 1.1rem 1.1rem}
 .card-cat{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;color:var(--burgundy);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px}
 .card-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:0.4rem}
 .card-excerpt{font-family:'EB Garamond',serif;font-size:0.88rem;font-style:italic;color:var(--muted);line-height:1.5}
@@ -191,10 +191,22 @@ footer{background:var(--gold-footer);margin-top:3rem}
 .fi-meta span{font-family:'Jost',sans-serif;font-size:0.54rem;color:var(--muted)}
 .fi-thumb{border-radius:2px}
 .feed-section-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;padding:1.5rem 0 0.5rem;border-top:2px solid var(--black);margin-top:1rem}
+
+.vid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:1400px;margin:0 auto;padding:2rem 3rem}
+.vid-card{cursor:pointer;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,0.07);transition:box-shadow .22s,transform .22s}
+.vid-card:hover{box-shadow:0 5px 24px rgba(0,0,0,0.13);transform:translateY(-2px)}
+.vid-thumb{position:relative;overflow:hidden}
+.vid-thumb-img{height:180px;width:100%}
+.vid-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 60%);display:flex;align-items:center;justify-content:center}
+.vid-play{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center}
+.vid-play-tri{width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.vid-dur{position:absolute;bottom:8px;right:10px;font-family:'Jost',sans-serif;font-size:0.56rem;color:rgba(255,255,255,0.75);background:rgba(0,0,0,0.5);padding:2px 6px;border-radius:2px}
+.vid-badge{position:absolute;top:8px;left:8px}
+.vid-cat{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;color:var(--burgundy);letter-spacing:0.12em;text-transform:uppercase;margin:0.75rem 1rem 0.25rem}
+.vid-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;line-height:1.4;color:var(--text);margin:0 1rem 0.3rem;padding-bottom:0.75rem}
+.vid-meta{display:flex;gap:1rem;padding:0 1rem 0.75rem}
+.vid-meta span{font-family:'Jost',sans-serif;font-size:0.54rem;color:var(--muted)}
 </style>
-
-
-
 </head>
 <body>
 
@@ -214,14 +226,23 @@ var db = firebase.firestore();
 
 <header class="masthead">
   <div class="mast-left"><div class="mast-date">Tuesday, March 17, 2026</div><div class="mast-time">Morning Dispatch</div></div>
-  <div class="mast-center"><a href="index.html" class="logo">ZENIT</a><div class="logo-sub">The Whole Picture &nbsp;·&nbsp; Every Angle</div></div>
+  <div class="mast-center"><a href="index.html" class="logo">ZENIT</a><div class="logo-sub">The Whole Picture &nbsp;&middot;&nbsp; Every Angle</div></div>
   <div class="mast-right"><button class="search-btn">&#9906; &nbsp;Search</button></div>
 </header>
-<nav class="nav"><div class="nav-inner"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="pakistan.html">Pakistan</a><a href="uae.html">UAE</a><a href="india.html">India</a><a href="business.html">Business</a><a href="sports.html">Sports</a><a href="lifestyle.html">Lifestyle</a><a href="opinion.html">Opinion</a><a href="world.html">World</a><a href="scitech.html">Sci-Tech</a><a href="video.html"  class="active">Video</a></div></nav>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html">Home</a><a href="latest.html">Latest</a><a href="pakistan.html">Pakistan</a>
+    <a href="uae.html">UAE</a><a href="india.html">India</a><a href="business.html">Business</a>
+    <a href="sports.html">Sports</a><a href="lifestyle.html">Lifestyle</a><a href="opinion.html">Opinion</a>
+    <a href="world.html">World</a><a href="scitech.html">Sci-Tech</a><a href="video.html" class="active">Video</a>
+  </div>
+</nav>
+
 <div class="ticker">
   <div class="ticker-label"><span class="tdot"></span>Breaking</div>
   <div style="overflow:hidden;flex:1"><div class="ticker-track" id="ticker-track">
-    <span>Loading latest news...</span><span>Loading latest news...</span>
+    <span>Welcome to ZENIT</span>
   </div></div>
 </div>
 
@@ -232,9 +253,14 @@ var db = firebase.firestore();
     <div class="section-desc">Shorts, live coverage, documentaries and programmes</div>
   </div>
 </div>
+
 <div class="vid-grid" id="vid-full-grid">
-  <div class="loading-state" style="grid-column:1/-1"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span><p>Loading videos...</p></div>
+  <div class="loading-state" style="grid-column:1/-1">
+    <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
+    <p>Loading videos...</p>
+  </div>
 </div>
+
 <div style="padding-bottom:3rem"></div>
 
 <footer>
@@ -253,71 +279,12 @@ var db = firebase.firestore();
     <div class="footer-copy">&copy; 2026 Zenit Media Group. All rights reserved.</div>
   </div>
 </footer>
-<script>
 
-db.collection('ticker').orderBy('createdAt','desc').onSnapshot(function(snap){
-  var tt = document.getElementById('ticker-track');
-  if(!tt) return;
-  var items = snap.docs.map(function(d){ return d.data().text; });
-  if(items.length === 0){
-    tt.innerHTML = '<span>Welcome to ZENIT — The Whole Picture, Every Angle</span>';
-    tt.style.animation = 'none';
-  } else {
-    // We need enough items to fill the screen for seamless loop
-    // Duplicate only if needed for smooth animation
-    var minItems = Math.ceil(10 / items.length);
-    var repeated = [];
-    for(var i = 0; i < minItems + 1; i++){
-      repeated = repeated.concat(items);
-    }
-    tt.innerHTML = repeated.map(function(t){ return '<span>' + t + '</span>'; }).join('');
-    // Reset animation
-    tt.style.animation = 'none';
-    tt.offsetHeight; // trigger reflow
-    tt.style.animation = '';
-  }
-});
-
-
-var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
-db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
-  var vids = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  window._allVideos = vids;
-  var grid = document.getElementById('vid-full-grid');
-  if(!grid) return;
-  var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
-  if(vids.length === 0){
-    grid.innerHTML = '<div class="empty-section" style="grid-column:1/-1"><p>No videos yet. Add some from the admin panel.</p></div>';
-    return;
-  }
-  grid.innerHTML = vids.map(function(v, i){
-    var thumbStyle = v.thumbnailUrl
-      ? 'background:#000;background-image:url('+v.thumbnailUrl+');background-size:cover;background-position:center'
-      : 'background:'+(bgMap[v.bg]||bgMap.vt1);
-    return '<div class="vid-card" style="cursor:pointer" data-vidindex="'+i+'">'
-      +'<div class="vid-thumb">'
-      +'<div class="vid-thumb-img" style="'+thumbStyle+'"></div>'
-      +'<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
-      +'<span class="vid-dur">'+(v.dur||'1:00')+'</span>'
-      +'<div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div>'
-      +'</div>'
-      +'<div class="vid-cat">'+v.cat+'</div>'
-      +'<div class="vid-title">'+v.title+'</div>'
-      +'<div class="vid-meta"><span>Just now</span><span>'+(v.likes||'0')+' views</span></div>'
-      +'</div>';
-  }).join('');
-  // Add click handlers
-  grid.onclick = null;
-  grid.addEventListener('click', function(e){
-    var card = e.target.closest('.vid-card');
-    if(card) openReelPlayer(parseInt(card.getAttribute('data-vidindex')), window._allVideos);
-  });
-});
-</script>
 <div id="reel-modal" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;flex-direction:column;align-items:center;justify-content:center">
   <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.1)">
     <div id="reel-progress-bar" style="height:100%;background:#c9a84c;transition:width .3s;width:0%"></div>
   </div>
+
 <script>
 var _reelVideos = [];
 var _reelIndex = 0;
@@ -481,5 +448,58 @@ document.addEventListener('touchend', function(e) {
   if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) reelNav(dx > 0 ? -1 : 1);
 });
 </script>
+
+<script>
+var bgMap = {vt1:'linear-gradient(170deg,#0a0a14,#1a2040)',vt2:'linear-gradient(170deg,#140a0a,#401a1a)',vt3:'linear-gradient(170deg,#0a140a,#1a3520)',vt4:'linear-gradient(170deg,#14120a,#3a2e10)',vt5:'linear-gradient(170deg,#0e0a14,#2a1840)',vt6:'linear-gradient(170deg,#140a0e,#401520)'};
+
+// Ticker
+db.collection('ticker').orderBy('createdAt','desc').onSnapshot(function(snap){
+  var tt = document.getElementById('ticker-track');
+  if(!tt) return;
+  var items = snap.docs.map(function(d){ return d.data().text; });
+  if(items.length > 0){
+    var doubled = items.concat(items);
+    tt.innerHTML = doubled.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+  }
+});
+
+// Videos
+db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
+  var vids = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  window._allVideos = vids;
+  var grid = document.getElementById('vid-full-grid');
+  if(!grid) return;
+  if(vids.length === 0){
+    grid.innerHTML = '<div class="empty-section" style="grid-column:1/-1"><p>No videos yet. Add some from the admin panel.</p></div>';
+    return;
+  }
+  grid.innerHTML = vids.map(function(v, i){
+    var thumbStyle = v.thumbnailUrl
+      ? 'background:#000;background-image:url('+v.thumbnailUrl+');background-size:cover;background-position:center'
+      : 'background:'+(bgMap[v.bg]||bgMap.vt1);
+    return '<div class="vid-card" data-vidindex="'+i+'">'
+      +'<div class="vid-thumb">'
+      +'<div class="vid-thumb-img" style="'+thumbStyle+'"></div>'
+      +'<div class="vid-overlay"><div class="vid-play"><div class="vid-play-tri"></div></div></div>'
+      +'<span class="vid-dur">'+(v.dur||'1:00')+'</span>'
+      +'<div class="vid-badge"><span class="rbadge '+(v.badge||'recap')+'">'+(v.badge||'Recap')+'</span></div>'
+      +'</div>'
+      +'<div class="vid-cat">'+v.cat+'</div>'
+      +'<div class="vid-title">'+v.title+'</div>'
+      +'<div class="vid-meta"><span>Just now</span><span>'+(v.likes||'0')+' views</span></div>'
+      +'</div>';
+  }).join('');
+  
+  // Click handler
+  grid.addEventListener('click', function(e){
+    var card = e.target.closest('.vid-card');
+    if(card){
+      var idx = parseInt(card.getAttribute('data-vidindex'));
+      openReelPlayer(idx, window._allVideos);
+    }
+  });
+});
+</script>
+
 </body>
 </html>
