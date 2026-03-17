@@ -80,6 +80,28 @@ footer{background:var(--gold-footer);margin-top:3rem}
 .footer-copy{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.45);letter-spacing:0.04em}
 .footer-links{display:flex;gap:1.5rem}
 .footer-links a{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.55);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase}
+
+.wa-share-btn {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#25D366;
+  color:#fff;
+  border:none;
+  padding:5px 10px;
+  font-family:'Jost',sans-serif;
+  font-size:0.55rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  margin-top:0.5rem;
+  transition:opacity .2s;
+}
+.wa-share-btn:hover{opacity:0.85}
+.wa-share-btn svg{width:12px;height:12px;fill:#fff;flex-shrink:0}
+
 </style>
 </head>
 <body style="background:#f0ece3;color:#1a1612">
@@ -96,6 +118,12 @@ firebase.initializeApp({
   appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
 });
 var db = firebase.firestore();
+
+function shareWA(title, url) {
+  var text = title + ' — Read on ZENIT: ' + url;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+
 </script>
 
 <!-- MASTHEAD -->
