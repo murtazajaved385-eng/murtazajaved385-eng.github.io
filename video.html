@@ -314,3 +314,172 @@ db.collection('videos').orderBy('createdAt','desc').onSnapshot(function(snap){
   });
 });
 </script>
+<div id="reel-modal" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;flex-direction:column;align-items:center;justify-content:center">
+  <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.1)">
+    <div id="reel-progress-bar" style="height:100%;background:#c9a84c;transition:width .3s;width:0%"></div>
+  </div>
+<script>
+var _reelVideos = [];
+var _reelIndex = 0;
+
+function getYoutubeId(url) {
+  if(!url) return null;
+  var patterns = [
+    /youtu\.be\/([\w-]{11})/,
+    /youtube\.com\/watch\?v=([\w-]{11})/,
+    /youtube\.com\/embed\/([\w-]{11})/,
+    /youtube\.com\/shorts\/([\w-]{11})/,
+    /youtube\.com\/live\/([\w-]{11})/
+  ];
+  for(var i=0;i<patterns.length;i++){
+    var m = url.match(patterns[i]);
+    if(m) return m[1];
+  }
+  return null;
+}
+
+function getInstagramId(url) {
+  if(!url) return null;
+  var m = url.match(/instagram\.com\/(p|reel|tv)\/([\w-]+)/);
+  return m ? m[2] : null;
+}
+
+function openReelPlayer(index, videos) {
+  if(!videos || !videos.length) return;
+  _reelVideos = videos;
+  _reelIndex = index || 0;
+  var modal = document.getElementById('reel-modal');
+  if(!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  renderReelSlide();
+}
+
+function closeReelPlayer() {
+  var modal = document.getElementById('reel-modal');
+  if(modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+  var wrap = document.getElementById('reel-video-wrap');
+  if(wrap) wrap.innerHTML = '';
+}
+
+function reelNav(dir) {
+  if(!_reelVideos.length) return;
+  _reelIndex = (_reelIndex + dir + _reelVideos.length) % _reelVideos.length;
+  var wrap = document.getElementById('reel-video-wrap');
+  if(wrap) wrap.innerHTML = '';
+  renderReelSlide();
+}
+
+function renderReelSlide() {
+  if(!_reelVideos.length) return;
+  var v = _reelVideos[_reelIndex];
+  if(!v) return;
+
+  var wrap = document.getElementById('reel-video-wrap');
+  var info = document.getElementById('reel-info');
+  var counter = document.getElementById('reel-counter');
+  var progressBar = document.getElementById('reel-progress-bar');
+
+  if(counter) counter.textContent = (_reelIndex+1) + ' / ' + _reelVideos.length;
+  if(progressBar) progressBar.style.width = ((_reelIndex+1)/_reelVideos.length*100) + '%';
+
+  var prevBtn = document.getElementById('reel-prev');
+  var nextBtn = document.getElementById('reel-next');
+  if(prevBtn) prevBtn.style.display = _reelVideos.length > 1 ? 'flex' : 'none';
+  if(nextBtn) nextBtn.style.display = _reelVideos.length > 1 ? 'flex' : 'none';
+
+  if(!wrap) return;
+  wrap.innerHTML = '';
+
+  var url = v.videoUrl || '';
+  var ytId = getYoutubeId(url);
+  var igId = getInstagramId(url);
+
+  if(ytId) {
+    // YouTube embed using nocookie domain
+    var embedUrl = 'https://www.youtube-nocookie.com/embed/' + ytId
+      + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&fs=1';
+    var iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    iframe.style.cssText = 'width:100%;height:100%;border:none';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
+    iframe.setAttribute('loading', 'lazy');
+    wrap.appendChild(iframe);
+
+  } else if(igId) {
+    // Instagram embed
+    var igDiv = document.createElement('div');
+    igDiv.style.cssText = 'width:100%;height:100%;overflow-y:auto;background:#000;display:flex;align-items:flex-start;justify-content:center;padding-top:1rem';
+    var igFrame = document.createElement('iframe');
+    igFrame.src = 'https://www.instagram.com/p/' + igId + '/embed/captioned/';
+    igFrame.style.cssText = 'width:400px;min-height:500px;border:none;border-radius:8px';
+    igFrame.setAttribute('scrolling', 'yes');
+    igFrame.setAttribute('allowtransparency', 'true');
+    igFrame.setAttribute('allowfullscreen', '');
+    igDiv.appendChild(igFrame);
+    wrap.appendChild(igDiv);
+
+  } else if(url) {
+    // Direct video file (MP4 etc)
+    var video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    video.autoplay = true;
+    video.setAttribute('playsinline', '');
+    video.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000';
+    wrap.appendChild(video);
+
+  } else if(v.thumbnailUrl) {
+    // No video URL - show thumbnail
+    var img = document.createElement('img');
+    img.src = v.thumbnailUrl;
+    img.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000';
+    wrap.appendChild(img);
+
+  } else {
+    // Fallback
+    var bgColors = ['linear-gradient(170deg,#0a0a14,#1a2040)','linear-gradient(170deg,#140a0a,#401a1a)','linear-gradient(170deg,#0a140a,#1a3520)'];
+    var fallback = document.createElement('div');
+    fallback.style.cssText = 'width:100%;height:100%;background:' + bgColors[_reelIndex % bgColors.length] + ';display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem';
+    fallback.innerHTML = '<div style="font-size:3rem;opacity:0.3">&#9654;</div><div style="font-family:EB Garamond,serif;font-style:italic;color:rgba(255,255,255,0.4);text-align:center;padding:2rem">' + v.title + '</div>';
+    wrap.appendChild(fallback);
+  }
+
+  // Update info panel
+  if(info) {
+    info.innerHTML = '<div class="reel-info-cat">' + (v.cat||'') + '</div>'
+      + '<div class="reel-info-title">' + (v.title||'') + '</div>'
+      + '<div class="reel-info-meta">' + (v.dur||'') + (v.dur&&v.likes?' &middot; ':'') + (v.likes?v.likes+' views':'') + '</div>';
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  var modal = document.getElementById('reel-modal');
+  if(!modal || modal.style.display === 'none') return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') reelNav(1);
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') reelNav(-1);
+  if(e.key === 'Escape') closeReelPlayer();
+});
+
+// Touch swipe
+var _tx = 0, _ty = 0;
+document.addEventListener('touchstart', function(e) {
+  var modal = document.getElementById('reel-modal');
+  if(!modal || modal.style.display === 'none') return;
+  _tx = e.touches[0].clientX;
+  _ty = e.touches[0].clientY;
+});
+document.addEventListener('touchend', function(e) {
+  var modal = document.getElementById('reel-modal');
+  if(!modal || modal.style.display === 'none') return;
+  var dx = e.changedTouches[0].clientX - _tx;
+  var dy = e.changedTouches[0].clientY - _ty;
+  if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) reelNav(dy > 0 ? -1 : 1);
+  if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) reelNav(dx > 0 ? -1 : 1);
+});
+</script>
+</body>
+</html>
