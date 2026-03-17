@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article — ZENIT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0a0a0a;--bg:#f0ece3;--gold:#c9a84c;--gold-light:#e0c070;--gold-pale:#f5e6b8;--gold-footer:#d4a832;--burgundy:#7a1c2e;--text:#1a1612;--muted:#6b5f4e;--rule:#d0c8b8}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+.masthead{background:var(--gold-footer);border-bottom:3px solid rgba(0,0,0,0.18);padding:16px 3rem;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:100px;position:sticky;top:0;z-index:200}
+.mast-left{display:flex;flex-direction:column;gap:4px}
+.mast-date{font-family:'Jost',sans-serif;font-size:0.72rem;font-weight:500;color:var(--black);letter-spacing:0.1em;text-transform:uppercase}
+.mast-time{font-family:'EB Garamond',serif;font-size:0.85rem;font-style:italic;color:rgba(0,0,0,0.55)}
+.mast-center{text-align:center}
+.logo{font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:700;color:var(--black);letter-spacing:0.22em;line-height:1;text-decoration:none;display:block}
+.logo-sub{font-family:'Jost',sans-serif;font-size:0.5rem;font-weight:400;color:rgba(0,0,0,0.55);letter-spacing:0.4em;text-transform:uppercase;margin-top:4px}
+.mast-right{display:flex;justify-content:flex-end}
+.back-btn{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.08);border:1.5px solid rgba(0,0,0,0.4);color:var(--black);padding:8px 20px;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border-radius:1px;text-decoration:none;transition:all .2s}
+.back-btn:hover{background:rgba(0,0,0,0.16)}
+.nav{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.07)}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:center}
+.nav-inner a{color:rgba(255,255,255,0.78);font-family:'Jost',sans-serif;font-size:0.64rem;font-weight:400;text-decoration:none;padding:0 1.05rem;height:46px;display:flex;align-items:center;letter-spacing:0.12em;text-transform:uppercase;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s}
+.nav-inner a:hover{color:#fff;border-bottom-color:var(--gold)}
+
+/* ARTICLE */
+.article-wrap{max-width:780px;margin:0 auto;padding:3rem 2rem 5rem}
+.article-section-tag{display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem}
+.article-section-link{font-family:'Jost',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--burgundy);text-decoration:none}
+.article-section-link:hover{color:var(--gold)}
+.article-sep{color:var(--rule)}
+.article-cat{font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+.article-headline{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;line-height:1.15;color:var(--black);margin-bottom:1.25rem}
+.article-deck{font-family:'EB Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--muted);line-height:1.6;margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid var(--rule)}
+.article-meta{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.article-author{font-family:'Jost',sans-serif;font-size:0.72rem;font-weight:500;color:var(--black)}
+.article-time{font-family:'Jost',sans-serif;font-size:0.65rem;color:var(--muted)}
+.article-read{font-family:'Jost',sans-serif;font-size:0.65rem;color:var(--muted)}
+.article-meta-sep{width:4px;height:4px;border-radius:50%;background:var(--rule)}
+.article-hero-img{width:100%;max-height:500px;object-fit:cover;border-radius:2px;margin-bottom:2rem;display:block}
+.article-hero-placeholder{width:100%;height:320px;border-radius:2px;margin-bottom:2rem;display:flex;align-items:center;justify-content:center}
+.article-body{font-family:'EB Garamond',serif;font-size:1.15rem;line-height:1.85;color:var(--text)}
+.article-body p{margin-bottom:1.5rem}
+.article-body-img{width:100%;border-radius:2px;margin:2rem 0;display:block}
+.article-body-img-caption{font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--muted);text-align:center;margin-top:-1.5rem;margin-bottom:2rem;letter-spacing:0.06em}
+.article-divider{border:none;border-top:1px solid var(--rule);margin:2.5rem 0}
+.article-share{display:flex;align-items:center;gap:1rem;padding:1.5rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:2.5rem 0}
+.article-share-label{font-family:'Jost',sans-serif;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.share-btn{background:var(--black);color:#fff;border:none;padding:8px 18px;font-family:'Jost',sans-serif;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.share-btn:hover{opacity:0.8}
+
+/* RELATED */
+.related-section{max-width:780px;margin:0 auto;padding:0 2rem 4rem}
+.related-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--black);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:2px solid var(--black)}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.related-card{background:#fff;box-shadow:0 1px 12px rgba(0,0,0,0.07);cursor:pointer;transition:box-shadow .2s,transform .2s;border-top:3px solid transparent;text-decoration:none;display:block;color:inherit}
+.related-card:hover{box-shadow:0 5px 24px rgba(0,0,0,0.13);transform:translateY(-2px);border-top-color:var(--gold)}
+.related-thumb{width:100%;height:120px;object-fit:cover}
+.related-thumb-placeholder{width:100%;height:120px}
+.related-body{padding:0.85rem 1rem 1rem}
+.related-cat{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;color:var(--burgundy);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px}
+.related-heading{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;line-height:1.35;color:var(--text)}
+.related-time{font-family:'Jost',sans-serif;font-size:0.54rem;color:var(--muted);margin-top:5px}
+
+/* LOADING */
+.loading-wrap{text-align:center;padding:6rem 2rem;color:var(--muted)}
+.loading-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);animation:ldot 1.4s ease-in-out infinite;margin:0 3px}
+.loading-dot:nth-child(2){animation-delay:.2s}.loading-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.not-found{text-align:center;padding:6rem 2rem}
+.not-found h2{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--black);margin-bottom:1rem}
+.not-found p{font-family:'EB Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem}
+
+footer{background:var(--gold-footer);margin-top:3rem}
+.footer-bottom{background:rgba(0,0,0,0.12);padding:1.25rem 3rem;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.45);letter-spacing:0.04em}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-family:'Jost',sans-serif;font-size:0.58rem;color:rgba(0,0,0,0.55);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
+  authDomain:"zenit-website.firebaseapp.com",
+  projectId:"zenit-website",
+  storageBucket:"zenit-website.firebasestorage.app",
+  messagingSenderId:"690745286720",
+  appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
+});
+var db = firebase.firestore();
+</script>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="mast-left"><div class="mast-date">Tuesday, March 17, 2026</div><div class="mast-time">Morning Dispatch</div></div>
+  <div class="mast-center"><a href="index.html" class="logo">ZENIT</a><div class="logo-sub">The Whole Picture &nbsp;&middot;&nbsp; Every Angle</div></div>
+  <div class="mast-right"><a href="javascript:history.back()" class="back-btn">&larr; &nbsp;Back</a></div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html">Home</a>
+    <a href="latest.html">Latest</a>
+    <a href="pakistan.html">Pakistan</a>
+    <a href="uae.html">UAE</a>
+    <a href="india.html">India</a>
+    <a href="business.html">Business</a>
+    <a href="sports.html">Sports</a>
+    <a href="lifestyle.html">Lifestyle</a>
+    <a href="opinion.html">Opinion</a>
+    <a href="world.html">World</a>
+    <a href="scitech.html">Sci-Tech</a>
+    <a href="video.html">Video</a>
+  </div>
+</nav>
+
+<!-- ARTICLE CONTENT -->
+<div id="article-loading" class="loading-wrap">
+  <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
+  <p style="font-family:'EB Garamond',serif;font-style:italic;margin-top:1rem;font-size:1.1rem">Loading article...</p>
+</div>
+
+<div id="article-content" style="display:none">
+  <div class="article-wrap">
+    <div class="article-section-tag">
+      <a href="#" class="article-section-link" id="art-section-link"></a>
+      <span class="article-sep">/</span>
+      <span class="article-cat" id="art-cat-tag"></span>
+    </div>
+    <h1 class="article-headline" id="art-headline"></h1>
+    <div class="article-deck" id="art-deck"></div>
+    <div class="article-meta">
+      <span class="article-author" id="art-author"></span>
+      <span class="article-meta-sep"></span>
+      <span class="article-time" id="art-time"></span>
+      <span class="article-meta-sep"></span>
+      <span class="article-read" id="art-read"></span>
+    </div>
+    <div id="art-hero-img-wrap"></div>
+    <div class="article-body" id="art-body"></div>
+    <div id="art-body-img-wrap"></div>
+    <div class="article-share">
+      <span class="article-share-label">Share this story</span>
+      <button class="share-btn" onclick="shareArticle()">Copy Link</button>
+      <button class="share-btn" style="background:var(--burgundy)" onclick="shareTwitter()">Twitter / X</button>
+      <button class="share-btn" style="background:#1877f2" onclick="shareFacebook()">Facebook</button>
+      <button class="share-btn" style="background:#25D366" onclick="shareWhatsapp()">WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="related-section" id="related-section" style="display:none">
+    <div class="related-title">Related Stories</div>
+    <div class="related-grid" id="related-grid"></div>
+  </div>
+</div>
+
+<div id="article-not-found" style="display:none" class="not-found">
+  <h2>Article not found</h2>
+  <p>This article may have been removed or the link is incorrect.</p>
+  <a href="index.html" style="display:inline-block;margin-top:1.5rem;font-family:'Jost',sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Return to Homepage &rarr;</a>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+    <div class="footer-copy">&copy; 2026 Zenit Media Group. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+var thumbColors = {Pakistan:'linear-gradient(140deg,#0a1f0a,#1a4020)',World:'linear-gradient(140deg,#0f1a30,#1a2744)',Business:'linear-gradient(140deg,#1a0f00,#5c3200)',Sports:'linear-gradient(140deg,#0a0a1a,#1a2050)',UAE:'linear-gradient(140deg,#1a1000,#4a3800)',India:'linear-gradient(140deg,#1a0800,#5c2000)',Lifestyle:'linear-gradient(140deg,#1a0a14,#5c1a30)','Sci-Tech':'linear-gradient(140deg,#001a1a,#003a3a)',Opinion:'linear-gradient(140deg,#0a0a0a,#2a2a2a)'};
+var sectionLinks = {Pakistan:'pakistan.html',World:'world.html',Business:'business.html',Sports:'sports.html',UAE:'uae.html',India:'india.html',Lifestyle:'lifestyle.html','Sci-Tech':'scitech.html',Opinion:'opinion.html'};
+
+// Get article ID from URL
+function getArticleId() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+var articleId = getArticleId();
+var currentArticle = null;
+
+if(!articleId) {
+  document.getElementById('article-loading').style.display = 'none';
+  document.getElementById('article-not-found').style.display = 'block';
+} else {
+  db.collection('articles').doc(articleId).get().then(function(doc) {
+    document.getElementById('article-loading').style.display = 'none';
+    if(!doc.exists) {
+      document.getElementById('article-not-found').style.display = 'block';
+      return;
+    }
+    var a = Object.assign({id:doc.id}, doc.data());
+    currentArticle = a;
+    renderArticle(a);
+    loadRelated(a);
+  }).catch(function() {
+    document.getElementById('article-loading').style.display = 'none';
+    document.getElementById('article-not-found').style.display = 'block';
+  });
+}
+
+function renderArticle(a) {
+  // Update page title
+  document.title = a.title + ' — ZENIT';
+
+  // Section tag
+  var secLink = document.getElementById('art-section-link');
+  secLink.textContent = a.section;
+  secLink.href = sectionLinks[a.section] || 'index.html';
+  document.getElementById('art-cat-tag').textContent = a.cat || a.section;
+
+  // Headline & deck
+  document.getElementById('art-headline').textContent = a.title;
+  var deck = document.getElementById('art-deck');
+  if(a.excerpt) {
+    deck.textContent = a.excerpt;
+    deck.style.display = 'block';
+  } else {
+    deck.style.display = 'none';
+  }
+
+  // Meta
+  document.getElementById('art-author').textContent = a.author || 'Zenit Staff';
+  document.getElementById('art-time').textContent = a.time || 'Just now';
+  document.getElementById('art-read').textContent = a.read || '3 min read';
+
+  // Hero image
+  var heroWrap = document.getElementById('art-hero-img-wrap');
+  if(a.thumbnailUrl) {
+    heroWrap.innerHTML = '<img src="'+a.thumbnailUrl+'" class="article-hero-img" alt="'+a.title+'">';
+  } else {
+    var bg = thumbColors[a.section] || 'linear-gradient(140deg,#0a0a0a,#1a1a1a)';
+    heroWrap.innerHTML = '<div class="article-hero-placeholder" style="background:'+bg+'"></div>';
+  }
+
+  // Body
+  var bodyEl = document.getElementById('art-body');
+  if(a.body) {
+    // Convert line breaks to paragraphs
+    var paragraphs = a.body.split('\n').filter(function(p){ return p.trim(); });
+    bodyEl.innerHTML = paragraphs.map(function(p){ return '<p>'+p+'</p>'; }).join('');
+  } else {
+    bodyEl.innerHTML = '<p style="color:var(--muted);font-style:italic">Full article content coming soon.</p>';
+  }
+
+  // Body image
+  var bodyImgWrap = document.getElementById('art-body-img-wrap');
+  if(a.bodyImageUrl) {
+    bodyImgWrap.innerHTML = '<img src="'+a.bodyImageUrl+'" class="article-body-img" alt="Article image"><p class="article-body-img-caption">Photo: Zenit Media</p>';
+  }
+
+  document.getElementById('article-content').style.display = 'block';
+}
+
+function loadRelated(a) {
+  db.collection('articles').orderBy('createdAt','desc').limit(10).get().then(function(snap) {
+    var all = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+    // Filter: same section, not current article, live only
+    var related = all.filter(function(art){
+      return art.id !== a.id && art.status === 'live' && art.section === a.section;
+    }).slice(0,3);
+    // If not enough same section, fill with other articles
+    if(related.length < 3) {
+      var others = all.filter(function(art){
+        return art.id !== a.id && art.status === 'live' && art.section !== a.section;
+      }).slice(0, 3 - related.length);
+      related = related.concat(others);
+    }
+    if(related.length === 0) return;
+    var grid = document.getElementById('related-grid');
+    grid.innerHTML = related.map(function(r) {
+      var bg = thumbColors[r.section] || 'linear-gradient(140deg,#0a0a0a,#1a1a1a)';
+      var thumb = r.thumbnailUrl
+        ? '<img src="'+r.thumbnailUrl+'" class="related-thumb" alt="'+r.title+'">'
+        : '<div class="related-thumb-placeholder" style="background:'+bg+'"></div>';
+      return '<a class="related-card" href="article.html?id='+r.id+'">'+thumb
+        +'<div class="related-body"><div class="related-cat">'+(r.cat||r.section)+'</div>'
+        +'<div class="related-heading">'+r.title+'</div>'
+        +'<div class="related-time">'+(r.time||'Just now')+'</div>'
+        +'</div></a>';
+    }).join('');
+    document.getElementById('related-section').style.display = 'block';
+  });
+}
+
+// Share functions
+function shareArticle() {
+  navigator.clipboard.writeText(window.location.href).then(function(){
+    alert('Link copied to clipboard!');
+  });
+}
+function shareTwitter() {
+  var text = currentArticle ? currentArticle.title : 'Check this out';
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(window.location.href));
+}
+function shareFacebook() {
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href));
+}
+function shareWhatsapp() {
+  var text = currentArticle ? currentArticle.title + ' ' + window.location.href : window.location.href;
+  window.open('https://wa.me/?text='+encodeURIComponent(text));
+}
+</script>
+</body>
+</html>
