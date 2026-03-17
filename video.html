@@ -150,7 +150,7 @@ firebase.initializeApp({
 var db = firebase.firestore();
 
 function shareWA(title, url) {
-  var text = title + ' — Read on ZENIT: ' + url;
+  var text = title + ' - Read on ZENIT: ' + url;
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 }
 
