@@ -347,7 +347,7 @@ db.collection('articles').orderBy('createdAt','desc').onSnapshot(function(snap){
       var feat = arts[0];
       var thumb = thumbColors[feat.section]||'linear-gradient(140deg,#0a0a0a,#1a1a1a)';
       var featBg = feat.thumbnailUrl ? 'background:'+thumb+';background-image:url('+feat.thumbnailUrl+');background-size:cover;background-position:center' : 'background:'+thumb;
-      featWrap.innerHTML = '<a class="featured-card" href="article.html?id='+feat.id+'" style="text-decoration:none;display:block"><div class="feat-img" style="'+featBg+'">'
+      featWrap.innerHTML = '<a class="featured-card" href="article.html?id='+feat.id+'" style="text-decoration:none;display:block;cursor:pointer" onclick="window.location.href=\'article.html?id='+feat.id+'\'"><div class="feat-img" style="'+featBg+'">'
         +'<div class="feat-fade"></div><div class="feat-body">'
         +'<div class="tag-row"><span class="tag-break">'+feat.section+'</span><span class="tag-cat">'+(feat.cat||feat.section)+'</span></div>'
         +'<div class="feat-headline">'+feat.title+'</div>'
