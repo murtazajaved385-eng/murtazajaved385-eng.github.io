@@ -7,197 +7,130 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --black:#0a0a0a;
-  --gold:#1565c0;
-  --gold-light:#42a5f5;
-  --gold-footer:#ffffff;
-  --burgundy:#1565c0;
-  --bg:#f8f9ff;
-  --panel:#ffffff;
-  --panel2:#f0f4f8;
-  --border:rgba(21,101,192,0.2);
-  --text:#111111;
-  --muted:#555555;
-  --success:#2d6a3f;
-  --danger:#6a1a2a;
-}
+:root{--black:#0a0a0a;--gold:#c9a84c;--gold-light:#e0c070;--gold-footer:#d4a832;--burgundy:#7a1c2e;--bg:#0d0d0d;--panel:#161616;--panel2:#1e1e1e;--border:rgba(201,168,76,0.15);--text:#e8e0d0;--muted:#8a7a62;--success:#2d6a3f;--danger:#6a1a2a;}
 html{scroll-behavior:smooth}
-body{font-family:'Jost',sans-serif;background:#f8f9ff;color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* LOGIN */
-#login-screen{position:fixed;inset:0;background:#f8f9ff;display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem}
-.login-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:#1565c0;letter-spacing:0.3em}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);letter-spacing:0.3em}
 .login-sub{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;margin-top:-1.5rem}
-.login-box{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:2.5rem;width:380px}
-.login-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#1565c0;margin-bottom:0.4rem;line-height:1.2}
-.login-hint{font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem;line-height:1.5}
+.login-box{background:var(--panel);border:1px solid var(--border);padding:2.5rem;width:380px}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:0.4rem}
+.login-hint{font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem}
 .field-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
-.field-input{width:100%;background:#f0f4f8;border:1px solid rgba(21,101,192,0.2);color:#111111;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;outline:none;margin-bottom:1rem;transition:border-color .2s}
-.field-input:focus{border-color:#1565c0}
-.btn-gold{width:100%;background:#ffffff;color:var(--black);border:none;padding:11px;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;margin-bottom:0.75rem}
+.field-input{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;outline:none;margin-bottom:1rem;transition:border-color .2s}
+.field-input:focus{border-color:var(--gold)}
+.btn-gold{width:100%;background:var(--gold-footer);color:var(--black);border:none;padding:11px;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;margin-bottom:0.75rem}
 .btn-gold:hover{opacity:0.88}
 .btn-forgot{width:100%;background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-forgot:hover{border-color:var(--gold);color:var(--gold)}
-.login-error{color:#e07070;font-family:'Jost',sans-serif;font-size:0.7rem;margin-top:0.75rem;display:none;text-align:center;line-height:1.4}
+.login-error{color:#e07070;font-family:'Jost',sans-serif;font-size:0.7rem;margin-top:0.75rem;display:none;text-align:center}
 .login-success{color:#7ecf94;font-family:'Jost',sans-serif;font-size:0.7rem;margin-top:0.75rem;display:none;text-align:center;line-height:1.5}
-
-/* APP SHELL */
 #admin-app{display:none;min-height:100vh}
-.admin-topbar{background:#ffffff;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid rgba(0,0,0,0.2)}
-.topbar-left{display:flex;align-items:center;gap:0}
-.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:#ffffff;letter-spacing:0.2em;line-height:1}
-.topbar-badge{font-family:'Jost',sans-serif;font-size:0.52rem;background:#1565c0;color:#ffffff;padding:3px 10px;letter-spacing:0.14em;text-transform:uppercase;margin-left:0.75rem;vertical-align:middle;line-height:1}
+.admin-topbar{background:var(--gold-footer);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid rgba(0,0,0,0.2)}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--black);letter-spacing:0.2em}
+.topbar-badge{font-family:'Jost',sans-serif;font-size:0.52rem;background:var(--black);color:var(--gold-light);padding:3px 10px;letter-spacing:0.14em;text-transform:uppercase;margin-left:0.75rem}
 .topbar-right{display:flex;align-items:center;gap:1rem}
-.firebase-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px;flex-shrink:0}
-.firebase-status{font-family:'Jost',sans-serif;font-size:0.6rem;color:rgba(0,0,0,0.55);display:flex;align-items:center}
-.topbar-user{font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(0,0,0,0.6);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.btn-logout{background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.25);color:var(--black);padding:6px 16px;font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-
+.firebase-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px}
+.firebase-status{font-family:'Jost',sans-serif;font-size:0.6rem;color:rgba(0,0,0,0.55);display:flex;align-items:center;gap:4px}
+.topbar-user{font-family:'Jost',sans-serif;font-size:0.65rem;color:rgba(0,0,0,0.6)}
+.btn-logout{background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.25);color:var(--black);padding:6px 16px;font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 .admin-body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
-
-/* SIDEBAR */
-.sidebar{background:#ffffff;border-right:1px solid rgba(21,101,192,0.15);padding:1.5rem 0;overflow-y:auto}
-.sidebar-section{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#1565c0;padding:0 1.25rem;margin-bottom:0.5rem;margin-top:1.25rem}
+.sidebar{background:var(--panel);border-right:1px solid var(--border);padding:1.5rem 0}
+.sidebar-section{font-family:'Jost',sans-serif;font-size:0.52rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding:0 1.25rem;margin-bottom:0.5rem;margin-top:1.25rem}
 .sidebar-section:first-child{margin-top:0}
-.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.25rem;cursor:pointer;transition:background .15s;border-left:3px solid transparent;font-family:'Jost',sans-serif;font-size:0.72rem;color:#555555;user-select:none;line-height:1.3}
-.nav-item:hover{background:rgba(21,101,192,0.06);color:var(--text)}
-.nav-item.active{background:rgba(21,101,192,0.1);border-left-color:#1565c0;color:var(--gold)}
-.nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.25rem;cursor:pointer;transition:background .15s;border-left:3px solid transparent;font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--muted)}
+.nav-item:hover{background:rgba(201,168,76,0.06);color:var(--text)}
+.nav-item.active{background:rgba(201,168,76,0.1);border-left-color:var(--gold);color:var(--gold)}
+.nav-icon{font-size:1rem;width:20px;text-align:center}
 .sidebar-divider{height:1px;background:var(--border);margin:1rem 1.25rem}
-
-/* MAIN */
-.main-content{padding:2rem;background:#f8f9ff;overflow-y:auto}
+.main-content{padding:2rem;background:var(--bg);overflow-y:auto}
 .page{display:none}.page.active{display:block}
 .page-header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
-.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:#1565c0;margin-bottom:6px;line-height:1.15}
-.page-desc{font-family:'EB Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted);line-height:1.5}
-
-/* STATS */
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.page-desc{font-family:'EB Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-.stat-card{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1.25rem 1.5rem}
+.stat-card{background:var(--panel);border:1px solid var(--border);padding:1.25rem 1.5rem}
 .stat-label{font-family:'Jost',sans-serif;font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
-.stat-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:#1565c0;line-height:1}
-.stat-sub{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--muted);margin-top:5px;line-height:1.4}
-
-/* DASHBOARD */
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
+.stat-sub{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--muted);margin-top:4px}
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.dash-card{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1.5rem}
+.dash-card{background:var(--panel);border:1px solid var(--border);padding:1.5rem}
 .dash-card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
-.recent-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.6rem 0;border-bottom:1px solid rgba(21,101,192,0.08);font-family:'Jost',sans-serif;font-size:0.68rem}
+.recent-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.07);font-family:'Jost',sans-serif;font-size:0.68rem}
 .recent-item:last-child{border-bottom:none}
-.recent-title{color:var(--text);flex:1;margin-right:1rem;line-height:1.5}
-.recent-cat{color:#1565c0;font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:2px}
+.recent-title{color:var(--text);flex:1;margin-right:1rem;line-height:1.4}
+.recent-cat{color:var(--gold);font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase}
 .recent-time{color:var(--muted);font-size:0.58rem;white-space:nowrap}
-
-/* FORMS */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.form-group{margin-bottom:0}.form-group.full{grid-column:1/-1}
-label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;line-height:1.4}
-input[type=text],input[type=email],input[type=password],select,textarea{width:100%;background:#f0f4f8;border:1px solid rgba(21,101,192,0.2);color:#111111;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0;line-height:1.4}
-input:focus,select:focus,textarea:focus{border-color:#1565c0}
+.form-group{margin-bottom:1.25rem}.form-group.full{grid-column:1/-1}
+label{font-family:'Jost',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+input[type=text],input[type=email],input[type=password],select,textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.8rem;outline:none;transition:border-color .2s;border-radius:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 select option{background:var(--panel2)}
 textarea{resize:vertical;min-height:100px;font-family:'EB Garamond',serif;font-size:0.95rem;font-style:italic}
-.form-actions{display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
-.btn-primary{background:#ffffff;color:var(--black);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+.form-actions{display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.btn-primary{background:var(--gold-footer);color:var(--black);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
 .btn-primary:hover{opacity:0.88}.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
-.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px 20px;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px 20px;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-secondary:hover{border-color:var(--gold);color:var(--text)}
-.btn-danger{background:var(--danger);color:#ffaaaa;border:none;padding:6px 14px;font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-
-/* TABS */
+.btn-danger{background:var(--danger);color:#ffaaaa;border:none;padding:6px 14px;font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 .tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
-.tab{padding:0.7rem 1.25rem;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap;line-height:1.4}
-.tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:#ffffff}
+.tab{padding:0.7rem 1.25rem;font-family:'Jost',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .tab-content{display:none}.tab-content.active{display:block}
-
-/* TABLE */
-.table-wrap{background:#ffffff;border:1px solid rgba(21,101,192,0.2);overflow:hidden}
-.table-toolbar{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.table-search{background:#f0f4f8;border:1px solid rgba(21,101,192,0.2);color:#111111;padding:7px 12px;font-family:'Jost',sans-serif;font-size:0.72rem;outline:none;min-width:180px}
+.table-wrap{background:var(--panel);border:1px solid var(--border);overflow:hidden}
+.table-toolbar{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.table-search{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 12px;font-family:'Jost',sans-serif;font-size:0.72rem;outline:none;width:220px}
 table{width:100%;border-collapse:collapse}
-th{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#555555;padding:0.75rem 1.25rem;text-align:left;border-bottom:1px solid rgba(21,101,192,0.2);background:#f0f4f8}
-td{padding:0.85rem 1.25rem;border-bottom:1px solid rgba(21,101,192,0.08);font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);vertical-align:top}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(201,168,76,0.03)}
-.td-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;line-height:1.3;margin-top:3px}
-.td-cat{display:inline-block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:#1565c0;background:rgba(21,101,192,0.1);padding:2px 8px;margin-bottom:4px}
-.td-thumb{width:60px;height:40px;border-radius:2px;object-fit:cover;display:block}
-.td-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
+th{font-family:'Jost',sans-serif;font-size:0.54rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:0.75rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);background:var(--panel)}
+td{padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.06);font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(201,168,76,0.03)}
+.td-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;line-height:1.3}
+.td-cat{display:inline-block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.1);padding:2px 8px;margin-bottom:4px}
+.td-thumb{width:60px;height:40px;border-radius:2px;object-fit:cover}
+.td-actions{display:flex;gap:0.5rem}
 .status-live{background:rgba(45,106,63,0.25);color:#7ecf94;border:1px solid rgba(45,106,63,0.4);font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;display:inline-block}
 .status-draft{background:rgba(100,100,100,0.2);color:#999;border:1px solid rgba(100,100,100,0.3);font-family:'Jost',sans-serif;font-size:0.5rem;padding:3px 8px;display:inline-block}
-
-/* TICKER */
-.ticker-list{background:#ffffff;border:1px solid rgba(21,101,192,0.2);margin-bottom:1.5rem}
+.ticker-list{background:var(--panel);border:1px solid var(--border);margin-bottom:1.5rem}
 .ticker-item{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.07)}
 .ticker-item:last-child{border-bottom:none}
-.ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text);line-height:1.5}
-.ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa;white-space:nowrap;flex-shrink:0}
-.ticker-cap-bar{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;background:var(--panel2);border:1px solid var(--border);padding:0.75rem 1rem}
-.ticker-cap-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
-.ticker-cap-fill{height:100%;border-radius:3px;transition:width .4s,background .3s;background:#1565c0}
-.ticker-cap-label{font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--muted);white-space:nowrap}
-.ticker-cap-count{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--gold);white-space:nowrap}
-
-/* VIDEOS */
+.ticker-text{flex:1;font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text)}
+.ticker-badge{font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;background:var(--burgundy);color:#ffaaaa}
 .video-admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
-.video-admin-card{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1rem;display:flex;gap:1rem}
-.video-admin-info{flex:1;min-width:0}
+.video-admin-card{background:var(--panel);border:1px solid var(--border);padding:1rem;display:flex;gap:1rem}
+.video-admin-thumb{width:120px;height:75px;border-radius:3px;object-fit:cover;flex-shrink:0;background:var(--panel2)}
+.video-admin-thumb video{width:100%;height:100%;object-fit:cover}
+.video-admin-info{flex:1}
 .video-admin-cat{font-family:'Jost',sans-serif;font-size:0.52rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
 .video-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.5rem}
 .video-admin-meta{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);margin-bottom:0.75rem}
 .video-admin-actions{display:flex;gap:0.5rem}
-
-/* OPINION */
 .opinion-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
-.op-admin-card{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start}
-.op-admin-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:700;color:var(--black);flex-shrink:0}
-.op-admin-info{flex:1;min-width:0}
-.op-admin-author{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:4px;line-height:1.4}
+.op-admin-card{background:var(--panel);border:1px solid var(--border);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start}
+.op-admin-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a6020);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:700;color:var(--black);flex-shrink:0}
+.op-admin-info{flex:1}
+.op-admin-author{font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:3px}
 .op-admin-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:0.5rem}
 .op-admin-actions{display:flex;gap:0.5rem;margin-top:0.5rem}
-
-/* SECTIONS */
-.sections-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.5rem}
-.section-chip{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:0.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem}
-.section-chip-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--text);line-height:1.2}
-.btn-chip-del{background:#c62828;color:#ffaaaa;border:none;padding:4px 10px;font-family:'Jost',sans-serif;font-size:0.55rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0}
-.sections-note{font-family:'EB Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--muted);margin-top:0.75rem;line-height:1.6}
-
-/* ANALYTICS */
-.analytics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
-.analytics-card{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1.25rem 1.5rem;position:relative;overflow:hidden}
-.analytics-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1565c0,#42a5f5)}
-.analytics-label{font-family:'Jost',sans-serif;font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
-.analytics-value{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:#1565c0;line-height:1.1}
-.analytics-sub{font-family:'Jost',sans-serif;font-size:0.58rem;color:var(--muted);margin-top:5px;line-height:1.4}
-.analytics-table-wrap{background:#ffffff;border:1px solid rgba(21,101,192,0.2);overflow:hidden}
-.view-bar-wrap{width:90px;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:8px}
-.view-bar{height:100%;background:#1565c0;border-radius:3px}
-
-/* MISC */
-.toast{position:fixed;bottom:2rem;right:2rem;background:#2d6a3f;color:#a0ffb8;padding:1rem 1.5rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.06em;border:1px solid rgba(45,106,63,0.5);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;max-width:300px;line-height:1.5}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.error{background:var(--danger);color:#ffaaaa;border-color:rgba(106,26,42,0.5)}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--success);color:#a0ffb8;padding:1rem 1.5rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.06em;border:1px solid rgba(45,106,63,0.5);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}.toast.error{background:var(--danger);color:#ffaaaa;border-color:rgba(106,26,42,0.5)}
 .empty-state{text-align:center;padding:3rem;color:var(--muted)}
 .empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4}
 .empty-text{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem}
-.char-count{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);text-align:right;margin-top:4px}
+.char-count{font-family:'Jost',sans-serif;font-size:0.56rem;color:var(--muted);text-align:right;margin-top:3px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
+/* Upload area */
 .upload-area{border:2px dashed var(--border);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:var(--panel2)}
-.upload-area:hover{border-color:#1565c0}
+.upload-area:hover{border-color:var(--gold)}
 .upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-area-text{font-family:'Jost',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.5}
-.upload-area-icon{font-size:1.5rem;margin-bottom:0.5rem;color:#1565c0}
+.upload-area-text{font-family:'Jost',sans-serif;font-size:0.7rem;color:var(--muted)}
+.upload-area-icon{font-size:1.5rem;margin-bottom:0.5rem;color:var(--gold)}
 .preview-img{max-width:100%;max-height:150px;margin-top:0.75rem;border-radius:2px;display:none}
 .preview-video{max-width:100%;max-height:150px;margin-top:0.75rem;border-radius:2px;display:none}
 .upload-progress{height:3px;background:var(--panel2);border-radius:2px;margin-top:0.75rem;display:none}
-.upload-progress-bar{height:100%;background:#1565c0;border-radius:2px;width:0%;transition:width .3s}
-.upload-status{font-family:'Jost',sans-serif;font-size:0.62rem;color:#1565c0;margin-top:0.5rem;display:none;line-height:1.4}
-.panel-box{background:#ffffff;border:1px solid rgba(21,101,192,0.2);padding:1.75rem;margin-bottom:1.5rem}
-.panel-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1565c0;margin-bottom:1rem;font-weight:600;line-height:1.2}
-.section-count-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:0.75rem}
+.upload-progress-bar{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .3s}
+.upload-status{font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--gold);margin-top:0.5rem;display:none}
 </style>
 </head>
 <body>
@@ -207,22 +140,21 @@ tr:hover td{background:rgba(201,168,76,0.03)}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
-  authDomain:"zenit-website.firebaseapp.com",
-  projectId:"zenit-website",
-  storageBucket:"zenit-website.firebasestorage.app",
-  messagingSenderId:"690745286720",
-  appId:"1:690745286720:web:7c9d8fa74ca7083d9dffa5"
+  apiKey: "AIzaSyA-jv6KyfEjsjGKTyyR9sWuE1eJy9zP0Jw",
+  authDomain: "zenit-website.firebaseapp.com",
+  projectId: "zenit-website",
+  storageBucket: "zenit-website.firebasestorage.app",
+  messagingSenderId: "690745286720",
+  appId: "1:690745286720:web:7c9d8fa74ca7083d9dffa5"
 });
 var auth = firebase.auth();
-var db   = firebase.firestore();
-var ADMIN_EMAIL   = "murtazajaved385@gmail.com";
-var CLOUD_NAME    = "dr8zqvhlh";
+var db = firebase.firestore();
+var ADMIN_EMAIL = "murtazajaved385@gmail.com";
+var CLOUD_NAME = "dr8zqvhlh";
 var UPLOAD_PRESET = "zenit_uploads";
-var TICKER_MAX    = 20;
 </script>
 
-<!-- ══════════ LOGIN ══════════ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div style="text-align:center">
     <div class="login-logo">ZENIT</div>
@@ -236,17 +168,14 @@ var TICKER_MAX    = 20;
       <input class="field-input" type="email" id="login-email" value="murtazajaved385@gmail.com">
       <label class="field-label">Password</label>
       <div style="position:relative">
-        <input class="field-input" type="password" id="login-pass" placeholder="Your password" style="padding-right:52px">
-        <span id="show-pw-btn" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span>
+        <input class="field-input" type="password" id="login-pass" placeholder="Your password" style="padding-right:50px">
+        <span id="show-pw-btn" style="position:absolute;right:12px;top:35%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:0.7rem;user-select:none">Show</span>
       </div>
       <button class="btn-gold" id="signin-btn">Sign In &rarr;</button>
       <button class="btn-forgot" id="forgot-btn">Forgot Password? Send Reset Email</button>
     </div>
     <div id="forgot-form" style="display:none">
-      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">
-        A password reset link will be sent to:<br>
-        <strong style="color:var(--gold)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd0c8cfc9dcc7dcd7dccbd8d98e8588fddad0dcd4d193ded2d0">[email&#160;protected]</a></strong>
-      </div>
+      <div style="font-family:'Jost',sans-serif;font-size:0.72rem;color:var(--text);margin-bottom:1rem;line-height:1.6">A password reset link will be sent to:<br><strong style="color:var(--gold)">murtazajaved385@gmail.com</strong></div>
       <button class="btn-gold" id="send-reset-btn">Send Reset Email &rarr;</button>
       <button class="btn-forgot" id="back-btn">Back to Sign In</button>
     </div>
@@ -255,22 +184,17 @@ var TICKER_MAX    = 20;
   </div>
 </div>
 
-<!-- ══════════ ADMIN APP ══════════ -->
+<!-- ADMIN APP -->
 <div id="admin-app">
   <div class="admin-topbar">
-    <div class="topbar-left">
-      <div class="topbar-logo">ZENIT</div>
-      <span class="topbar-badge">Admin</span>
-    </div>
+    <div style="display:flex;align-items:center"><div class="topbar-logo">ZENIT</div><span class="topbar-badge">Admin</span></div>
     <div class="topbar-right">
-      <div class="firebase-status"><span class="firebase-dot"></span>Firebase · Cloudinary</div>
+      <div class="firebase-status"><span class="firebase-dot"></span><span>Firebase + Cloudinary</span></div>
       <span class="topbar-user" id="topbar-email"></span>
       <button id="signout-btn" class="btn-logout">Sign Out</button>
     </div>
   </div>
-
   <div class="admin-body">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-section">Overview</div>
       <div class="nav-item active" id="nav-dashboard"><span class="nav-icon">&#9672;</span> Dashboard</div>
@@ -281,124 +205,66 @@ var TICKER_MAX    = 20;
       <div class="nav-item" id="nav-opinion"><span class="nav-icon">&#9872;</span> Opinion Pieces</div>
       <div class="sidebar-divider"></div>
       <div class="sidebar-section">Site</div>
-      <div class="nav-item" id="nav-sections"><span class="nav-icon">&#9783;</span> Manage Sections</div>
-      <div class="nav-item" id="nav-analytics"><span class="nav-icon">&#9650;</span> Analytics</div>
       <div class="nav-item" id="nav-website"><span class="nav-icon">&#8853;</span> View Website</div>
     </div>
 
     <div class="main-content">
 
-      <!-- ═══ DASHBOARD ═══ -->
+      <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
-        <div class="page-header">
-          <div class="page-title">Dashboard</div>
-          <div class="page-desc">Live overview of your ZENIT website content.</div>
-        </div>
+        <div class="page-header"><div class="page-title">Dashboard</div><div class="page-desc">Live overview of your ZENIT website content.</div></div>
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total Articles</div>
-            <div class="stat-value" id="stat-articles">0</div>
-            <div class="stat-sub">Across all sections</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Ticker Items</div>
-            <div class="stat-value" id="stat-ticker">0</div>
-            <div class="stat-sub">Max 20 · auto-rotates</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Video Reels</div>
-            <div class="stat-value" id="stat-videos">0</div>
-            <div class="stat-sub">Published shorts</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Total Page Views</div>
-            <div class="stat-value" id="stat-views">0</div>
-            <div class="stat-sub">All articles combined</div>
-          </div>
+          <div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value" id="stat-articles">0</div><div class="stat-sub">Across all sections</div></div>
+          <div class="stat-card"><div class="stat-label">Ticker Items</div><div class="stat-value" id="stat-ticker">0</div><div class="stat-sub">Breaking news</div></div>
+          <div class="stat-card"><div class="stat-label">Video Reels</div><div class="stat-value" id="stat-videos">0</div><div class="stat-sub">Published shorts</div></div>
+          <div class="stat-card"><div class="stat-label">Opinion Pieces</div><div class="stat-value" id="stat-opinion">0</div><div class="stat-sub">Writer columns</div></div>
         </div>
         <div class="dash-grid">
-          <div class="dash-card">
-            <div class="dash-card-title">Recent Articles</div>
-            <div id="dash-recent-articles">
-              <div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div>
-            </div>
-          </div>
-          <div class="dash-card">
-            <div class="dash-card-title">Most Viewed</div>
-            <div id="dash-top-views">
-              <div class="empty-state"><div class="empty-icon">&#9650;</div><div class="empty-text">Loading...</div></div>
-            </div>
-          </div>
+          <div class="dash-card"><div class="dash-card-title">Recent Articles</div><div id="dash-recent-articles"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></div></div>
+          <div class="dash-card"><div class="dash-card-title">Recent Videos</div><div id="dash-recent-videos"><div class="empty-state"><div class="empty-icon">&#9654;</div><div class="empty-text">Loading...</div></div></div></div>
         </div>
       </div>
 
-      <!-- ═══ ARTICLES ═══ -->
+      <!-- ARTICLES -->
       <div class="page" id="page-articles">
-        <div class="page-header">
-          <div class="page-title">Articles</div>
-          <div class="page-desc">Add articles with optional thumbnail and body images. Changes go live instantly.</div>
-        </div>
+        <div class="page-header"><div class="page-title">Articles</div><div class="page-desc">Add articles with optional thumbnail and body images. Changes go live instantly.</div></div>
         <div class="tabs">
           <div class="tab active" id="tab-articles-list">All Articles</div>
           <div class="tab" id="tab-articles-add">Add New Article</div>
         </div>
         <div class="tab-content active" id="articles-list">
           <div class="table-wrap">
-            <div class="table-toolbar">
-              <input class="table-search" type="text" id="art-search" placeholder="Search articles...">
-              <button class="btn-primary" id="btn-new-article">+ New Article</button>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Thumbnail</th><th>Title</th><th>Section</th>
-                  <th>Status</th><th>Views</th><th>Time</th><th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="articles-table-body">
-                <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr>
-              </tbody>
-            </table>
+            <div class="table-toolbar"><input class="table-search" type="text" id="art-search" placeholder="Search articles..."><button class="btn-primary" id="btn-new-article">+ New Article</button></div>
+            <table><thead><tr><th>Thumbnail</th><th>Title</th><th>Section</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
+            <tbody id="articles-table-body"><tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">Loading...</div></div></td></tr></tbody></table>
           </div>
         </div>
         <div class="tab-content" id="articles-add">
-          <div class="panel-box">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
+              <div class="form-group full"><label>Headline *</label><input type="text" id="art-title" placeholder="Enter article headline..."><div class="char-count"><span id="art-tc">0</span>/120</div></div>
+              <div class="form-group"><label>Section *</label><select id="art-section"><option value="">Select section...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Opinion</option><option>Sci-Tech</option></select></div>
+              <div class="form-group"><label>Category Tag</label><input type="text" id="art-cat" placeholder="e.g. Pakistan - Security"></div>
+              <div class="form-group full"><label>Excerpt</label><input type="text" id="art-excerpt" placeholder="Brief summary shown under headline..."></div>
+              <div class="form-group full"><label>Article Body</label><textarea id="art-body" rows="5" placeholder="Full article content..."></textarea></div>
+
+              <!-- THUMBNAIL UPLOAD -->
               <div class="form-group full">
-                <label>Headline *</label>
-                <input type="text" id="art-title" placeholder="Enter article headline...">
-                <div class="char-count"><span id="art-tc">0</span>/120</div>
-              </div>
-              <div class="form-group">
-                <label>Section *</label>
-                <select id="art-section"><option value="">Select section...</option></select>
-              </div>
-              <div class="form-group">
-                <label>Category Tag</label>
-                <input type="text" id="art-cat" placeholder="e.g. Pakistan - Security">
-              </div>
-              <div class="form-group full">
-                <label>Excerpt</label>
-                <input type="text" id="art-excerpt" placeholder="Brief summary shown under headline...">
-              </div>
-              <div class="form-group full">
-                <label>Article Body</label>
-                <textarea id="art-body" rows="5" placeholder="Full article content..."></textarea>
-              </div>
-              <div class="form-group full">
-                <label>Thumbnail Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0;font-family:'EB Garamond',serif;font-style:italic">(optional — a colour gradient shows if not uploaded)</span></label>
+                <label>Thumbnail Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — if not uploaded, a color gradient will be shown)</span></label>
                 <div class="upload-area" id="thumb-upload-area">
                   <input type="file" id="art-thumb-file" accept="image/*">
                   <div class="upload-area-icon">&#128247;</div>
-                  <div class="upload-area-text">Click or drag to upload thumbnail<br><span style="font-size:0.6rem">JPG, PNG, WebP — max 10MB</span></div>
+                  <div class="upload-area-text">Click or drag to upload thumbnail image<br><span style="font-size:0.6rem">JPG, PNG, WebP — max 10MB</span></div>
                   <img id="art-thumb-preview" class="preview-img">
                 </div>
                 <div class="upload-progress" id="thumb-progress"><div class="upload-progress-bar" id="thumb-progress-bar"></div></div>
                 <div class="upload-status" id="thumb-status"></div>
                 <input type="hidden" id="art-thumb-url">
               </div>
+
+              <!-- BODY IMAGE UPLOAD -->
               <div class="form-group full">
-                <label>Body Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0;font-family:'EB Garamond',serif;font-style:italic">(optional — appears inside the article)</span></label>
+                <label>Body Image <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — appears inside the article)</span></label>
                 <div class="upload-area" id="body-upload-area">
                   <input type="file" id="art-body-file" accept="image/*">
                   <div class="upload-area-icon">&#128444;</div>
@@ -409,67 +275,34 @@ var TICKER_MAX    = 20;
                 <div class="upload-status" id="body-status"></div>
                 <input type="hidden" id="art-body-img-url">
               </div>
-              <div class="form-group">
-                <label>Author</label>
-                <input type="text" id="art-author" placeholder="e.g. Ayesha Khalid">
-              </div>
-              <div class="form-group">
-                <label>Read Time</label>
-                <input type="text" id="art-read" placeholder="e.g. 4 min read">
-              </div>
-              <div class="form-group">
-                <label>Status</label>
-                <select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select>
-              </div>
-              <div class="form-group">
-                <label>Time Label</label>
-                <input type="text" id="art-time" placeholder="e.g. 2h ago">
-              </div>
+
+              <div class="form-group"><label>Author</label><input type="text" id="art-author" placeholder="e.g. Ayesha Khalid"></div>
+              <div class="form-group"><label>Read Time</label><input type="text" id="art-read" placeholder="e.g. 4 min read"></div>
+              <div class="form-group"><label>Status</label><select id="art-status"><option value="live">Live</option><option value="draft">Draft</option></select></div>
+              <div class="form-group"><label>Time Label</label><input type="text" id="art-time" placeholder="e.g. 2h ago"></div>
             </div>
-            <div class="form-actions">
-              <button class="btn-primary" id="btn-save-art">Save Article &rarr;</button>
-              <button class="btn-secondary" id="btn-clear-art">Clear</button>
-            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-art">Save Article &rarr;</button><button class="btn-secondary" id="btn-clear-art">Clear</button></div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ TICKER ═══ -->
+      <!-- TICKER -->
       <div class="page" id="page-ticker">
-        <div class="page-header">
-          <div class="page-title">Breaking News Ticker</div>
-          <div class="page-desc">Maximum 20 items. When you add a 21st, the oldest item is permanently deleted automatically. No archive is kept.</div>
-        </div>
-        <div class="panel-box">
-          <div class="panel-subtitle">Add Breaking News Item</div>
-          <div class="ticker-cap-bar">
-            <span class="ticker-cap-label">Capacity</span>
-            <div class="ticker-cap-track">
-              <div class="ticker-cap-fill" id="ticker-cap-fill" style="width:0%"></div>
-            </div>
-            <span class="ticker-cap-count" id="ticker-cap-count">0 / 20</span>
-          </div>
+        <div class="page-header"><div class="page-title">Breaking News Ticker</div><div class="page-desc">Add items — they appear on your website ticker instantly.</div></div>
+        <div style="background:var(--panel);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);margin-bottom:1rem">Add Breaking News Item</div>
           <div style="display:flex;gap:0.75rem;align-items:flex-end">
-            <div style="flex:1">
-              <label>Breaking News Text *</label>
-              <input type="text" id="ticker-input" placeholder="Enter breaking news headline...">
-              <div class="char-count"><span id="ticker-cc">0</span>/100</div>
-            </div>
-            <button class="btn-primary" style="margin-top:1.4rem;white-space:nowrap" id="btn-add-ticker">+ Add Item</button>
+            <div style="flex:1"><label>Breaking News Text *</label><input type="text" id="ticker-input" placeholder="Enter breaking news headline..."><div class="char-count"><span id="ticker-cc">0</span>/100</div></div>
+            <button class="btn-primary" style="margin-bottom:18px;white-space:nowrap" id="btn-add-ticker">+ Add Item</button>
           </div>
         </div>
-        <div class="section-count-label">Current Items (<span id="ticker-count">0</span> / 20)</div>
-        <div class="ticker-list" id="ticker-list">
-          <div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">Loading...</div></div>
-        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.75rem">Current Items (<span id="ticker-count">0</span>)</div>
+        <div class="ticker-list" id="ticker-list"><div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">Loading...</div></div></div>
       </div>
 
-      <!-- ═══ VIDEOS ═══ -->
+      <!-- VIDEOS -->
       <div class="page" id="page-videos">
-        <div class="page-header">
-          <div class="page-title">Video Reels</div>
-          <div class="page-desc">Upload video files, link YouTube or Instagram content. They stream directly on your website.</div>
-        </div>
+        <div class="page-header"><div class="page-title">Video Reels</div><div class="page-desc">Upload actual video files. They stream directly on your website.</div></div>
         <div class="tabs">
           <div class="tab active" id="tab-videos-list">All Videos</div>
           <div class="tab" id="tab-videos-add">Upload New Video</div>
@@ -480,42 +313,26 @@ var TICKER_MAX    = 20;
           </div>
         </div>
         <div class="tab-content" id="videos-add">
-          <div class="panel-box">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
-              <div class="form-group full">
-                <label>Video Title *</label>
-                <input type="text" id="vid-title" placeholder="Enter video title...">
-                <div class="char-count"><span id="vid-tc">0</span>/80</div>
-              </div>
-              <div class="form-group">
-                <label>Section / Category *</label>
-                <select id="vid-cat"><option value="">Select...</option></select>
-              </div>
-              <div class="form-group">
-                <label>Badge</label>
-                <select id="vid-badge">
-                  <option value="live">Live</option>
-                  <option value="recap">Recap</option>
-                  <option value="analysis">Analysis</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Duration <span style="color:var(--muted);font-size:0.55rem;text-transform:none;font-family:'EB Garamond',serif;font-style:italic">(auto-detected after upload)</span></label>
-                <input type="text" id="vid-dur" placeholder="e.g. 2:34">
-              </div>
-              <div class="form-group">
-                <label>Likes Count</label>
-                <input type="text" id="vid-likes" placeholder="e.g. 14k">
-              </div>
+              <div class="form-group full"><label>Video Title *</label><input type="text" id="vid-title" placeholder="Enter video title..."><div class="char-count"><span id="vid-tc">0</span>/80</div></div>
+              <div class="form-group"><label>Section / Category *</label><select id="vid-cat"><option value="">Select...</option><option>Pakistan</option><option>World</option><option>Business</option><option>Sports</option><option>UAE</option><option>India</option><option>Lifestyle</option><option>Sci-Tech</option></select></div>
+              <div class="form-group"><label>Badge</label><select id="vid-badge"><option value="live">Live</option><option value="recap">Recap</option><option value="analysis">Analysis</option></select></div>
+              <div class="form-group"><label>Duration <span style="color:var(--muted);font-size:0.55rem;text-transform:none">(auto-detected after upload)</span></label><input type="text" id="vid-dur" placeholder="e.g. 2:34"></div>
+              <div class="form-group"><label>Likes Count</label><input type="text" id="vid-likes" placeholder="e.g. 14k"></div>
+
+              <!-- VIDEO SOURCE TABS -->
               <div class="form-group full">
                 <label>Video Source *</label>
                 <div style="display:flex;gap:0;margin-bottom:1rem;border-bottom:1px solid var(--border)">
-                  <div class="tab active" id="vid-tab-upload">Upload File</div>
-                  <div class="tab" id="vid-tab-youtube">YouTube URL</div>
-                  <div class="tab" id="vid-tab-instagram">Instagram URL</div>
+                  <div class="tab active" id="vid-tab-upload" style="cursor:pointer">Upload File</div>
+                  <div class="tab" id="vid-tab-youtube" style="cursor:pointer">YouTube URL</div>
+                  <div class="tab" id="vid-tab-instagram" style="cursor:pointer">Instagram URL</div>
                 </div>
+
+                <!-- FILE UPLOAD -->
                 <div id="vid-source-upload">
-                  <div class="upload-area">
+                  <div class="upload-area" id="vid-upload-area">
                     <input type="file" id="vid-file" accept="video/*">
                     <div class="upload-area-icon">&#127916;</div>
                     <div class="upload-area-text">Click or drag to upload your video file<br><span style="font-size:0.6rem">MP4 recommended — max 100MB on free plan</span></div>
@@ -524,23 +341,30 @@ var TICKER_MAX    = 20;
                   <div class="upload-progress" id="vid-progress"><div class="upload-progress-bar" id="vid-progress-bar"></div></div>
                   <div class="upload-status" id="vid-status"></div>
                 </div>
+
+                <!-- YOUTUBE URL -->
                 <div id="vid-source-youtube" style="display:none">
-                  <input type="text" id="vid-youtube-url" placeholder="e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...">
+                  <input type="text" id="vid-youtube-url" placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtu.be/...">
                   <div style="font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);margin-top:6px">Paste any YouTube video or Shorts URL</div>
                   <div id="vid-youtube-preview" style="margin-top:0.75rem;display:none">
                     <iframe id="vid-youtube-iframe" width="100%" height="200" frameborder="0" allowfullscreen style="border-radius:3px"></iframe>
                   </div>
                 </div>
+
+                <!-- INSTAGRAM URL -->
                 <div id="vid-source-instagram" style="display:none">
                   <input type="text" id="vid-instagram-url" placeholder="e.g. https://www.instagram.com/reel/ABC123/">
                   <div style="font-family:'Jost',sans-serif;font-size:0.6rem;color:var(--muted);margin-top:6px">Paste any Instagram Reel or Post URL</div>
                 </div>
+
                 <input type="hidden" id="vid-url">
                 <input type="hidden" id="vid-thumb-url">
               </div>
+
+              <!-- VIDEO THUMBNAIL -->
               <div class="form-group full">
-                <label>Video Thumbnail <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0;font-family:'EB Garamond',serif;font-style:italic">(optional — auto-generated from video if not uploaded)</span></label>
-                <div class="upload-area">
+                <label>Video Thumbnail <span style="color:var(--muted);font-size:0.55rem;text-transform:none;letter-spacing:0">(optional — auto-generated from video if not uploaded)</span></label>
+                <div class="upload-area" id="vid-thumb-area">
                   <input type="file" id="vid-thumb-file" accept="image/*">
                   <div class="upload-area-icon">&#128247;</div>
                   <div class="upload-area-text">Click or drag to upload a thumbnail for this video</div>
@@ -550,20 +374,14 @@ var TICKER_MAX    = 20;
                 <div class="upload-status" id="vid-thumb-status"></div>
               </div>
             </div>
-            <div class="form-actions">
-              <button class="btn-primary" id="btn-save-vid">Upload &amp; Publish Video &rarr;</button>
-              <button class="btn-secondary" id="btn-clear-vid">Clear</button>
-            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-vid">Upload &amp; Publish Video &rarr;</button><button class="btn-secondary" id="btn-clear-vid">Clear</button></div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ OPINION ═══ -->
+      <!-- OPINION -->
       <div class="page" id="page-opinion">
-        <div class="page-header">
-          <div class="page-title">Opinion Pieces</div>
-          <div class="page-desc">Add opinion pieces — they appear on your website instantly.</div>
-        </div>
+        <div class="page-header"><div class="page-title">Opinion Pieces</div><div class="page-desc">Add opinion pieces — they appear on your website instantly.</div></div>
         <div class="tabs">
           <div class="tab active" id="tab-opinion-list">All Opinions</div>
           <div class="tab" id="tab-opinion-add">Add New Opinion</div>
@@ -574,138 +392,33 @@ var TICKER_MAX    = 20;
           </div>
         </div>
         <div class="tab-content" id="opinion-add">
-          <div class="panel-box">
+          <div style="background:var(--panel);border:1px solid var(--border);padding:1.75rem">
             <div class="form-grid">
-              <div class="form-group">
-                <label>Author Name *</label>
-                <input type="text" id="op-author" placeholder="e.g. Ayesha Khalid">
-              </div>
-              <div class="form-group">
-                <label>Author Role</label>
-                <input type="text" id="op-role" placeholder="e.g. Senior Correspondent">
-              </div>
-              <div class="form-group">
-                <label>Initials <span style="color:var(--muted);font-size:0.55rem;text-transform:none;font-family:'EB Garamond',serif;font-style:italic">(auto-generated if blank)</span></label>
-                <input type="text" id="op-initials" placeholder="e.g. AK" maxlength="2">
-              </div>
-              <div class="form-group">
-                <label>Avatar Color</label>
-                <select id="op-color">
-                  <option value="linear-gradient(135deg,#c9a84c,#8a6020)">Gold</option>
-                  <option value="linear-gradient(135deg,#1b4a8a,#2d70c8)">Blue</option>
-                  <option value="linear-gradient(135deg,#5c1020,#8b2030)">Burgundy</option>
-                  <option value="linear-gradient(135deg,#1a3020,#2d5040)">Green</option>
-                  <option value="linear-gradient(135deg,#3a1020,#6a1a38)">Plum</option>
-                </select>
-              </div>
-              <div class="form-group full">
-                <label>Opinion Title *</label>
-                <input type="text" id="op-title" placeholder="Opinion headline...">
-                <div class="char-count"><span id="op-tc">0</span>/120</div>
-              </div>
-              <div class="form-group full">
-                <label>Opening Paragraph</label>
-                <textarea id="op-deck" rows="4" placeholder="Opening argument..."></textarea>
-              </div>
-              <div class="form-group">
-                <label>Read Time</label>
-                <input type="text" id="op-read" placeholder="e.g. 6 min read">
-              </div>
-              <div class="form-group">
-                <label>Time Label</label>
-                <input type="text" id="op-time" placeholder="e.g. 3h ago">
-              </div>
+              <div class="form-group"><label>Author Name *</label><input type="text" id="op-author" placeholder="e.g. Ayesha Khalid"></div>
+              <div class="form-group"><label>Author Role</label><input type="text" id="op-role" placeholder="e.g. Senior Correspondent"></div>
+              <div class="form-group"><label>Initials</label><input type="text" id="op-initials" placeholder="e.g. AK" maxlength="2"></div>
+              <div class="form-group"><label>Avatar Color</label><select id="op-color"><option value="linear-gradient(135deg,#c9a84c,#8a6020)">Gold</option><option value="linear-gradient(135deg,#1b4a8a,#2d70c8)">Blue</option><option value="linear-gradient(135deg,#5c1020,#8b2030)">Burgundy</option><option value="linear-gradient(135deg,#1a3020,#2d5040)">Green</option><option value="linear-gradient(135deg,#3a1020,#6a1a38)">Plum</option></select></div>
+              <div class="form-group full"><label>Opinion Title *</label><input type="text" id="op-title" placeholder="Opinion headline..."><div class="char-count"><span id="op-tc">0</span>/120</div></div>
+              <div class="form-group full"><label>Opening Paragraph</label><textarea id="op-deck" rows="4" placeholder="Opening argument..."></textarea></div>
+              <div class="form-group"><label>Read Time</label><input type="text" id="op-read" placeholder="e.g. 6 min read"></div>
+              <div class="form-group"><label>Time Label</label><input type="text" id="op-time" placeholder="e.g. 3h ago"></div>
             </div>
-            <div class="form-actions">
-              <button class="btn-primary" id="btn-save-op">Save Opinion &rarr;</button>
-              <button class="btn-secondary" id="btn-clear-op">Clear</button>
-            </div>
+            <div class="form-actions"><button class="btn-primary" id="btn-save-op">Save Opinion &rarr;</button><button class="btn-secondary" id="btn-clear-op">Clear</button></div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ MANAGE SECTIONS ═══ -->
-      <div class="page" id="page-sections">
-        <div class="page-header">
-          <div class="page-title">Manage Sections</div>
-          <div class="page-desc">Add or remove website sections. They appear instantly in all navigation menus and article / video dropdowns. Removing a section does not delete its articles.</div>
-        </div>
-        <div class="panel-box">
-          <div class="panel-subtitle">Add New Section</div>
-          <div style="display:flex;gap:0.75rem;align-items:flex-end">
-            <div style="flex:1">
-              <label>Section Name</label>
-              <input type="text" id="section-new-name" placeholder="e.g. Canada, Technology, Culture...">
-            </div>
-            <button class="btn-primary" style="margin-top:1.4rem" id="btn-add-section">+ Add Section</button>
-          </div>
-          <div class="sections-note">Section names are capitalised automatically. Adding a section makes it available immediately in article &amp; video dropdowns. Removing a section only removes the navigation link — existing articles stay in Firestore.</div>
-          <div style="margin-top:1rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:1rem 1.25rem;border-left:3px solid var(--gold)">
-            <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">&#9888; Required: Firestore Rules</div>
-            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem;line-height:1.5">If sections show 0 or you get errors, your Firestore rules need to allow access to the <strong style="font-style:normal;color:var(--text)">sections</strong> collection. In the <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold-light)">Firebase Console</a> go to <strong style="font-style:normal;color:var(--text)">Firestore → Rules</strong> and make sure you have:</div>
-            <pre style="background:var(--panel2);border:1px solid var(--border);padding:0.85rem 1rem;font-family:monospace;font-size:0.72rem;color:#a0d8a0;line-height:1.7;overflow-x:auto">match /sections/{doc} {
-  allow read, write: if request.auth != null;
-}</pre>
-          </div>
-        </div>
-        <div class="section-count-label">Active Sections (<span id="sections-count">0</span>)</div>
-        <div class="sections-grid" id="sections-grid">
-          <div class="empty-state" style="grid-column:1/-1;padding:2rem"><div class="empty-icon">&#9783;</div><div class="empty-text">Loading...</div></div>
-        </div>
-      </div>
-
-      <!-- ═══ ANALYTICS ═══ -->
-      <div class="page" id="page-analytics">
-        <div class="page-header">
-          <div class="page-title">Analytics</div>
-          <div class="page-desc">View counts are tracked automatically each time a reader opens an article on your website.</div>
-        </div>
-        <div class="analytics-grid">
-          <div class="analytics-card">
-            <div class="analytics-label">Total Article Views</div>
-            <div class="analytics-value" id="ana-total">0</div>
-            <div class="analytics-sub">All time, all articles</div>
-          </div>
-          <div class="analytics-card">
-            <div class="analytics-label">Most Viewed Article</div>
-            <div class="analytics-value" id="ana-top-views" style="font-size:1.6rem">—</div>
-            <div class="analytics-sub" id="ana-top-title">No data yet</div>
-          </div>
-          <div class="analytics-card">
-            <div class="analytics-label">Articles Read At Least Once</div>
-            <div class="analytics-value" id="ana-with-views">0</div>
-            <div class="analytics-sub">Have at least 1 view</div>
-          </div>
-        </div>
-        <div class="analytics-table-wrap">
-          <div class="table-toolbar">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--text)">Article View Counts</span>
-            <input class="table-search" type="text" id="ana-search" placeholder="Search articles...">
-          </div>
-          <table>
-            <thead>
-              <tr><th>Title</th><th>Section</th><th>Views</th><th>Bar</th><th>Status</th></tr>
-            </thead>
-            <tbody id="analytics-table-body">
-              <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#9650;</div><div class="empty-text">Loading analytics...</div></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div><!-- /main-content -->
-  </div><!-- /admin-body -->
-</div><!-- /admin-app -->
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ── STATE ── */
-var _lists = {articles:[], ticker:[], videos:[], opinion:[], sections:[]};
-var _defaultSections = ["Pakistan","World","Business","Sports","UAE","India","Lifestyle","Opinion","Sci-Tech"];
+<script>
+var _lists = {articles:[], ticker:[], videos:[], opinion:[]};
 
-/* ── AUTH ── */
+// AUTH
 auth.onAuthStateChanged(function(user) {
-  if(user && user.email === ADMIN_EMAIL) {
+  if (user && user.email === ADMIN_EMAIL) {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("admin-app").style.display = "block";
     document.getElementById("topbar-email").textContent = user.email;
@@ -715,81 +428,73 @@ auth.onAuthStateChanged(function(user) {
     document.getElementById("admin-app").style.display = "none";
   }
 });
+
 document.getElementById("signin-btn").addEventListener("click", function() {
   var email = document.getElementById("login-email").value.trim();
-  var pass  = document.getElementById("login-pass").value;
-  var err   = document.getElementById("login-error");
-  err.style.display = "none";
+  var pass = document.getElementById("login-pass").value;
+  var errEl = document.getElementById("login-error");
+  errEl.style.display = "none";
   auth.signInWithEmailAndPassword(email, pass).catch(function() {
-    err.textContent = "Incorrect email or password.";
-    err.style.display = "block";
+    errEl.textContent = "Incorrect email or password.";
+    errEl.style.display = "block";
   });
 });
-document.getElementById("login-pass").addEventListener("keydown", function(e) {
-  if(e.key==="Enter") document.getElementById("signin-btn").click();
-});
+document.getElementById("login-pass").addEventListener("keydown", function(e) { if(e.key==="Enter") document.getElementById("signin-btn").click(); });
 document.getElementById("show-pw-btn").addEventListener("click", function() {
   var el = document.getElementById("login-pass");
-  el.type = el.type==="password" ? "text" : "password";
-  this.textContent = el.type==="password" ? "Show" : "Hide";
+  el.type = el.type==="password"?"text":"password";
+  this.textContent = el.type==="password"?"Show":"Hide";
 });
 document.getElementById("forgot-btn").addEventListener("click", function() {
   document.getElementById("login-form").style.display = "none";
   document.getElementById("forgot-form").style.display = "block";
   document.getElementById("login-title").textContent = "Reset Password";
-  document.getElementById("login-hint").textContent = "A reset link will be emailed to you.";
 });
 document.getElementById("back-btn").addEventListener("click", function() {
   document.getElementById("login-form").style.display = "block";
   document.getElementById("forgot-form").style.display = "none";
   document.getElementById("login-title").textContent = "Sign In";
-  document.getElementById("login-hint").textContent = "Sign in with your Gmail to access the dashboard";
 });
 document.getElementById("send-reset-btn").addEventListener("click", function() {
   auth.sendPasswordResetEmail(ADMIN_EMAIL).then(function() {
-    var s = document.getElementById("login-success");
-    s.textContent = "Reset email sent! Check your inbox.";
-    s.style.display = "block";
+    document.getElementById("login-success").textContent = "Reset email sent! Check your inbox.";
+    document.getElementById("login-success").style.display = "block";
   }).catch(function() {
-    var e = document.getElementById("login-error");
-    e.textContent = "Error sending email. Try again.";
-    e.style.display = "block";
+    document.getElementById("login-error").textContent = "Error sending email.";
+    document.getElementById("login-error").style.display = "block";
   });
 });
 document.getElementById("signout-btn").addEventListener("click", function() { auth.signOut(); });
 
-/* ── NAV ── */
+// NAV
 function showPage(p) {
   document.querySelectorAll(".page").forEach(function(x){ x.classList.remove("active"); });
   document.querySelectorAll(".nav-item").forEach(function(x){ x.classList.remove("active"); });
-  var pg  = document.getElementById("page-"+p);
-  var nav = document.getElementById("nav-"+p);
-  if(pg)  pg.classList.add("active");
-  if(nav) nav.classList.add("active");
+  document.getElementById("page-"+p).classList.add("active");
+  document.getElementById("nav-"+p).classList.add("active");
 }
-["dashboard","articles","ticker","videos","opinion","sections","analytics"].forEach(function(p) {
-  document.getElementById("nav-"+p).addEventListener("click", function(){ showPage(p); });
-});
+document.getElementById("nav-dashboard").addEventListener("click", function(){ showPage("dashboard"); });
+document.getElementById("nav-articles").addEventListener("click", function(){ showPage("articles"); });
+document.getElementById("nav-ticker").addEventListener("click", function(){ showPage("ticker"); });
+document.getElementById("nav-videos").addEventListener("click", function(){ showPage("videos"); });
+document.getElementById("nav-opinion").addEventListener("click", function(){ showPage("opinion"); });
 document.getElementById("nav-website").addEventListener("click", function(){ window.open("index.html","_blank"); });
 
 function switchTab(s,t) {
   var pg = document.getElementById("page-"+s);
   pg.querySelectorAll(".tab").forEach(function(x){ x.classList.remove("active"); });
   pg.querySelectorAll(".tab-content").forEach(function(x){ x.classList.remove("active"); });
-  var tab = document.getElementById("tab-"+s+"-"+t);
-  var cnt = document.getElementById(s+"-"+t);
-  if(tab) tab.classList.add("active");
-  if(cnt) cnt.classList.add("active");
+  document.getElementById("tab-"+s+"-"+t).classList.add("active");
+  document.getElementById(s+"-"+t).classList.add("active");
 }
-document.getElementById("tab-articles-list").addEventListener("click",function(){ switchTab("articles","list"); });
-document.getElementById("tab-articles-add").addEventListener("click",function(){ switchTab("articles","add"); });
-document.getElementById("tab-videos-list").addEventListener("click",function(){ switchTab("videos","list"); });
-document.getElementById("tab-videos-add").addEventListener("click",function(){ switchTab("videos","add"); });
-document.getElementById("tab-opinion-list").addEventListener("click",function(){ switchTab("opinion","list"); });
-document.getElementById("tab-opinion-add").addEventListener("click",function(){ switchTab("opinion","add"); });
-document.getElementById("btn-new-article").addEventListener("click",function(){ switchTab("articles","add"); });
+document.getElementById("tab-articles-list").addEventListener("click", function(){ switchTab("articles","list"); });
+document.getElementById("tab-articles-add").addEventListener("click", function(){ switchTab("articles","add"); });
+document.getElementById("tab-videos-list").addEventListener("click", function(){ switchTab("videos","list"); });
+document.getElementById("tab-videos-add").addEventListener("click", function(){ switchTab("videos","add"); });
+document.getElementById("tab-opinion-list").addEventListener("click", function(){ switchTab("opinion","list"); });
+document.getElementById("tab-opinion-add").addEventListener("click", function(){ switchTab("opinion","add"); });
+document.getElementById("btn-new-article").addEventListener("click", function(){ switchTab("articles","add"); });
 
-/* ── TOAST ── */
 function showToast(msg, err) {
   var t = document.getElementById("toast");
   t.textContent = msg;
@@ -798,394 +503,329 @@ function showToast(msg, err) {
   setTimeout(function(){ t.classList.remove("show"); }, 3500);
 }
 
-/* ── CLOUDINARY ── */
-function uploadToCloudinary(file, barId, statusId, progressId, cb) {
-  var fd = new FormData();
-  fd.append("file", file);
-  fd.append("upload_preset", UPLOAD_PRESET);
-  fd.append("cloud_name", CLOUD_NAME);
-  var bar  = document.getElementById(barId);
-  var stat = document.getElementById(statusId);
-  var prog = document.getElementById(progressId);
-  prog.style.display = "block";
-  stat.style.display = "block";
-  stat.textContent = "Uploading...";
+// CLOUDINARY UPLOAD
+function uploadToCloudinary(file, progressBarId, statusId, progressContainerId, callback) {
+  var formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+  formData.append("cloud_name", CLOUD_NAME);
+
+  var progressContainer = document.getElementById(progressContainerId);
+  var progressBar = document.getElementById(progressBarId);
+  var status = document.getElementById(statusId);
+
+  progressContainer.style.display = "block";
+  status.style.display = "block";
+  status.textContent = "Uploading...";
+
   var xhr = new XMLHttpRequest();
-  xhr.open("POST","https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/auto/upload");
+  xhr.open("POST", "https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/auto/upload");
+
   xhr.upload.onprogress = function(e) {
     if(e.lengthComputable) {
       var pct = Math.round((e.loaded/e.total)*100);
-      bar.style.width = pct+"%";
-      stat.textContent = "Uploading... "+pct+"%";
+      progressBar.style.width = pct+"%";
+      status.textContent = "Uploading... "+pct+"%";
     }
   };
+
   xhr.onload = function() {
-    if(xhr.status===200) {
-      var r = JSON.parse(xhr.responseText);
-      stat.textContent = "✓ Upload complete!";
-      bar.style.width = "100%";
-      cb(r.secure_url, r);
+    if(xhr.status === 200) {
+      var resp = JSON.parse(xhr.responseText);
+      status.textContent = "&#10003; Upload complete!";
+      progressBar.style.width = "100%";
+      callback(resp.secure_url, resp);
     } else {
-      stat.textContent = "Upload failed. Try again.";
-      stat.style.color = "#e07070";
+      status.textContent = "Upload failed. Try again.";
+      status.style.color = "#e07070";
     }
   };
-  xhr.onerror = function() { stat.textContent = "Upload failed."; stat.style.color="#e07070"; };
-  xhr.send(fd);
+
+  xhr.onerror = function() {
+    status.textContent = "Upload failed. Check connection.";
+    status.style.color = "#e07070";
+  };
+
+  xhr.send(formData);
 }
 
-/* ── FILE PREVIEWS ── */
-document.getElementById("art-thumb-file").addEventListener("change",function(){
-  var f=this.files[0]; if(!f) return;
-  var p=document.getElementById("art-thumb-preview");
-  p.src=URL.createObjectURL(f); p.style.display="block";
-  uploadToCloudinary(f,"thumb-progress-bar","thumb-status","thumb-progress",function(url){
-    document.getElementById("art-thumb-url").value=url;
-  });
-});
-document.getElementById("art-body-file").addEventListener("change",function(){
-  var f=this.files[0]; if(!f) return;
-  var p=document.getElementById("art-body-preview");
-  p.src=URL.createObjectURL(f); p.style.display="block";
-  uploadToCloudinary(f,"body-progress-bar","body-status","body-progress",function(url){
-    document.getElementById("art-body-img-url").value=url;
+// ARTICLE THUMBNAIL PREVIEW
+document.getElementById("art-thumb-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("art-thumb-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "thumb-progress-bar", "thumb-status", "thumb-progress", function(url) {
+    document.getElementById("art-thumb-url").value = url;
   });
 });
 
-/* ── VIDEO SOURCE TABS ── */
-var vidSource='upload';
-document.getElementById("vid-tab-upload").addEventListener("click",function(){
-  vidSource='upload';
-  document.getElementById("vid-source-upload").style.display="block";
-  document.getElementById("vid-source-youtube").style.display="none";
-  document.getElementById("vid-source-instagram").style.display="none";
-  document.querySelectorAll("#page-videos .tab").forEach(function(t){t.classList.remove("active");});
+// ARTICLE BODY IMAGE PREVIEW
+document.getElementById("art-body-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("art-body-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "body-progress-bar", "body-status", "body-progress", function(url) {
+    document.getElementById("art-body-img-url").value = url;
+  });
+});
+
+// VIDEO SOURCE TABS
+var vidSource = 'upload';
+document.getElementById("vid-tab-upload").addEventListener("click", function() {
+  vidSource = 'upload';
+  document.getElementById("vid-source-upload").style.display = "block";
+  document.getElementById("vid-source-youtube").style.display = "none";
+  document.getElementById("vid-source-instagram").style.display = "none";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
   this.classList.add("active");
 });
-document.getElementById("vid-tab-youtube").addEventListener("click",function(){
-  vidSource='youtube';
-  document.getElementById("vid-source-upload").style.display="none";
-  document.getElementById("vid-source-youtube").style.display="block";
-  document.getElementById("vid-source-instagram").style.display="none";
-  document.querySelectorAll("#page-videos .tab").forEach(function(t){t.classList.remove("active");});
+document.getElementById("vid-tab-youtube").addEventListener("click", function() {
+  vidSource = 'youtube';
+  document.getElementById("vid-source-upload").style.display = "none";
+  document.getElementById("vid-source-youtube").style.display = "block";
+  document.getElementById("vid-source-instagram").style.display = "none";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
   this.classList.add("active");
 });
-document.getElementById("vid-tab-instagram").addEventListener("click",function(){
-  vidSource='instagram';
-  document.getElementById("vid-source-upload").style.display="none";
-  document.getElementById("vid-source-youtube").style.display="none";
-  document.getElementById("vid-source-instagram").style.display="block";
-  document.querySelectorAll("#page-videos .tab").forEach(function(t){t.classList.remove("active");});
+document.getElementById("vid-tab-instagram").addEventListener("click", function() {
+  vidSource = 'instagram';
+  document.getElementById("vid-source-upload").style.display = "none";
+  document.getElementById("vid-source-youtube").style.display = "none";
+  document.getElementById("vid-source-instagram").style.display = "block";
+  document.querySelectorAll("#page-videos .tab").forEach(function(t){ t.classList.remove("active"); });
   this.classList.add("active");
 });
-document.getElementById("vid-youtube-url").addEventListener("input",function(){
-  var url=this.value.trim();
-  var m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([-\w]{11})/);
-  if(m){
-    var id=m[1];
-    document.getElementById("vid-youtube-iframe").src="https://www.youtube.com/embed/"+id+"?rel=0&modestbranding=1";
-    document.getElementById("vid-youtube-preview").style.display="block";
-    document.getElementById("vid-url").value=url;
-    document.getElementById("vid-thumb-url").value="https://img.youtube.com/vi/"+id+"/hqdefault.jpg";
+
+// YouTube URL preview
+document.getElementById("vid-youtube-url").addEventListener("input", function() {
+  var url = this.value.trim();
+  var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([-\w]{11})/);
+  if(m) {
+    var ytId = m[1];
+    document.getElementById("vid-youtube-iframe").src = "https://www.youtube.com/embed/" + ytId + "?rel=0&modestbranding=1";
+    document.getElementById("vid-youtube-preview").style.display = "block";
+    document.getElementById("vid-url").value = url;
+    // Auto-set thumbnail
+    document.getElementById("vid-thumb-url").value = "https://img.youtube.com/vi/" + ytId + "/hqdefault.jpg";
   }
 });
-document.getElementById("vid-instagram-url").addEventListener("input",function(){
-  document.getElementById("vid-url").value=this.value.trim();
+
+// Instagram URL
+document.getElementById("vid-instagram-url").addEventListener("input", function() {
+  document.getElementById("vid-url").value = this.value.trim();
 });
-document.getElementById("vid-file").addEventListener("change",function(){
-  var f=this.files[0]; if(!f) return;
-  var p=document.getElementById("vid-preview");
-  p.src=URL.createObjectURL(f); p.style.display="block";
-  p.addEventListener("loadedmetadata",function(){
-    var d=Math.floor(p.duration);
-    document.getElementById("vid-dur").value=Math.floor(d/60)+":"+(d%60<10?"0":"")+d%60;
+
+// VIDEO FILE PREVIEW
+document.getElementById("vid-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("vid-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+
+  // Auto detect duration
+  preview.addEventListener("loadedmetadata", function() {
+    var dur = Math.floor(preview.duration);
+    var mins = Math.floor(dur/60);
+    var secs = dur%60;
+    document.getElementById("vid-dur").value = mins+":"+(secs<10?"0":"")+secs;
   });
-  uploadToCloudinary(f,"vid-progress-bar","vid-status","vid-progress",function(url,r){
-    document.getElementById("vid-url").value=url;
-    if(r.resource_type==="video"){
-      document.getElementById("vid-thumb-url").value=url.replace("/upload/","/upload/so_0/").replace(/\.[^.]+$/,".jpg");
+
+  uploadToCloudinary(file, "vid-progress-bar", "vid-status", "vid-progress", function(url, resp) {
+    document.getElementById("vid-url").value = url;
+    // Auto set thumbnail from Cloudinary
+    if(resp.resource_type === "video") {
+      var thumbUrl = url.replace("/upload/", "/upload/so_0/").replace(/\.[^.]+$/, ".jpg");
+      document.getElementById("vid-thumb-url").value = thumbUrl;
     }
   });
 });
-document.getElementById("vid-thumb-file").addEventListener("change",function(){
-  var f=this.files[0]; if(!f) return;
-  var p=document.getElementById("vid-thumb-preview");
-  p.src=URL.createObjectURL(f); p.style.display="block";
-  uploadToCloudinary(f,"vid-thumb-progress-bar","vid-thumb-status","vid-thumb-progress",function(url){
-    document.getElementById("vid-thumb-url").value=url;
+
+// VIDEO THUMBNAIL PREVIEW
+document.getElementById("vid-thumb-file").addEventListener("change", function() {
+  var file = this.files[0];
+  if(!file) return;
+  var preview = document.getElementById("vid-thumb-preview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  uploadToCloudinary(file, "vid-thumb-progress-bar", "vid-thumb-status", "vid-thumb-progress", function(url) {
+    document.getElementById("vid-thumb-url").value = url;
   });
 });
 
-/* ── CHAR COUNTS ── */
-document.getElementById("art-title").addEventListener("input",function(){ document.getElementById("art-tc").textContent=this.value.length; });
-document.getElementById("vid-title").addEventListener("input",function(){ document.getElementById("vid-tc").textContent=this.value.length; });
-document.getElementById("op-title").addEventListener("input",function(){ document.getElementById("op-tc").textContent=this.value.length; });
-document.getElementById("ticker-input").addEventListener("input",function(){ document.getElementById("ticker-cc").textContent=this.value.length; });
+// CHAR COUNTS
+document.getElementById("art-title").addEventListener("input", function(){ document.getElementById("art-tc").textContent = this.value.length; });
+document.getElementById("vid-title").addEventListener("input", function(){ document.getElementById("vid-tc").textContent = this.value.length; });
+document.getElementById("op-title").addEventListener("input", function(){ document.getElementById("op-tc").textContent = this.value.length; });
+document.getElementById("ticker-input").addEventListener("input", function(){ document.getElementById("ticker-cc").textContent = this.value.length; });
 
-/* ── POPULATE SECTION DROPDOWNS ── */
-function populateSectionDropdowns() {
-  var names = _lists.sections.length
-    ? _lists.sections.map(function(s){ return s.name; })
-    : _defaultSections;
-  ["art-section","vid-cat"].forEach(function(id) {
-    var sel = document.getElementById(id);
-    var cur = sel.value;
-    sel.innerHTML = '<option value="">Select section...</option>';
-    names.forEach(function(n){
-      var o = document.createElement("option");
-      o.value = n; o.textContent = n;
-      sel.appendChild(o);
-    });
-    if(cur) sel.value = cur;
-  });
-}
-
-/* ── FIREBASE LISTENERS ── */
+// FIREBASE LISTENERS
 function startListeners() {
-  db.collection("articles").orderBy("createdAt","desc").onSnapshot(function(snap){
+  db.collection("articles").orderBy("createdAt","desc").onSnapshot(function(snap) {
     _lists.articles = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderArticles();
     document.getElementById("stat-articles").textContent = _lists.articles.length;
     renderDash();
-    renderAnalytics();
   });
-  db.collection("ticker").orderBy("createdAt","asc").onSnapshot(function(snap){
+  db.collection("ticker").orderBy("createdAt","desc").onSnapshot(function(snap) {
     _lists.ticker = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderTicker();
     document.getElementById("stat-ticker").textContent = _lists.ticker.length;
   });
-  db.collection("videos").orderBy("createdAt","desc").onSnapshot(function(snap){
+  db.collection("videos").orderBy("createdAt","desc").onSnapshot(function(snap) {
     _lists.videos = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderVideos();
     document.getElementById("stat-videos").textContent = _lists.videos.length;
     renderDash();
   });
-  db.collection("opinion").orderBy("createdAt","desc").onSnapshot(function(snap){
+  db.collection("opinion").orderBy("createdAt","desc").onSnapshot(function(snap) {
     _lists.opinion = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
     renderOpinion();
-  });
-  // Sections: no orderBy (avoids index requirement), stable sort client-side
-  // Use a flag to track whether we've already triggered a seed write
-  var _seedAttempted = false;
-  var _sectionsRenderTimer = null;
-
-  db.collection("sections").onSnapshot(function(snap){
-    // If truly empty and we haven't tried seeding yet, seed the defaults
-    if(snap.empty && !_seedAttempted) {
-      _seedAttempted = true;
-      var batch = db.batch();
-      _defaultSections.forEach(function(name){
-        batch.set(db.collection("sections").doc(), {
-          name: name,
-          order: _defaultSections.indexOf(name)
-        });
-      });
-      batch.commit()
-        .then(function(){ console.log("Sections seeded."); })
-        .catch(function(e){
-          // Firestore rules may block write — load defaults locally so UI still works
-          console.warn("Seed blocked (rules?):", e.code, e.message);
-          _lists.sections = _defaultSections.map(function(n,i){
-            return {id:"local-"+i, name:n};
-          });
-          renderSections();
-          populateSectionDropdowns();
-          document.getElementById("sections-count").textContent = _lists.sections.length;
-          showToast("Sections loaded locally. Update Firestore rules to persist them.",true);
-        });
-      return; // wait for the onSnapshot to re-fire after the batch write
-    }
-
-    // Non-empty: update state and re-render (debounced to prevent grid jumping)
-    _seedAttempted = true;
-    _lists.sections = snap.docs
-      .map(function(d){ return Object.assign({id:d.id}, d.data()); })
-      .sort(function(a,b){
-        // Sort by order field if present, otherwise alphabetically
-        if(a.order !== undefined && b.order !== undefined) return a.order - b.order;
-        return a.name.localeCompare(b.name);
-      });
-
-    if(_sectionsRenderTimer) clearTimeout(_sectionsRenderTimer);
-    _sectionsRenderTimer = setTimeout(function(){
-      renderSections();
-      populateSectionDropdowns();
-      document.getElementById("sections-count").textContent = _lists.sections.length;
-    }, 80);
-  }, function(err){
-    // onSnapshot error handler — e.g. rules deny read
-    console.error("Sections listener error:", err.code, err.message);
-    _lists.sections = _defaultSections.map(function(n,i){ return {id:"local-"+i, name:n}; });
-    renderSections();
-    populateSectionDropdowns();
-    document.getElementById("sections-count").textContent = _lists.sections.length;
-    showToast("Could not load sections from Firestore — check your rules.",true);
+    document.getElementById("stat-opinion").textContent = _lists.opinion.length;
   });
 }
 
-/* ── DASHBOARD ── */
+// DASHBOARD
 function renderDash() {
   var ra = document.getElementById("dash-recent-articles");
-  ra.innerHTML = _lists.articles.length===0
+  ra.innerHTML = _lists.articles.length === 0
     ? '<div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div>'
-    : _lists.articles.slice(0,5).map(function(a){
-        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span>'+a.title+'</div><div class="recent-time">'+(a.time||"Now")+'</div></div>';
+    : _lists.articles.slice(0,5).map(function(a) {
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span><br>'+a.title+'</div><div class="recent-time">'+(a.time||"Now")+'</div></div>';
       }).join("");
-
-  var total = _lists.articles.reduce(function(s,a){ return s+(a.views||0); },0);
-  document.getElementById("stat-views").textContent = total;
-
-  var sorted = _lists.articles.slice().sort(function(a,b){ return (b.views||0)-(a.views||0); }).slice(0,5).filter(function(a){ return (a.views||0)>0; });
-  var rv = document.getElementById("dash-top-views");
-  rv.innerHTML = sorted.length===0
-    ? '<div class="empty-state"><div class="empty-icon">&#9650;</div><div class="empty-text">No views tracked yet</div></div>'
-    : sorted.map(function(a){
-        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+a.section+'</span>'+a.title+'</div><div class="recent-time" style="color:var(--gold);font-weight:600">'+(a.views||0)+'</div></div>';
+  var rv = document.getElementById("dash-recent-videos");
+  rv.innerHTML = _lists.videos.length === 0
+    ? '<div class="empty-state"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet</div></div>'
+    : _lists.videos.slice(0,5).map(function(v) {
+        return '<div class="recent-item"><div class="recent-title"><span class="recent-cat">'+v.cat+'</span><br>'+v.title+'</div><div class="recent-time">'+(v.dur||"--")+'</div></div>';
       }).join("");
 }
 
-/* ── SAVE ARTICLE ── */
-document.getElementById("btn-save-art").addEventListener("click",function(){
-  var title   = document.getElementById("art-title").value.trim();
+// SAVE ARTICLE
+document.getElementById("btn-save-art").addEventListener("click", function() {
+  var title = document.getElementById("art-title").value.trim();
   var section = document.getElementById("art-section").value;
-  if(!title||!section){ showToast("Please fill headline and section",true); return; }
-  var btn=this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
+  if(!title||!section) { showToast("Please fill headline and section",true); return; }
+  var thumbUrl = document.getElementById("art-thumb-url").value;
+  var bodyImgUrl = document.getElementById("art-body-img-url").value;
+  var btn = this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
   db.collection("articles").add({
     title:title, section:section,
     cat:document.getElementById("art-cat").value.trim()||section,
     excerpt:document.getElementById("art-excerpt").value.trim(),
     body:document.getElementById("art-body").value.trim(),
-    thumbnailUrl:document.getElementById("art-thumb-url").value||"",
-    bodyImageUrl:document.getElementById("art-body-img-url").value||"",
+    thumbnailUrl: thumbUrl || "",
+    bodyImageUrl: bodyImgUrl || "",
     author:document.getElementById("art-author").value.trim()||"Zenit Staff",
     read:document.getElementById("art-read").value.trim()||"3 min read",
     status:document.getElementById("art-status").value,
     time:document.getElementById("art-time").value.trim()||"Just now",
-    views:0,
     createdAt:firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(){
+  }).then(function() {
     showToast("Article is now live on your website!");
+    // Clear form
     ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
     document.getElementById("art-section").selectedIndex=0;
     document.getElementById("art-status").selectedIndex=0;
     document.getElementById("art-tc").textContent="0";
-    ["art-thumb-preview","art-body-preview"].forEach(function(id){ document.getElementById(id).style.display="none"; });
-    ["thumb-progress","body-progress","thumb-status","body-status"].forEach(function(id){ document.getElementById(id).style.display="none"; });
+    document.getElementById("art-thumb-preview").style.display="none";
+    document.getElementById("art-body-preview").style.display="none";
+    document.getElementById("thumb-progress").style.display="none";
+    document.getElementById("body-progress").style.display="none";
+    document.getElementById("thumb-status").style.display="none";
+    document.getElementById("body-status").style.display="none";
     switchTab("articles","list");
-  }).catch(function(){ showToast("Error saving article",true); })
+  }).catch(function(){ showToast("Error saving",true); })
   .finally(function(){ btn.disabled=false; btn.innerHTML="Save Article &rarr;"; });
 });
 
-document.getElementById("btn-clear-art").addEventListener("click",function(){
+document.getElementById("btn-clear-art").addEventListener("click", function() {
   ["art-title","art-cat","art-excerpt","art-body","art-author","art-read","art-time","art-thumb-url","art-body-img-url"].forEach(function(id){ document.getElementById(id).value=""; });
-  ["art-thumb-preview","art-body-preview"].forEach(function(id){ document.getElementById(id).style.display="none"; });
+  document.getElementById("art-thumb-preview").style.display="none";
+  document.getElementById("art-body-preview").style.display="none";
   document.getElementById("art-tc").textContent="0";
 });
 
-document.getElementById("art-search").addEventListener("input",function(){
-  var q=this.value.toLowerCase();
+document.getElementById("art-search").addEventListener("input", function() {
+  var q = this.value.toLowerCase();
   renderArticles(_lists.articles.filter(function(a){ return a.title.toLowerCase().includes(q)||a.section.toLowerCase().includes(q); }));
 });
 
 function renderArticles(list) {
   var data = list||_lists.articles;
   var tbody = document.getElementById("articles-table-body");
-  if(data.length===0){
-    tbody.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>';
+  if(data.length===0) {
+    tbody.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#10022;</div><div class="empty-text">No articles yet</div></div></td></tr>';
     return;
   }
-  tbody.innerHTML = data.map(function(a){
-    var thumb = a.thumbnailUrl
-      ? '<img src="'+a.thumbnailUrl+'" class="td-thumb">'
-      : '<div class="td-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);border-radius:2px"></div>';
-    return '<tr>'
-      +'<td>'+thumb+'</td>'
-      +'<td><div class="td-cat">'+(a.cat||a.section)+'</div><div class="td-title">'+a.title+'</div></td>'
-      +'<td>'+a.section+'</td>'
-      +'<td><span class="status-'+(a.status||"live")+'">'+(a.status||"live")+'</span></td>'
-      +'<td style="color:var(--gold);font-family:\'Cormorant Garamond\',serif;font-size:1rem;font-weight:700">'+(a.views||0)+'</td>'
-      +'<td>'+(a.time||"—")+'</td>'
-      +'<td><div class="td-actions"><button class="btn-danger" data-id="'+a.id+'">Delete</button></div></td>'
-      +'</tr>';
+  tbody.innerHTML = data.map(function(a) {
+    var thumb = a.thumbnailUrl ? '<img src="'+a.thumbnailUrl+'" class="td-thumb">' : '<div class="td-thumb" style="background:linear-gradient(140deg,#0a0a0a,#1a1a1a);border-radius:2px"></div>';
+    return '<tr><td>'+thumb+'</td><td><div class="td-cat">'+(a.cat||a.section)+'</div><div class="td-title">'+a.title+'</div></td><td>'+a.section+'</td><td><span class="status-'+(a.status||"live")+'">'+(a.status||"live")+'</span></td><td>'+(a.time||"--")+'</td><td><div class="td-actions"><button class="btn-danger" data-id="'+a.id+'">Delete</button></div></td></tr>';
   }).join("");
-  tbody.querySelectorAll(".btn-danger").forEach(function(btn){
-    btn.addEventListener("click",function(){
+  tbody.querySelectorAll(".btn-danger").forEach(function(btn) {
+    btn.addEventListener("click", function() {
       if(!confirm("Delete this article?")) return;
       db.collection("articles").doc(this.getAttribute("data-id")).delete()
-        .then(function(){ showToast("Article deleted"); }).catch(function(){ showToast("Error",true); });
+        .then(function(){ showToast("Deleted"); }).catch(function(){ showToast("Error",true); });
     });
   });
 }
 
-/* ── TICKER (max 20, auto-delete oldest) ── */
+// TICKER
 document.getElementById("btn-add-ticker").addEventListener("click", addTicker);
-document.getElementById("ticker-input").addEventListener("keydown",function(e){ if(e.key==="Enter") addTicker(); });
-
+document.getElementById("ticker-input").addEventListener("keydown", function(e){ if(e.key==="Enter") addTicker(); });
 function addTicker() {
   var text = document.getElementById("ticker-input").value.trim();
-  if(!text){ showToast("Please enter a headline",true); return; }
+  if(!text) { showToast("Please enter a headline",true); return; }
   var btn = document.getElementById("btn-add-ticker");
   btn.disabled=true; btn.textContent="Saving...";
-  db.collection("ticker").add({
-    text:text,
-    createdAt:firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(){
-    document.getElementById("ticker-input").value="";
-    document.getElementById("ticker-cc").textContent="0";
-    showToast("Ticker item is now live!");
-    // Enforce max 20 — delete oldest items beyond the limit
-    return db.collection("ticker").orderBy("createdAt","asc").get();
-  }).then(function(snap){
-    if(snap && snap.size > TICKER_MAX) {
-      var excess = snap.docs.slice(0, snap.size - TICKER_MAX);
-      var batch = db.batch();
-      excess.forEach(function(doc){ batch.delete(doc.ref); });
-      return batch.commit();
-    }
-  }).catch(function(){ showToast("Error",true); })
-  .finally(function(){ btn.disabled=false; btn.textContent="+ Add Item"; });
+  db.collection("ticker").add({text:text,createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+    .then(function(){ document.getElementById("ticker-input").value=""; document.getElementById("ticker-cc").textContent="0"; showToast("Ticker item is now live!"); })
+    .catch(function(){ showToast("Error",true); })
+    .finally(function(){ btn.disabled=false; btn.textContent="+ Add Item"; });
 }
-
 function renderTicker() {
-  var count = _lists.ticker.length;
-  document.getElementById("ticker-count").textContent = count;
-  var pct = Math.min(100, Math.round((count/TICKER_MAX)*100));
-  var fill = document.getElementById("ticker-cap-fill");
-  fill.style.width = pct+"%";
-  fill.style.background = count>=TICKER_MAX ? "#e07070" : "var(--gold)";
-  document.getElementById("ticker-cap-count").textContent = count+" / "+TICKER_MAX;
-  document.getElementById("ticker-cap-count").style.color = count>=TICKER_MAX ? "#e07070" : "var(--gold)";
-
   var list = document.getElementById("ticker-list");
-  list.innerHTML = count===0
+  document.getElementById("ticker-count").textContent = _lists.ticker.length;
+  list.innerHTML = _lists.ticker.length===0
     ? '<div class="empty-state" style="padding:2rem"><div class="empty-icon">&#9670;</div><div class="empty-text">No ticker items yet</div></div>'
-    : _lists.ticker.slice().reverse().map(function(t){
+    : _lists.ticker.map(function(t){
         return '<div class="ticker-item"><span class="ticker-badge">Breaking</span><span class="ticker-text">'+t.text+'</span><button class="btn-danger" data-id="'+t.id+'">Remove</button></div>';
       }).join("");
   list.querySelectorAll(".btn-danger").forEach(function(btn){
-    btn.addEventListener("click",function(){
+    btn.addEventListener("click", function(){
       db.collection("ticker").doc(this.getAttribute("data-id")).delete()
         .then(function(){ showToast("Removed"); }).catch(function(){ showToast("Error",true); });
     });
   });
 }
 
-/* ── SAVE VIDEO ── */
-document.getElementById("btn-save-vid").addEventListener("click",function(){
+// SAVE VIDEO
+document.getElementById("btn-save-vid").addEventListener("click", function() {
   var title = document.getElementById("vid-title").value.trim();
-  var cat   = document.getElementById("vid-cat").value;
-  var url   = vidSource==="youtube" ? document.getElementById("vid-youtube-url").value.trim()
-            : vidSource==="instagram" ? document.getElementById("vid-instagram-url").value.trim()
-            : document.getElementById("vid-url").value;
-  if(!title||!cat){ showToast("Please fill title and category",true); return; }
-  if(!url){ showToast("Please add a video — upload a file or paste a URL",true); return; }
-  var btn=this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Publishing...';
+  var cat = document.getElementById("vid-cat").value;
+  // Get video URL based on source type
+  var vidUrl = "";
+  if(vidSource === "youtube") {
+    vidUrl = document.getElementById("vid-youtube-url").value.trim();
+  } else if(vidSource === "instagram") {
+    vidUrl = document.getElementById("vid-instagram-url").value.trim();
+  } else {
+    vidUrl = document.getElementById("vid-url").value;
+  }
+  if(!title||!cat) { showToast("Please fill title and category",true); return; }
+  if(!vidUrl) { showToast("Please add a video — upload a file or paste a URL",true); return; }
+  var btn = this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Publishing...';
   db.collection("videos").add({
     title:title, cat:cat,
     badge:document.getElementById("vid-badge").value,
     dur:document.getElementById("vid-dur").value.trim()||"1:00",
     likes:document.getElementById("vid-likes").value.trim()||"0",
-    videoUrl:url,
+    videoUrl:vidUrl,
     thumbnailUrl:document.getElementById("vid-thumb-url").value||"",
     createdAt:firebase.firestore.FieldValue.serverTimestamp()
   }).then(function(){
@@ -1193,39 +833,35 @@ document.getElementById("btn-save-vid").addEventListener("click",function(){
     ["vid-title","vid-dur","vid-likes","vid-url","vid-thumb-url"].forEach(function(id){ document.getElementById(id).value=""; });
     document.getElementById("vid-cat").selectedIndex=0;
     document.getElementById("vid-tc").textContent="0";
-    ["vid-preview","vid-thumb-preview"].forEach(function(id){ document.getElementById(id).style.display="none"; });
-    ["vid-progress","vid-status"].forEach(function(id){ document.getElementById(id).style.display="none"; });
+    document.getElementById("vid-preview").style.display="none";
+    document.getElementById("vid-thumb-preview").style.display="none";
+    document.getElementById("vid-progress").style.display="none";
+    document.getElementById("vid-status").style.display="none";
     switchTab("videos","list");
   }).catch(function(){ showToast("Error",true); })
   .finally(function(){ btn.disabled=false; btn.innerHTML="Upload &amp; Publish Video &rarr;"; });
 });
 
-document.getElementById("btn-clear-vid").addEventListener("click",function(){
+document.getElementById("btn-clear-vid").addEventListener("click", function(){
   ["vid-title","vid-dur","vid-likes","vid-url","vid-thumb-url"].forEach(function(id){ document.getElementById(id).value=""; });
-  ["vid-preview","vid-thumb-preview"].forEach(function(id){ document.getElementById(id).style.display="none"; });
+  document.getElementById("vid-preview").style.display="none";
+  document.getElementById("vid-thumb-preview").style.display="none";
   document.getElementById("vid-tc").textContent="0";
 });
 
 function renderVideos() {
   var grid = document.getElementById("videos-grid");
-  if(_lists.videos.length===0){
+  if(_lists.videos.length===0) {
     grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9654;</div><div class="empty-text">No videos yet. Upload your first reel!</div></div>';
     return;
   }
   grid.innerHTML = _lists.videos.map(function(v){
-    var thumb = v.thumbnailUrl
-      ? '<img src="'+v.thumbnailUrl+'" style="width:120px;height:75px;object-fit:cover;border-radius:3px;flex-shrink:0">'
+    var thumb = v.thumbnailUrl ? '<img src="'+v.thumbnailUrl+'" style="width:120px;height:75px;object-fit:cover;border-radius:3px;flex-shrink:0">'
       : '<div style="width:120px;height:75px;background:linear-gradient(170deg,#0a0a14,#1a2040);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:1.5rem">&#9654;</div>';
-    return '<div class="video-admin-card">'+thumb
-      +'<div class="video-admin-info">'
-      +'<div class="video-admin-cat">'+v.cat+' &middot; '+v.badge+'</div>'
-      +'<div class="video-admin-title">'+v.title+'</div>'
-      +'<div class="video-admin-meta">'+v.dur+' &middot; '+v.likes+' likes</div>'
-      +'<div class="video-admin-actions"><button class="btn-danger" data-id="'+v.id+'">Remove</button></div>'
-      +'</div></div>';
+    return '<div class="video-admin-card">'+thumb+'<div class="video-admin-info"><div class="video-admin-cat">'+v.cat+' &middot; '+v.badge+'</div><div class="video-admin-title">'+v.title+'</div><div class="video-admin-meta">'+v.dur+' &middot; '+v.likes+' likes</div><div class="video-admin-actions"><button class="btn-danger" data-id="'+v.id+'">Remove</button></div></div></div>';
   }).join("");
   grid.querySelectorAll(".btn-danger").forEach(function(btn){
-    btn.addEventListener("click",function(){
+    btn.addEventListener("click", function(){
       if(!confirm("Delete this video?")) return;
       db.collection("videos").doc(this.getAttribute("data-id")).delete()
         .then(function(){ showToast("Removed"); }).catch(function(){ showToast("Error",true); });
@@ -1233,15 +869,15 @@ function renderVideos() {
   });
 }
 
-/* ── OPINION ── */
-document.getElementById("btn-save-op").addEventListener("click",function(){
+// OPINION
+document.getElementById("btn-save-op").addEventListener("click", function() {
   var author = document.getElementById("op-author").value.trim();
-  var title  = document.getElementById("op-title").value.trim();
-  if(!author||!title){ showToast("Please fill author and title",true); return; }
+  var title = document.getElementById("op-title").value.trim();
+  if(!author||!title) { showToast("Please fill author and title",true); return; }
   var initials = document.getElementById("op-initials").value.trim()||author.split(" ").map(function(w){return w[0];}).join("").toUpperCase().slice(0,2);
   var btn=this; btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
   db.collection("opinion").add({
-    author:author, initials:initials,
+    author:author,initials:initials,
     role:document.getElementById("op-role").value.trim(),
     color:document.getElementById("op-color").value,
     title:title,
@@ -1251,141 +887,35 @@ document.getElementById("btn-save-op").addEventListener("click",function(){
     createdAt:firebase.firestore.FieldValue.serverTimestamp()
   }).then(function(){
     showToast("Opinion piece is now live!");
-    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){ document.getElementById(id).value=""; });
+    ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
     document.getElementById("op-tc").textContent="0";
     switchTab("opinion","list");
-  }).catch(function(){ showToast("Error",true); })
-  .finally(function(){ btn.disabled=false; btn.innerHTML="Save Opinion &rarr;"; });
+  }).catch(function(){showToast("Error",true);})
+  .finally(function(){btn.disabled=false;btn.innerHTML="Save Opinion &rarr;";});
 });
 
-document.getElementById("btn-clear-op").addEventListener("click",function(){
-  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){ document.getElementById(id).value=""; });
+document.getElementById("btn-clear-op").addEventListener("click", function(){
+  ["op-author","op-role","op-initials","op-title","op-deck","op-read","op-time"].forEach(function(id){document.getElementById(id).value="";});
   document.getElementById("op-tc").textContent="0";
 });
 
 function renderOpinion() {
   var grid = document.getElementById("opinion-grid");
-  if(_lists.opinion.length===0){
+  if(_lists.opinion.length===0) {
     grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:3rem"><div class="empty-icon">&#9872;</div><div class="empty-text">No opinion pieces yet</div></div>';
     return;
   }
   grid.innerHTML = _lists.opinion.map(function(o){
-    return '<div class="op-admin-card">'
-      +'<div class="op-admin-av" style="background:'+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+'">'+o.initials+'</div>'
-      +'<div class="op-admin-info">'
-      +'<div class="op-admin-author">'+o.author+(o.role?" — "+o.role:"")+'</div>'
-      +'<div class="op-admin-title">'+o.title+'</div>'
-      +'<div class="op-admin-actions"><button class="btn-danger" data-id="'+o.id+'">Remove</button></div>'
-      +'</div></div>';
+    return '<div class="op-admin-card"><div class="op-admin-av" style="background:'+(o.color||"linear-gradient(135deg,#c9a84c,#8a6020)")+'">'+o.initials+'</div><div class="op-admin-info"><div class="op-admin-author">'+o.author+(o.role?" - "+o.role:"")+'</div><div class="op-admin-title">'+o.title+'</div><div class="op-admin-actions"><button class="btn-danger" data-id="'+o.id+'">Remove</button></div></div></div>';
   }).join("");
   grid.querySelectorAll(".btn-danger").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      if(!confirm("Delete this opinion piece?")) return;
+    btn.addEventListener("click", function(){
+      if(!confirm("Delete?")) return;
       db.collection("opinion").doc(this.getAttribute("data-id")).delete()
-        .then(function(){ showToast("Removed"); }).catch(function(){ showToast("Error",true); });
+        .then(function(){showToast("Removed");}).catch(function(){showToast("Error",true);});
     });
   });
 }
-
-/* ── MANAGE SECTIONS ── */
-document.getElementById("btn-add-section").addEventListener("click", addSection);
-document.getElementById("section-new-name").addEventListener("keydown",function(e){ if(e.key==="Enter") addSection(); });
-
-function addSection() {
-  var raw = document.getElementById("section-new-name").value.trim();
-  if(!raw){ showToast("Please enter a section name",true); return; }
-  var name = raw.charAt(0).toUpperCase()+raw.slice(1);
-  if(_lists.sections.some(function(s){ return s.name.toLowerCase()===name.toLowerCase(); })){
-    showToast("Section already exists",true); return;
-  }
-  var btn = document.getElementById("btn-add-section"); btn.disabled=true;
-  var newOrder = _lists.sections.length; // append at end
-  db.collection("sections").add({name:name, order:newOrder})
-    .then(function(){
-      document.getElementById("section-new-name").value="";
-      showToast("Section '"+name+"' added!");
-    }).catch(function(err){
-      console.error("Add section error:", err.code, err.message);
-      if(err.code === "permission-denied") {
-        showToast("Permission denied — add 'sections' collection to your Firestore rules",true);
-      } else {
-        showToast("Error adding section: "+err.message,true);
-      }
-    })
-    .finally(function(){ btn.disabled=false; });
-}
-
-function renderSections() {
-  var grid = document.getElementById("sections-grid");
-  if(_lists.sections.length===0){
-    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;padding:2rem"><div class="empty-icon">&#9783;</div><div class="empty-text">No sections yet</div></div>';
-    return;
-  }
-  grid.innerHTML = _lists.sections.map(function(s){
-    return '<div class="section-chip">'
-      +'<span class="section-chip-name">'+s.name+'</span>'
-      +'<button class="btn-chip-del" data-id="'+s.id+'" data-name="'+s.name+'">Remove</button>'
-      +'</div>';
-  }).join("");
-  grid.querySelectorAll(".btn-chip-del").forEach(function(btn){
-    btn.addEventListener("click", function(e){
-      e.stopPropagation();
-      var docId = btn.getAttribute("data-id");
-      var name  = btn.getAttribute("data-name");
-      if(!docId){ showToast("Error: missing section ID",true); return; }
-      if(docId.startsWith("local-")){ showToast("Update Firestore rules first — sections are loaded locally only.",true); return; }
-      if(!confirm("Remove section '"+name+"'?\nExisting articles stay in Firestore.")) return;
-      btn.disabled = true;
-      btn.textContent = "...";
-      db.collection("sections").doc(docId).delete()
-        .then(function(){ showToast("Section '"+name+"' removed"); })
-        .catch(function(err){
-          console.error("Delete failed:", err.code, err.message);
-          if(err.code === "permission-denied") {
-            showToast("Permission denied — add 'sections' collection to your Firestore rules",true);
-          } else {
-            showToast("Error removing: "+err.message,true);
-          }
-          btn.disabled = false;
-          btn.textContent = "Remove";
-        });
-    });
-  });
-}
-
-/* ── ANALYTICS ── */
-document.getElementById("ana-search").addEventListener("input",function(){
-  var q=this.value.toLowerCase();
-  renderAnalytics(_lists.articles.filter(function(a){ return a.title.toLowerCase().includes(q)||(a.section||"").toLowerCase().includes(q); }));
-});
-
-function renderAnalytics(list) {
-  var data = (list || _lists.articles.slice()).sort(function(a,b){ return (b.views||0)-(a.views||0); });
-  var total      = _lists.articles.reduce(function(s,a){ return s+(a.views||0); },0);
-  var withViews  = _lists.articles.filter(function(a){ return (a.views||0)>0; }).length;
-  var top        = data[0];
-  var maxV       = top ? (top.views||0) : 1;
-
-  document.getElementById("ana-total").textContent      = total;
-  document.getElementById("ana-with-views").textContent  = withViews;
-  if(top && (top.views||0)>0){
-    document.getElementById("ana-top-views").textContent = top.views;
-    document.getElementById("ana-top-title").textContent = top.title.length>48 ? top.title.slice(0,48)+"…" : top.title;
-  } else {
-    document.getElementById("ana-top-views").textContent = "—";
-    document.getElementById("ana-top-title").textContent = "No views yet";
-  }
-
-  var tbody = document.getElementById("analytics-table-body");
-  if(data.length===0){
-    tbody.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#9650;</div><div class="empty-text">No articles found</div></div></td></tr>';
-    return;
-  }
-  tbody.innerHTML = data.map(function(a){
-    var v = a.views||0;
-    var w = maxV>0 ? Math.round((v/maxV)*100) : 0;
-    return '<tr>'
-      +'<td><div class="td-title" style="font-size:0.85rem;font-family:\'Cormorant Garamond\',serif">'+a.title+'</div></td>'
-      +'<td><span class="td-cat">'+a.section+'</span></td>'
-      +'<td style="color:var(--gold);font-family:\'Cormorant Garamond\',serif;font-size:1.15rem;font-weight:700">'+v+'</td>'
-      +'<td><div
+</script>
+</body>
+</html>
